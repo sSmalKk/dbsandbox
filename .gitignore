@@ -1,3 +1,17 @@
-.glitchdotcom.json
-.node-gyp
-node_modules
+# Ignore diretórios
+/node_modules
+/__test__
+
+# Ignore arquivos específicos
+.env
+.env.docker
+.dockerignore
+.eslintrc.js
+.gitignore
+README.md
+
+# Ignore extensões zip
+*.zip
+
+# Ignore arquivos de build e dependências
+/package-lock.json

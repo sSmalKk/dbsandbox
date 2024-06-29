@@ -1,28 +1,120 @@
-# Hello Node (blank)
+# NodeJS,Mongoose,Express Project in MVC Architecture
 
-[Node.js](https://nodejs.org/en/about/) is a popular runtime that lets you run JavaScript on the server. This project uses the [Fastify](https://www.fastify.io/) framework and basic templating with [Handlebars](https://handlebarsjs.com/).
+**Supported version of nodejs >= 12**,
+**Supported version of mongoose >= 6**
 
-_Last updated: 14 August 2023_
+## About 
+- This is a Node application, developed using MVC pattern with Node.js, ExpressJS, and Mongoose. 
+- MongoDB database is used for data storage, with object modeling provided by Mongoose.
 
-## What's in this project?
+## Initial
+1. ```$ npm install```
+2. ```$ npm start```
+3. Credentials
 
-← `README.md`: That’s this file, where you can tell people what your cool website does and how you built it.
+	- One user with User role,
+	# Default User credentials
+	**username** : Ludwig45
+	**password** : dK5FgpbMnr510ax
 
-← `public/style.css`: The styling rules for your pages and posts.
+	- One user with Admin role,
+	# Default Admin credentials
+	**username** : Buddy.DuBuque58
+	**password** : ZRwoOQCYROnUf3N
 
-← `server.js`: The main server script for your new site.
+## How to use generated APIs:
+[Click here to visit documentation](<https://docs.dhiwise.com/docs/node/generate-apis/> "API Documentation")
 
-← `src/`: This folder holds page templates, additional scripts.
+## How to run with Docker ? :
+- if you have docker file you can execute following command
+- build the image
+	```$ docker build --pull --rm -f "Dockerfile" -t <imageName>:latest "." ```
+- execute the command
+	```$ docker run -p 3000:3000 <imageName> ```
 
-### Working in the `src/` folder 📁
 
-← `src/pages/index.hbs`: This is the main page template for your site.
+## Folder structure:
+```
+  ├── app.js       - starting point of the application
+  ├── config
+  │   └── db.js    - contains api database connection
+  ├── constants    - contains commonly used constants 
+  ├── controllers               
+  │   └── platform - contains business logic
+  ├── jobs         - cron jobs
+  ├── models       - models of application
+  ├── postman      - postman collection files
+  ├── routes       - contains all the routes of application
+  ├── services     - contains commonly used services
+  ├── views        - templates
+  └── utils        - contains utility functions    
+```
 
-![Glitch](https://cdn.glitch.com/a9975ea6-8949-4bab-addb-8a95021dc2da%2FLogo_Color.svg?v=1602781328576)
+## Detail Description of Files and folders
 
-## You built this with Glitch!
+1. app.js
+- entry point of application.
 
-[Glitch](https://glitch.com) is a friendly community where millions of people come together to build web apps and websites.
+2. config
+- passport strategy files
+- database connection files
 
-- Need more help? [Check out our Help Center](https://help.glitch.com/) for answers to any common questions.
-- Ready to make it official? [Become a paid Glitch member](https://glitch.com/pricing) to boost your app with private sharing, more storage and memory, domains and more.
+3. constants
+- constants used across application.
+
+4. controllers
+- Controller files that contains Business logic
+```
+	├── controller
+		├── platform
+			└── modelNameController.js        - contains CRUD Operations
+```
+
+5. jobs
+- Cron jobs
+
+6. middleware
+- Middleware files for authentication, authorization and role-access.
+
+7. models
+- Database models 
+
+8. postman
+- Postman collection of APIs (Import this JSON in Postman to run the APIs)
+
+9. public 
+- Assets used in application
+
+10. routes
+```
+	├── routes
+		├── platform
+			├── modelNameRoutes.js   - contains CRUD operation routes
+			└── index.js             - exports model Routes
+		└── index.js                 - exports platform routes
+
+```
+- index.js file, exports platform routes, imported into app.js to access all the routes.
+
+11. services
+```
+	├── services
+		├── jobs                     - cron jobs
+		└── auth.js                  - Authentication module service
+
+```
+
+12. utils
+```
+	├── utils
+		├── validations              - joi validations files for every model
+		├── dbService.js             - Database functions 
+		├── messages.js              - Messages used in sending response 
+		├── responseCode.js          - response codes 
+		└── validateRequest.js       - validate request based on model schema
+
+```
+
+13. env files
+- You can add credentials and port, database values as per your environment(Development/Production).
+- If you are running test environment then test cases will run using test database,and its configuration is there inside app.js
