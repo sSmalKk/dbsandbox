@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import Routes from "./Routes";
 import Header from "components/Header";
-import Navmenublue from "components/Navmenublue";
-import Navmenuwhite from "components/Navmenuwhite";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -27,6 +25,10 @@ function App() {
         });
 
         if (!response.ok) {
+          if (response.status === 401 || response.status === 403) {
+            localStorage.clear();
+            window.location.href = "/";
+          }
           throw new Error("Failed to fetch user data");
         }
 
@@ -40,16 +42,32 @@ function App() {
     fetchUserData();
   }, [token]);
 
-  
-
   return (
     <Router>
-      {/* Condicional para renderizar diferentes HUDs com base em devMode */}
-      
-
-      <Routes />
-      
+      <PageLayout userData={userData} />
     </Router>
+  );
+}
+
+function PageLayout({ userData }) {
+  const location = useLocation();
+
+  const hideHeaderRoutes = ['/login', '/sandbox']; // Rotas onde o Header não deve ser exibido
+  const showHeader = !hideHeaderRoutes.includes(location.pathname);
+
+  return (
+    <>
+      {showHeader && (
+        <Header 
+          heading={userData} 
+          Status={userData} 
+          text={userData} 
+          className="flex flex-row md:flex-col justify-between items-center w-full md:h-auto p-[5px] md:gap-10 bg-black-900_60" 
+          life={0} 
+        />
+      )}
+      <Routes />
+    </>
   );
 }
 

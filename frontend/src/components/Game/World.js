@@ -8,7 +8,7 @@ const useChunkStore = create((set) => ({
     set((state) => ({ loadedChunks: [...state.loadedChunks, chunkData] })),
 }));
 
-export function World({cubeConfigurations, texturesArray, cubesArray, clusterWidth, renderDistance, playerPosition }) {
+export function World({ blockIndex, cubeConfigurations, texturesArray, cubesArray, clusterWidth, renderDistance, playerPosition }) {
   const { addLoadedChunk } = useChunkStore();
 
   const handleChunkLoad = (key, chunkCubesArray, position) => {
@@ -25,9 +25,10 @@ export function World({cubeConfigurations, texturesArray, cubesArray, clusterWid
         const chunkCubesArray = chunkData.slice(1); // Remove a posição da chunk
         return (
           <Chunk
-          cubeConfigurations={cubeConfigurations}
             key={key}
-            position={[10*position[0],10*position[1],10*position[2]]}
+            cubeConfigurations={cubeConfigurations}
+            blockIndex={blockIndex}
+            position={[10 * position[0], 10 * position[1], 10 * position[2]]}
             clusterPosition={position} // Passa a posição da chunk como clusterPosition
             clusterWidth={clusterWidth}
             onClick={(coords, faceIndex, button, globalCoords) => {

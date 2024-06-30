@@ -13,6 +13,8 @@ function Sandbox() {
   useEffect(() => {
     if (!token) {
       console.error('Token não configurado');
+      navigate("/");
+
       return;
     }
 

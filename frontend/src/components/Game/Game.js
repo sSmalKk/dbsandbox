@@ -1,12 +1,12 @@
-  import { Canvas } from "@react-three/fiber";
-  import { Sky, PointerLockControls, KeyboardControls } from "@react-three/drei";
-  import { Physics } from "@react-three/rapier";
-  import { Player } from "./Player";
-  import { World } from "./World";
-  import { useEffect, useState, useRef } from "react";
-  import * as THREE from "three";
-  import create from "zustand";
-  import PlayerModel from "./Entity"
+import { Canvas } from "@react-three/fiber";
+import { Sky, PointerLockControls, KeyboardControls } from "@react-three/drei";
+import { Physics } from "@react-three/rapier";
+import { Player } from "./Player";
+import { World } from "./World";
+import { useEffect, useState, useRef } from "react";
+import * as THREE from "three";
+import create from "zustand";
+import PlayerModel from "./Entity"
 
 
 const useStore = create((set) => ({
@@ -17,10 +17,10 @@ const useStore = create((set) => ({
   border: false,
 }));
 
+
 export default function Game() {
   const [fps, setFps] = useState(0);
   const tickRef = useRef(0);
-  const [gameMode, setGameMode] = useState(1); // 1 = game mode, 2 = paused, 3 = chat open, 4 = inventory
 
   const [chunkPosition, setChunkPosition] = useStore((state) => [
     state.chunkPosition,
@@ -42,64 +42,67 @@ export default function Game() {
       const now = performance.now();
       const deltaTime = now - lastFrameTime;
 
-      // Update FPS
+      // Atualiza o FPS
       setFps(Math.floor(1000 / deltaTime));
 
-      // Check if 1 second has passed since the last tick update
+      // Verifica se já passou 1 segundo desde a última atualização do tick
       if (now - lastTickTime >= 50) {
-        // 50ms = 1 second / 20 ticks
-        // Update tick count
+        // 50ms = 1 segundo / 20 ticks
+        // Atualiza o tick
         tickCount++;
-        lastTickTime = now; // Update last tick time
+        lastTickTime = now; // Atualiza o tempo do último tick
       }
 
-      // Update tick count reference
+      // Atualiza o contador de ticks
       tickRef.current = tickCount;
 
       lastFrameTime = now;
       requestAnimationFrame(updateLoop);
     };
 
-    // Start update loop
+    // Inicia o loop de atualização
     updateLoop();
 
-    // Cleanup function: cancel update loop
+    // Retorno da função de efeito: cancela o loop de atualização
     return () => cancelAnimationFrame(updateLoop);
   }, []);
-
-  // Texture and cube configurations (assuming you've defined these elsewhere in your code)
-  const textureArray = {
-    1: [
-      "../assets/dirt.jpg", "../assets/dirt.jpg", "../assets/dirt.jpg",
-      "../assets/dirt.jpg", "../assets/dirt.jpg", "../assets/dirt.jpg"
-    ],
-    2: [
-      "../assets/dirt.jpg", "../assets/dirt.jpg", "../assets/dirt.jpg",
-      "../assets/dirt.jpg", "../assets/dirt.jpg", "../assets/dirt.jpg"
-    ],
-    // Add more texture arrays as needed
-  };
-
+  const textureArray = [[
+    "../assets/dirt.jpg", "../assets/dirt.jpg", "../assets/dirt.jpg",
+    "../assets/dirt.jpg", "../assets/dirt.jpg", "../assets/dirt.jpg"
+  ],[
+    "../assets/dirt.jpg", "../assets/dirt.jpg", "../assets/dirt.jpg",
+    "../assets/dirt.jpg", "../assets/dirt.jpg", "../assets/dirt.jpg"
+  ]];
+  const blockIndex = [{ title: "stone", cubeConfigurations: 1, textureArray: 1 },]
   const cubeConfigurations = {
     1: {
       type: "fixed",
       colliders: "cuboid",
       planes: [
-        { position: [-0.5, 0, 0], rotation: [0, -Math.PI / 2, 0], textureIndex: 0 },
-        { position: [0.5, 0, 0], rotation: [0, Math.PI / 2, 0], textureIndex: 1 },
-        { position: [0, 0.5, 0], rotation: [-Math.PI / 2, 0, 0], textureIndex: 2 },
-        { position: [0, -0.5, 0], rotation: [Math.PI / 2, 0, 0], textureIndex: 3 },
-        { position: [0, 0, 0.5], rotation: [0, 0, 0], textureIndex: 4 },
-        { position: [0, 0, -0.5], rotation: [0, Math.PI, 0], textureIndex: 5 }
+        { position: [-0.5, 0, 0, 1], rotation: [0, -Math.PI / 2, 0, 1], textureIndex: 0 },
+        { position: [0.5, 0, 0, 1], rotation: [0, Math.PI / 2, 0, 1], textureIndex: 1 },
+        { position: [0, 0.5, 0, 1], rotation: [-Math.PI / 2, 0, 0, 1], textureIndex: 2 },
+        { position: [0, -0.5, 0, 1], rotation: [Math.PI / 2, 0, 0, 1], textureIndex: 3 },
+        { position: [0, 0, 0.5, 1], rotation: [0, 0, 0, 1], textureIndex: 4 },
+        { position: [0, 0, -0.5, 1], rotation: [0, Math.PI, 0, 1], textureIndex: 5 }
       ]
     },
-    // Add more block types as needed
+    // Adicione mais tipos de blocos conforme necessário
   };
-
-  // Function to toggle game modes (e.g., pause, chat open, inventory)
-  const toggleGameMode = (mode) => {
-    setGameMode(mode);
-  };
+  const cubesArray = [[[0, 0, 0],
+  [5, 0, 5, 1]],
+  [[1, 0, 0],
+  [0, 0, 0, 1], [0, 0, 1, 1], [0, 0, 2, 1], [0, 0, 3, 1], [0, 0, 4, 1], [0, 0, 5, 1], [0, 0, 6, 1], [0, 0, 7, 1], [0, 0, 8, 1], [0, 0, 9, 1],
+  [1, 0, 0, 1], [1, 0, 1, 1], [1, 0, 2, 1], [1, 0, 3, 1], [1, 0, 4, 1], [1, 0, 5, 1], [1, 0, 6, 1], [1, 0, 7, 1], [1, 0, 8, 1], [1, 0, 9, 1],
+  [2, 0, 0, 1], [2, 0, 1, 1], [2, 0, 2, 1], [2, 0, 3, 1], [2, 0, 4, 1], [2, 0, 5, 1], [2, 0, 6, 1], [2, 0, 7, 1], [2, 0, 8, 1], [2, 0, 9, 1],
+  [3, 0, 0, 1], [3, 0, 1, 1], [3, 0, 2, 1], [3, 0, 3, 1], [3, 0, 4, 1], [3, 0, 5, 1], [3, 0, 6, 1], [3, 0, 7, 1], [3, 0, 8, 1], [3, 0, 9, 1],
+  [4, 0, 0, 1], [4, 0, 1, 1], [4, 0, 2, 1], [4, 0, 3, 1], [4, 0, 4, 1], [4, 0, 5, 1], [4, 0, 6, 1], [4, 0, 7, 1], [4, 0, 8, 1], [4, 0, 9, 1],
+  [5, 0, 0, 1], [5, 0, 1, 1], [5, 0, 2, 1], [5, 0, 3, 1], [5, 0, 4, 1], [5, 0, 5, 1], [5, 0, 6, 1], [5, 0, 7, 1], [5, 0, 8, 1], [5, 0, 9, 1],
+  [6, 0, 0, 1], [6, 0, 1, 1], [6, 0, 2, 1], [6, 0, 3, 1], [6, 0, 4, 1], [6, 0, 5, 1], [6, 0, 6, 1], [6, 0, 7, 1], [6, 0, 8, 1], [6, 0, 9, 1],
+  [7, 0, 0, 1], [7, 0, 1, 1], [7, 0, 2, 1], [7, 0, 3, 1], [7, 0, 4, 1], [7, 0, 5, 1], [7, 0, 6, 1], [7, 0, 7, 1], [7, 0, 8, 1], [7, 0, 9, 1],
+  [8, 0, 0, 1], [8, 0, 1, 1], [8, 0, 2, 1], [8, 0, 3, 1], [8, 0, 4, 1], [8, 0, 5, 1], [8, 0, 6, 1], [8, 0, 7, 1], [8, 0, 8, 1], [8, 0, 9, 1],
+  [9, 0, 0, 1], [9, 0, 1, 1], [9, 0, 2, 1], [9, 0, 3, 1], [9, 0, 4, 1], [9, 0, 5, 1], [9, 0, 6, 1], [9, 0, 7, 1], [9, 0, 8, 1], [9, 0, 9, 1],]
+  ];
 
   return (
     <>
@@ -116,29 +119,27 @@ export default function Game() {
           { name: "jump", keys: ["Space"] },
         ]}
       >
-        <Canvas shadows camera={{ fov: 45 }} style={{ position: 'fixed', zIndex: -9 }} className="top-0 bottom-0 w-full h-full">
+        <Canvas shadows camera={{ fov: 45 }} style={{ position: 'fixed', zIndex: 0 }} className="top-0 bottom-0 w-full h-full">
           <Sky sunPosition={[100, 20, 100]} />
           <ambientLight intensity={10} />
           <pointLight castShadow intensity={10} position={[100, 100, 100]} />
           <Physics gravity={[0, 0, 0]}>
-            {/* Conditionally render components based on game mode */}
-            {gameMode === 1 && (
-              <>
-                <Player setChunkPosition={setChunkPosition} initialPosition={[0, 100, 0]} speed={speed} direction={direction} frontVector={frontVector} sideVector={sideVector} rotation={rotation} />
-                <PlayerModel position={[0, 5, 0]} />
-                <World
-                  texturesArray={textureArray}
-                  cubeConfigurations={cubeConfigurations}
-                  playerPosition={chunkPosition}
-                  clusterWidth={10}
-                  renderDistance={1}
-                  worldWidth={10}
-                  worldHeight={3}
-                />
-              </>
-            )}
-            <PointerLockControls />
+            <Player setChunkPosition={setChunkPosition} initialPosition={[0, 100, 0]} speed={speed} direction={direction} frontVector={frontVector} sideVector={sideVector} rotation={rotation} />
+            <PlayerModel position={[0, 5, 0]} />
+
+            <World
+              texturesArray={textureArray}
+              cubeConfigurations={cubeConfigurations}
+              playerPosition={chunkPosition}
+              cubesArray={cubesArray}
+              blockIndex={blockIndex}
+              clusterWidth={10}
+              renderDistance={1}
+              worldWidth={10}
+              worldHeight={3}
+            />
           </Physics>
+          <PointerLockControls />
         </Canvas>
       </KeyboardControls>
     </>
