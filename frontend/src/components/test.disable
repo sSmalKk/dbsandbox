@@ -1,0 +1,7 @@
+<SelectBox
+        indicator={<Img src="images/img_uarrowright.svg" alt="u:arrow-right" />}
+        name="button"
+        placeholder="my linkedin"
+        options={dropDownOptions}
+        className="w-auto h-auto pl-4 pr-[35px] gap-px py-2.5 text-colors tracking-[0.50px] font-inter text-xs bg-blue-A700 rounded-[3px]"
+      />
