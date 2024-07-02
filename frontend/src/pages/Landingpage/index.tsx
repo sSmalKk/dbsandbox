@@ -88,7 +88,6 @@ const LandingpagePage = () => {
         <title>Role Player</title>
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
-      <Header heading={userData} Status={userData} text={userData} className="flex flex-row md:flex-col justify-between items-center w-full md:h-auto p-[5px] md:gap-10 bg-black-900_60" life={0} />
       
       <div className="flex flex-col items-center justify-start w-full h-full bg-white-A700">
         <div className="flex flex-row md:flex-col justify-between items-start w-full p-5 md:gap-10 bg-indigo-A100_01">

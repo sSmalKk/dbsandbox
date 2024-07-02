@@ -1,6 +1,5 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
-import * as THREE from 'three';
 import create from 'zustand';
 
 const PlayerModel = ({ position }) => {
@@ -15,9 +14,8 @@ const PlayerModel = ({ position }) => {
     setStatus: (newStatus) => set((state) => ({ status: newStatus })),
     setFrame: (newFrame) => set((state) => ({ frame: newFrame })),
   }));
-  const { body, head, status, frame, setBody, setHead, setStatus, setFrame } = useStore();
+  const { status, frame } = useStore();
   const group = useRef();
-  
   const { nodes, animations } = useGLTF(bodyUrl);
   const { mixer, names } = useAnimations(animations);
 
