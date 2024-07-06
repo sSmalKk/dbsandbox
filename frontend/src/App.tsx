@@ -52,7 +52,7 @@ function App() {
 function PageLayout({ userData }) {
   const location = useLocation();
 
-  const hideHeaderRoutes = ['/login', '/sandbox']; // Rotas onde o Header não deve ser exibido
+  const hideHeaderRoutes = ['/login', '/sandboxsurvival', '/sandboxmenu', '/sandboxadmin']; // Rotas onde o Header não deve ser exibido
   const showHeader = !hideHeaderRoutes.includes(location.pathname);
 
   return (

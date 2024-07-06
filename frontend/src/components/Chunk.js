@@ -1,9 +1,9 @@
 import React from 'react';
 import VoxelCube from './VoxelCube';
 
-const Chunk = ({ cubesArray, textures }) => {
+const Chunk = ({ position, cubesArray, textures, clusterWidth }) => {
   return (
-    <group>
+    <group position={position}>
       {cubesArray.map(([x, y, z, id]) => {
         const hasCubeLeft = cubesArray.some(([cx, cy, cz]) => cx === x - 1 && cy === y && cz === z);
         const hasCubeRight = cubesArray.some(([cx, cy, cz]) => cx === x + 1 && cy === y && cz === z);
@@ -23,6 +23,7 @@ const Chunk = ({ cubesArray, textures }) => {
             hasCubeBottom={hasCubeBottom}
             hasCubeFront={hasCubeFront}
             hasCubeBack={hasCubeBack}
+            clusterWidth={clusterWidth}
             id={id}
           />
         );

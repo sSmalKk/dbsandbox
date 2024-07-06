@@ -13,10 +13,11 @@ const useStore = create((set) => ({
   setPlayerPosition: (newPosition) => set({ playerPosition: newPosition }),
   chunkPosition: [0, 0, 0],
   setChunkPosition: (newPosition) => set({ chunkPosition: newPosition }),
-  border: false,
+  canPlayerFly: true,
+  flying: true,
 }));
 
-export default function Game() {
+export default function Game({ setInterfaceOpen, interfaceOpen, canPlayerFly, textures, chunks, renderDistance = 10, gravity = [0, -5, 0], pointLightPosition = [100, 100, 100], initialPlayerPosition = [0, 10, 0], isMouseLocked }) {
   const [fps, setFps] = useState(0);
   const tickRef = useRef(0);
 
@@ -25,44 +26,43 @@ export default function Game() {
     state.setChunkPosition,
   ]);
 
-  const textures = ['./assets/textures/dirt.jpg', './assets/textures/grass.jpg'];
-  const chunks = [
-    {
-      cubesArray: [
-        [1, 1, 1, 1],
-        [1, 0, 0, 0],
-        [1, 0, 1, 0],
-        [1, 0, 0, 1],
-        [1, 1, 1, 1],
-      ],
-    },
+  const [flying, setFlying] = useStore((state) => [
+    state.flying,
+    state.set,
+  ]);
+
+  const keyboardMap = [
+    { name: 'forward', keys: ['w', 'W'] },
+    { name: 'backward', keys: ['s', 'S'] },
+    { name: 'left', keys: ['a', 'A'] },
+    { name: 'right', keys: ['d', 'D'] },
+    { name: 'shift', keys: ['Shift'] },
+    { name: 'jump', keys: ['Space'] },
+    { name: 'inventory', keys: ['e', 'E'] },
+    { name: 'layerp', keys: ['ArrowUp'] },
+    { name: 'layerm', keys: ['ArrowDown'] },
+    { name: 'escape', keys: ['ESC', 'Escape', 'Esc'] },
+
+
   ];
-  
+
+  useEffect(() => {
+    console.log("Chunks:", chunks);
+  }, [chunks]);
+
   return (
     <>
-      <div className="top-0 right-0" style={{ position: 'fixed', zIndex: 99 }}>
-        <h1>FPS: {Math.floor(fps)}</h1>
-        <h1>TICK: {Math.floor(tickRef.current)}</h1>
-      </div>
-      <KeyboardControls
-        map={[
-          { name: 'forward', keys: ['ArrowUp', 'w', 'W'] },
-          { name: 'backward', keys: ['ArrowDown', 's', 'S'] },
-          { name: 'left', keys: ['ArrowLeft', 'a', 'A'] },
-          { name: 'right', keys: ['ArrowRight', 'd', 'D'] },
-          { name: 'jump', keys: ['Space'] },
-        ]}
-      >
+      <KeyboardControls map={keyboardMap}>
         <Canvas shadows camera={{ fov: 45 }} style={{ position: 'fixed', zIndex: 0 }} className="top-0 bottom-0 w-full h-full">
           <Sky sunPosition={[100, 20, 100]} />
           <ambientLight intensity={10} />
-          <pointLight castShadow intensity={10} position={[100, 100, 100]} />
-          <Physics gravity={[0, -5, 0]}>
-            <Player setChunkPosition={setChunkPosition} initialPosition={[0, 100, 0]} />
+          <pointLight castShadow intensity={1} position={pointLightPosition} />
+          <Physics gravity={gravity}>
+            <Player interfaceOpen={interfaceOpen} setInterfaceOpen={setInterfaceOpen} setFlying={setFlying} canPlayerFly={canPlayerFly} gravity={gravity} setChunkPosition={setChunkPosition} initialPosition={initialPlayerPosition} flying={flying} />
             <PlayerModel position={[0, 5, 0]} />
-            <VoxelTerrain chunks={chunks} textures={textures} clusterWidth={10} />
+            <VoxelTerrain fullrender={true} chunks={chunks} textures={textures} clusterWidth={1} renderDistance={renderDistance} />
           </Physics>
-          <PointerLockControls />
+          {!interfaceOpen && (<PointerLockControls enabled={isMouseLocked} />)}
         </Canvas>
       </KeyboardControls>
     </>

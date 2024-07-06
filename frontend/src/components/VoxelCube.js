@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import * as THREE from 'three';
 
-const VoxelCube = ({ position, type, textures, id, hasCubeLeft,
+const VoxelCube = ({ position, type, textures, id, clusterWidth, hasCubeLeft,
   hasCubeRight,
   hasCubeBottom,
   hasCubeFront,
@@ -68,7 +68,7 @@ const VoxelCube = ({ position, type, textures, id, hasCubeLeft,
   }, [edges]);
 
   return (
-    <group position={position}>
+    <group scale={clusterWidth} position={position}>
       <mesh geometry={geometry} material={material} />
       {lines}
     </group>

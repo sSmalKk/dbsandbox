@@ -85,6 +85,9 @@ button {
 .bg {
   background: #101010;
 }
+.text-black {
+  color: #000000;
+}
 
 .fullscreen .logout {
   background: transparent;

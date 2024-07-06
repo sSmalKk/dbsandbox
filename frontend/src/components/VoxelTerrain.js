@@ -1,18 +1,33 @@
 import React from 'react';
 import Chunk from './Chunk';
+import VoxelCube from './VoxelCube';
 
-const VoxelTerrain = ({ chunks = [], textures, clusterWidth }) => {
+const VoxelTerrain = ({ chunks = [], textures, clusterWidth, fullrender }) => {
   console.log('VoxelTerrain props:', { chunks, textures, clusterWidth });
+
   return (
     <group>
-      {chunks.map((chunk, index) => (
-        <Chunk
-          key={index}
-          cubesArray={chunk.cubesArray}
-          textures={textures}
-          clusterWidth={clusterWidth}
-        />
-      ))}
+      {fullrender ? (
+        chunks.map((chunk, index) => (
+          <Chunk
+            key={index}
+            position={chunk.position}
+            cubesArray={chunk.cubesArray}
+            textures={textures}
+            clusterWidth={clusterWidth}
+          />
+        ))
+      ) : (
+        chunks.map((chunk, index) => (
+          <VoxelCube
+            key={index}
+            position={chunk.position}
+            cubesArray={chunk.cubesArray}
+            textures={textures}
+            clusterWidth={clusterWidth*10}
+          />
+        ))
+      )}
     </group>
   );
 };
