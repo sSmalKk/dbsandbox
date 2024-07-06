@@ -4,6 +4,7 @@ import Game from "components/Game";
 import { Helmet } from "react-helmet";
 import { Button, Input } from "../../components";
 import Modal from "react-modal";
+import "tailwindcss/tailwind.css"; // Certifique-se de que o Tailwind CSS está importado
 
 type UniverseData = {
   name: string;
@@ -96,7 +97,6 @@ const SandboxMenu: React.FC = () => {
 
         const data = await response.json();
         setUniverses(data.data.data);
-        console.log('universes:', universes)
       } catch (error) {
         console.error("Error fetching recent universes:", error);
       }
@@ -172,94 +172,24 @@ const SandboxMenu: React.FC = () => {
     switch (currentMenu) {
       case "mine-universe":
         return (
-          <div style={{ zIndex: 99 }} className="flex bg-white justify-center items-center fixed inset-0">
-            <div style={{ zIndex: 99, background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
-              {universes.map((universe, index) => (
-                <div key={index} className="world-card border p-2 mb-2">
-                  <h2>{universe.name}</h2>
-                  <p>Created At: {universe.createdAt}</p>
-                  <p>Age: {universe.age}</p>
-                  <p>Layers: {universe.layers}</p>
-                </div>
-              ))}
-              <div className="w-full bg-gray-200 p-4 rounded-lg">
-                <h2 className="text-xl font-bold mb-4">Create Universe</h2>
-                <form onSubmit={handleCreateUniverse} className="space-y-4">
-                  <div>
-                    <label className="block mb-2">
-                      Name:
-                      <Input
-                        type="text"
-                        name="name"
-                        className="input-field"
-                        value={newUniverseData.name}
-                        onChange={(e) => setNewUniverseData({ ...newUniverseData, name: e.target.value })}
-                      />
-                    </label>
+          <div className="flex bg-white justify-center items-center fixed inset-0">
+            <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg relative">
+              <div className="overflow-y-auto max-h-96">
+                {universes.map((universe, index) => (
+                  <div key={index} className="world-card border p-2 mb-2">
+                    <h2>{universe.name}</h2>
+                    <p>Created At: {universe.createdAt}</p>
+                    <p>Age: {universe.age}</p>
+                    <p>Layers: {universe.layers}</p>
                   </div>
-                  <div>
-                    <label className="block mb-2">
-                      Age:
-                      <Input
-                        type="number"
-                        name="age"
-                        min="0"
-                        className="input-field"
-                        value={newUniverseData.age}
-                        onChange={(e) => setNewUniverseData({ ...newUniverseData, age: Number(e.target.value) })}
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label className="flex items-center mb-2">
-                      <Input
-                        type="checkbox"
-                        name="hasTime"
-                        className="mr-2"
-                        checked={newUniverseData.hasTime}
-                        onChange={(e) => setNewUniverseData({ ...newUniverseData, hasTime: e.target.checked })}
-                      />
-                      <span>Has Time</span>
-                    </label>
-                  </div>
-                  <div>
-                    <label className="block mb-2">
-                      Expansion Rate:
-                      <Input
-                        type="number"
-                        name="expansionRate"
-                        min="0"
-                        className="input-field"
-                        value={newUniverseData.expansionRate}
-                        onChange={(e) => setNewUniverseData({ ...newUniverseData, expansionRate: Number(e.target.value) })}
-                      />
-                    </label>
-                  </div>
-                  <div>
-                    <label className="block mb-2">
-                      Seed:
-                      <Input
-                        type="text"
-                        name="seed"
-                        className="input-field"
-                        value={newUniverseData.seed}
-                        onChange={(e) => setNewUniverseData({ ...newUniverseData, seed: e.target.value })}
-                      />
-                    </label>
-                  </div>
-                  <div className="flex justify-between">
-                    <Button type="submit" className="button-primary">
-                      Create
-                    </Button>
-                    <Button type="button" onClick={() => setIsModalOpen(false)} className="button-secondary">
-                      Cancel
-                    </Button>
-                    <Button type="button" onClick={() => setCurrentMenu("main")} className="button-secondary">
-                      Back
-                    </Button>
-                  </div>
-                </form>
+                ))}
               </div>
+              <Button onClick={() => setIsModalOpen(true)} className="button-primary mt-4">
+                Criar Novo Mundo
+              </Button>
+              <Button onClick={() => setCurrentMenu("main")} className="button-secondary mt-4">
+                Back
+              </Button>
             </div>
           </div>
         );
@@ -267,8 +197,8 @@ const SandboxMenu: React.FC = () => {
       case "settings":
       case "items":
         return (
-          <div style={{ zIndex: 99 }} className="flex bg-white justify-center items-center fixed inset-0">
-            <div className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
+          <div className="flex bg-white justify-center items-center fixed inset-0">
+            <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
               <h1>{currentMenu === "enter-universe" ? "Enter Universe" : currentMenu === "settings" ? "Settings" : "Items"}</h1>
               <Button onClick={() => setCurrentMenu("main")} className="button-secondary mt-4">
                 Back
@@ -279,10 +209,10 @@ const SandboxMenu: React.FC = () => {
       case "main":
       default:
         return (
-          <div style={{ zIndex: 99 }} className="flex bg-white justify-center items-center fixed inset-0">
+          <div className="flex bg-white justify-center items-center fixed inset-0">
             <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
               <h1>Welcome {userData && userData.username ? userData.username : "User"}</h1>
-              <Button onClick={() => { setCurrentMenu("mine-universe"); }} className="button-primary mt-4">
+              <Button onClick={() => setCurrentMenu("mine-universe")} className="button-primary mt-4">
                 My Universes
               </Button>
               <Button onClick={() => setCurrentMenu("enter-universe")} className="button-primary mt-4">
@@ -308,6 +238,80 @@ const SandboxMenu: React.FC = () => {
       <div style={{ zIndex: 99 }} className={`flex bg-white justify-center items-center fixed inset-0 interface ${interfaceOpen ? "open" : "closed"}`}>
         {renderMenuContent()}
       </div>
+      <Modal style={{ zIndex: 100 }} isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} className="Modal" overlayClassName="Overlay">
+        <div style={{ zIndex: 99 }} className="flex bg-white justify-center items-center fixed inset-0">
+          <div className="w-full bg-gray-200 p-4 rounded-lg">
+            <h2 className="text-xl font-bold mb-4">Create Universe</h2>
+            <form onSubmit={handleCreateUniverse} className="space-y-4">
+              <div>
+                <label className="block mb-2">
+                  Name:
+                  <Input
+                    type="text"
+                    name="name"
+                    className="input-field"
+
+                  />
+                </label>
+              </div>
+              <div>
+                <label className="block mb-2">
+                  Age:
+                  <Input
+                    type="number"
+                    name="age"
+                    min="0"
+                    className="input-field"
+                  />
+                </label>
+              </div>
+              <div>
+                <label className="flex items-center mb-2">
+                  <Input
+                    type="checkbox"
+                    name="hasTime"
+                    className="mr-2"
+                    checked={newUniverseData.hasTime}
+
+                  />
+                  <span>Has Time</span>
+                </label>
+              </div>
+              <div>
+                <label className="block mb-2">
+                  Expansion Rate:
+                  <Input
+                    type="number"
+                    name="expansionRate"
+                    min="0"
+                    className="input-field"
+                  />
+                </label>
+              </div>
+              <div>
+                <label className="block mb-2">
+                  Seed:
+                  <Input
+                    type="text"
+                    name="seed"
+                    className="input-field"
+
+                  />
+                </label>
+              </div>
+              <div className="flex justify-between">
+                <Button type="submit" className="button-primary">
+                  Create
+                </Button>
+                <Button type="button" onClick={() => setIsModalOpen(false)} className="button-secondary">
+                  Cancel
+                </Button>
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </Modal>
       <Game
         setInterfaceOpen={setInterfaceOpen}
         interfaceOpen={interfaceOpen}
