@@ -66,9 +66,46 @@ const SandboxMenu: React.FC = () => {
         navigate("/");
       }
     };
-    console.debug(Response)
+
     fetchUserData();
   }, [token, navigate, apiUrl]);
+
+  useEffect(() => {
+    const fetchRecentUniverses = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/admin/universe/list`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            query: {
+              userId: userData?.id, // Replace with the actual user ID
+            },
+            options: {
+              sort: { createdAt: -1 }, // Sort by creation date in descending order
+              limit: 10, // Limit to the 10 most recent universes
+            },
+          }),
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch recent universes");
+        }
+
+        const data = await response.json();
+        setUniverses(data.data.data);
+        console.log('universes:', universes)
+      } catch (error) {
+        console.error("Error fetching recent universes:", error);
+      }
+    };
+
+    if (userData) {
+      fetchRecentUniverses();
+    }
+  }, [userData, apiUrl, token]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -92,40 +129,6 @@ const SandboxMenu: React.FC = () => {
 
     return () => clearInterval(intervalId);
   }, [newUniverseData.hasTime, newUniverseData.expansionRate]);
-  const fetchRecentUniverses = async () => {
-    try {
-      const response = await fetch(`${apiUrl}/admin/universe/list`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`, // Ensure you have the token available
-        },
-        body: JSON.stringify({
-          query: {
-            userId: userData.id, // Replace with the actual user ID
-          },
-          options: {
-            sort: { createdAt: -1 }, // Sort by creation date in descending order
-            limit: 10, // Limit to the 10 most recent universes
-          },
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch recent universes");
-      }
-
-      const data = await response.json();
-      console.log(data.data, 'data'); // Handle the universe data as needed
-    } catch (error) {
-      console.error("Error fetching recent universes:", error);
-      // Handle the error (e.g., navigate to an error page or show a message to the user)
-    }
-  };
-  // Call the function to fetch the recent universes
-  fetchRecentUniverses();
-
 
   const handleCreateUniverse = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -134,18 +137,17 @@ const SandboxMenu: React.FC = () => {
 
     try {
       const response = await fetch(`${apiUrl}/admin/universe/create`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(updatedUniverseData),
       });
 
       if (response.ok) {
         const data = await response.json();
-        setUniverses([...universes, data.data]);
         setNewUniverseData({
           name: "",
           createdAt: "",
@@ -190,6 +192,8 @@ const SandboxMenu: React.FC = () => {
                         type="text"
                         name="name"
                         className="input-field"
+                        value={newUniverseData.name}
+                        onChange={(e) => setNewUniverseData({ ...newUniverseData, name: e.target.value })}
                       />
                     </label>
                   </div>
@@ -201,6 +205,8 @@ const SandboxMenu: React.FC = () => {
                         name="age"
                         min="0"
                         className="input-field"
+                        value={newUniverseData.age}
+                        onChange={(e) => setNewUniverseData({ ...newUniverseData, age: Number(e.target.value) })}
                       />
                     </label>
                   </div>
@@ -210,6 +216,8 @@ const SandboxMenu: React.FC = () => {
                         type="checkbox"
                         name="hasTime"
                         className="mr-2"
+                        checked={newUniverseData.hasTime}
+                        onChange={(e) => setNewUniverseData({ ...newUniverseData, hasTime: e.target.checked })}
                       />
                       <span>Has Time</span>
                     </label>
@@ -222,6 +230,8 @@ const SandboxMenu: React.FC = () => {
                         name="expansionRate"
                         min="0"
                         className="input-field"
+                        value={newUniverseData.expansionRate}
+                        onChange={(e) => setNewUniverseData({ ...newUniverseData, expansionRate: Number(e.target.value) })}
                       />
                     </label>
                   </div>
@@ -232,6 +242,8 @@ const SandboxMenu: React.FC = () => {
                         type="text"
                         name="seed"
                         className="input-field"
+                        value={newUniverseData.seed}
+                        onChange={(e) => setNewUniverseData({ ...newUniverseData, seed: e.target.value })}
                       />
                     </label>
                   </div>
@@ -248,7 +260,6 @@ const SandboxMenu: React.FC = () => {
                   </div>
                 </form>
               </div>
-
             </div>
           </div>
         );
@@ -271,7 +282,7 @@ const SandboxMenu: React.FC = () => {
           <div style={{ zIndex: 99 }} className="flex bg-white justify-center items-center fixed inset-0">
             <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
               <h1>Welcome {userData && userData.username ? userData.username : "User"}</h1>
-              <Button onClick={() => setCurrentMenu("mine-universe")} className="button-primary mt-4">
+              <Button onClick={() => { setCurrentMenu("mine-universe"); }} className="button-primary mt-4">
                 My Universes
               </Button>
               <Button onClick={() => setCurrentMenu("enter-universe")} className="button-primary mt-4">
