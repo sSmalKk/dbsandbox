@@ -66,7 +66,7 @@ const SandboxMenu: React.FC = () => {
         navigate("/");
       }
     };
-
+    console.debug(Response)
     fetchUserData();
   }, [token, navigate, apiUrl]);
 
@@ -92,14 +92,45 @@ const SandboxMenu: React.FC = () => {
 
     return () => clearInterval(intervalId);
   }, [newUniverseData.hasTime, newUniverseData.expansionRate]);
+  const fetchRecentUniverses = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/admin/universe/list`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`, // Ensure you have the token available
+        },
+        body: JSON.stringify({
+          query: {
+            userId: userData.id, // Replace with the actual user ID
+          },
+          options: {
+            sort: { createdAt: -1 }, // Sort by creation date in descending order
+            limit: 10, // Limit to the 10 most recent universes
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch recent universes");
+      }
+
+      const data = await response.json();
+      console.log(data.data, 'data'); // Handle the universe data as needed
+    } catch (error) {
+      console.error("Error fetching recent universes:", error);
+      // Handle the error (e.g., navigate to an error page or show a message to the user)
+    }
+  };
+  // Call the function to fetch the recent universes
+  fetchRecentUniverses();
+
 
   const handleCreateUniverse = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const currentDate = new Date();
-    const createdAt = currentDate.toISOString();
-
-    const updatedUniverseData = { ...newUniverseData, createdAt, age: parseInt(newUniverseData.age.toString()) || 0 };
+    const createdAt = new Date().toISOString();
+    const updatedUniverseData = { ...newUniverseData, createdAt };
 
     try {
       const response = await fetch(`${apiUrl}/admin/universe/create`, {
@@ -140,7 +171,7 @@ const SandboxMenu: React.FC = () => {
       case "mine-universe":
         return (
           <div style={{ zIndex: 99 }} className="flex bg-white justify-center items-center fixed inset-0">
-            <div style={{ zIndex: 99, background:"#fff" }}className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
+            <div style={{ zIndex: 99, background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
               {universes.map((universe, index) => (
                 <div key={index} className="world-card border p-2 mb-2">
                   <h2>{universe.name}</h2>
@@ -217,7 +248,7 @@ const SandboxMenu: React.FC = () => {
                   </div>
                 </form>
               </div>
-              
+
             </div>
           </div>
         );
