@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Game from "components/Game";
 import { Helmet } from "react-helmet";
@@ -10,11 +10,17 @@ type UniverseData = {
   name: string;
   createdAt: string;
   age: number;
+  seed: string;
   startTime: string;
   hasTime: boolean;
-  expansionRate: number;
-  layers: number;
+};
+type ItemData = {
+  name: string;
+  createdAt: string;
+  age: number;
   seed: string;
+  startTime: string;
+  hasTime: boolean;
 };
 
 const SandboxMenu: React.FC = () => {
@@ -28,8 +34,6 @@ const SandboxMenu: React.FC = () => {
     age: 1000,
     startTime: "",
     hasTime: false,
-    expansionRate: 1,
-    layers: 1,
     seed: "",
   });
   const [interfaceOpen, setInterfaceOpen] = useState<boolean>(true);
@@ -37,8 +41,6 @@ const SandboxMenu: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL || "";
   const token = localStorage.getItem("token") || process.env.JWT || "";
   const navigate = useNavigate();
-  const startTimeRef = useRef<Date | null>(null);
-  const sessionStartRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!token) {
@@ -107,29 +109,6 @@ const SandboxMenu: React.FC = () => {
     }
   }, [userData, apiUrl, token]);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const currentTime = new Date();
-      if (startTimeRef.current) {
-        const timeElapsed = (currentTime.getTime() - startTimeRef.current.getTime()) / 1000;
-        setNewUniverseData((prevData) => ({
-          ...prevData,
-          age: prevData.age + Math.round(timeElapsed),
-          layers: Math.round((prevData.age / prevData.expansionRate) * 1),
-        }));
-      } else if (newUniverseData.hasTime) {
-        startTimeRef.current = currentTime;
-        sessionStartRef.current = currentTime.toLocaleTimeString();
-        setNewUniverseData((prevData) => ({
-          ...prevData,
-          startTime: sessionStartRef.current,
-        }));
-      }
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [newUniverseData.hasTime, newUniverseData.expansionRate]);
-
   const handleCreateUniverse = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const createdAt = new Date().toISOString();
@@ -154,8 +133,6 @@ const SandboxMenu: React.FC = () => {
           age: 1000,
           startTime: "",
           hasTime: false,
-          expansionRate: 1,
-          layers: 1,
           seed: "",
         });
         setIsModalOpen(false);
@@ -172,20 +149,37 @@ const SandboxMenu: React.FC = () => {
     switch (currentMenu) {
       case "mine-universe":
         return (
-          <div className="flex bg-white justify-center items-center fixed inset-0">
+          <div className="flex bg-white justify-center items-center fixed">
             <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg relative">
-              <div className="overflow-y-auto max-h-96">
+              <div className="overflow-y-auto max-h-96 overflow-x-hidden">
                 {universes.map((universe, index) => (
-                  <div key={index} className="world-card border p-2 mb-2">
-                    <h2>{universe.name}</h2>
-                    <p>Created At: {universe.createdAt}</p>
-                    <p>Age: {universe.age}</p>
-                    <p>Layers: {universe.layers}</p>
+                  <div key={index} className="world-card border p-2 pr-4 mb-2 flex justify-content-between">
+                    <div>
+                      <h2>{universe.name}</h2>
+                      <p>Created At: {universe.createdAt}</p>
+                      <p>Age: {universe.age}</p>
+                    </div>
+                    <div>
+                      <Button
+                        style={{ background: "blue", color: "#fff" }}
+                        onClick={() => setIsModalOpen(true)}
+                        className="button-primary ml-4"
+                      >
+                        Load
+                      </Button>
+                      <Button
+                        style={{ background: "gray", color: "#fff" }}
+                        onClick={() => setIsModalOpen(true)}
+                        className="button-primary ml-4"
+                      >
+                        Edit
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
               <Button onClick={() => setIsModalOpen(true)} className="button-primary mt-4">
-                Criar Novo Mundo
+                Create New World
               </Button>
               <Button onClick={() => setCurrentMenu("main")} className="button-secondary mt-4">
                 Back
@@ -197,7 +191,7 @@ const SandboxMenu: React.FC = () => {
       case "settings":
       case "items":
         return (
-          <div className="flex bg-white justify-center items-center fixed inset-0">
+          <div className="flex bg-white justify-center items-center fixed">
             <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
               <h1>{currentMenu === "enter-universe" ? "Enter Universe" : currentMenu === "settings" ? "Settings" : "Items"}</h1>
               <Button onClick={() => setCurrentMenu("main")} className="button-secondary mt-4">
@@ -209,8 +203,8 @@ const SandboxMenu: React.FC = () => {
       case "main":
       default:
         return (
-          <div className="flex bg-white justify-center items-center fixed inset-0">
-            <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
+          <div className="flex w-1/3  bg-white justify-center items-center fixed">
+            <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 justify-center items-center p-4 rounded-lg shadow-lg">
               <h1>Welcome {userData && userData.username ? userData.username : "User"}</h1>
               <Button onClick={() => setCurrentMenu("mine-universe")} className="button-primary mt-4">
                 My Universes
@@ -239,64 +233,31 @@ const SandboxMenu: React.FC = () => {
         {renderMenuContent()}
       </div>
       <Modal style={{ zIndex: 100 }} isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} className="Modal" overlayClassName="Overlay">
-        <div style={{ zIndex: 99 }} className="flex bg-white justify-center items-center fixed inset-0">
-          <div className="w-full bg-gray-200 p-4 rounded-lg">
-            <h2 className="text-xl font-bold mb-4">Create Universe</h2>
+        <div style={{ zIndex: 99 }} className="flex  justify-center items-center fixed inset-0">
+          <div className="flex  flex-row bg-gray-200 p-4 rounded-lg">
             <form onSubmit={handleCreateUniverse} className="space-y-4">
               <div>
                 <label className="block mb-2">
                   Name:
-                  <Input
-                    type="text"
-                    name="name"
-                    className="input-field"
-
-                  />
+                  <Input type="text" name="name" className="input-field" />
                 </label>
               </div>
               <div>
                 <label className="block mb-2">
                   Age:
-                  <Input
-                    type="number"
-                    name="age"
-                    min="0"
-                    className="input-field"
-                  />
+                  <Input type="number" name="age" min="0" className="input-field" />
                 </label>
               </div>
               <div>
                 <label className="flex items-center mb-2">
-                  <Input
-                    type="checkbox"
-                    name="hasTime"
-                    className="mr-2"
-                    checked={newUniverseData.hasTime}
-
-                  />
+                  <Input type="checkbox" name="hasTime" className="mr-2" />
                   <span>Has Time</span>
                 </label>
               </div>
               <div>
                 <label className="block mb-2">
-                  Expansion Rate:
-                  <Input
-                    type="number"
-                    name="expansionRate"
-                    min="0"
-                    className="input-field"
-                  />
-                </label>
-              </div>
-              <div>
-                <label className="block mb-2">
                   Seed:
-                  <Input
-                    type="text"
-                    name="seed"
-                    className="input-field"
-
-                  />
+                  <Input type="text" name="seed" className="input-field" />
                 </label>
               </div>
               <div className="flex justify-between">
@@ -306,7 +267,6 @@ const SandboxMenu: React.FC = () => {
                 <Button type="button" onClick={() => setIsModalOpen(false)} className="button-secondary">
                   Cancel
                 </Button>
-
               </div>
             </form>
           </div>
