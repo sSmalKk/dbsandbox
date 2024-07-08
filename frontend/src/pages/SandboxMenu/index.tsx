@@ -4,23 +4,56 @@ import Game from "components/Game";
 import { Helmet } from "react-helmet";
 import { Button, Input } from "../../components";
 import Modal from "react-modal";
-import "tailwindcss/tailwind.css"; // Certifique-se de que o Tailwind CSS está importado
+import "tailwindcss/tailwind.css"; // Ensure Tailwind CSS is imported
+
+type UniverseSettings = {
+  tickUpdate: boolean;
+  tick: number;
+  data: string;
+  tickRate: number;
+  resolution: number;
+  xres: number;
+  yres: number;
+  zres: number;
+  _id: boolean;
+};
 
 type UniverseData = {
   name: string;
-  createdAt: string;
-  age: number;
-  seed: string;
-  startTime: string;
-  hasTime: boolean;
+  description: string;
+  settings: UniverseSettings[];
+  universeData: { teste: string };
+  pattern: string;
+  code: string;
+  innerDim: string;
+  God: string;
+  sizeMax: string;
+  size: number;
 };
-type ItemData = {
-  name: string;
-  createdAt: string;
-  age: number;
-  seed: string;
-  startTime: string;
-  hasTime: boolean;
+
+const initialUniverseData: UniverseData = {
+  name: "",
+  description: "",
+  settings: [
+    {
+      tickUpdate: false,
+      tick: 0,
+      data: "",
+      tickRate: 0,
+      resolution: 0,
+      xres: 0,
+      yres: 0,
+      zres: 0,
+      _id: false,
+    },
+  ],
+  universeData: { teste: "" },
+  pattern: "",
+  code: "",
+  innerDim: "",
+  God: "",
+  sizeMax: "",
+  size: 0,
 };
 
 const SandboxMenu: React.FC = () => {
@@ -28,14 +61,7 @@ const SandboxMenu: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string>("main");
   const [universes, setUniverses] = useState<UniverseData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newUniverseData, setNewUniverseData] = useState<UniverseData>({
-    name: "",
-    createdAt: "",
-    age: 1000,
-    startTime: "",
-    hasTime: false,
-    seed: "",
-  });
+  const [newUniverseData, setNewUniverseData] = useState<UniverseData>(initialUniverseData);
   const [interfaceOpen, setInterfaceOpen] = useState<boolean>(true);
 
   const apiUrl = process.env.REACT_APP_API_URL || "";
@@ -85,11 +111,11 @@ const SandboxMenu: React.FC = () => {
           },
           body: JSON.stringify({
             query: {
-              userId: userData?.id, // Replace with the actual user ID
+              userId: userData?.id,
             },
             options: {
-              sort: { createdAt: -1 }, // Sort by creation date in descending order
-              limit: 10, // Limit to the 10 most recent universes
+              sort: { createdAt: -1 },
+              limit: 10,
             },
           }),
         });
@@ -111,8 +137,15 @@ const SandboxMenu: React.FC = () => {
 
   const handleCreateUniverse = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const createdAt = new Date().toISOString();
-    const updatedUniverseData = { ...newUniverseData, createdAt };
+    const updatedUniverseData = {
+      ...newUniverseData,
+      settings: [
+        {
+          ...newUniverseData.settings[0],
+          data: new Date().toISOString(),
+        },
+      ],
+    };
 
     try {
       const response = await fetch(`${apiUrl}/admin/universe/create`, {
@@ -127,14 +160,7 @@ const SandboxMenu: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setNewUniverseData({
-          name: "",
-          createdAt: "",
-          age: 1000,
-          startTime: "",
-          hasTime: false,
-          seed: "",
-        });
+        setNewUniverseData(initialUniverseData);
         setIsModalOpen(false);
       } else {
         const errorMessage = await response.text();
@@ -149,15 +175,15 @@ const SandboxMenu: React.FC = () => {
     switch (currentMenu) {
       case "mine-universe":
         return (
-          <div className="flex bg-white justify-center items-center fixed">
-            <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg relative">
+          <div className="flex bg-white justify-center items-center fixed inset-0">
+            <div className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg relative">
               <div className="overflow-y-auto max-h-96 overflow-x-hidden">
                 {universes.map((universe, index) => (
                   <div key={index} className="world-card border p-2 pr-4 mb-2 flex justify-content-between">
                     <div>
                       <h2>{universe.name}</h2>
-                      <p>Created At: {universe.createdAt}</p>
-                      <p>Age: {universe.age}</p>
+                      <p>Description: {universe.description}</p>
+                      <pre>{JSON.stringify(universe.settings, null, 2)}</pre>
                     </div>
                     <div>
                       <Button
@@ -191,8 +217,8 @@ const SandboxMenu: React.FC = () => {
       case "settings":
       case "items":
         return (
-          <div className="flex bg-white justify-center items-center fixed">
-            <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
+          <div className="flex bg-white justify-center items-center fixed inset-0">
+            <div className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
               <h1>{currentMenu === "enter-universe" ? "Enter Universe" : currentMenu === "settings" ? "Settings" : "Items"}</h1>
               <Button onClick={() => setCurrentMenu("main")} className="button-secondary mt-4">
                 Back
@@ -203,8 +229,8 @@ const SandboxMenu: React.FC = () => {
       case "main":
       default:
         return (
-          <div className="flex w-1/3  bg-white justify-center items-center fixed">
-            <div style={{ background: "#fff" }} className="w-2/3 bg-white text-gray-900 justify-center items-center p-4 rounded-lg shadow-lg">
+          <div className="flex w-1/3 bg-white justify-center items-center fixed inset-0">
+            <div className="w-2/3 bg-white text-gray-900 justify-center items-center p-4 rounded-lg shadow-lg">
               <h1>Welcome {userData && userData.username ? userData.username : "User"}</h1>
               <Button onClick={() => setCurrentMenu("mine-universe")} className="button-primary mt-4">
                 My Universes
@@ -229,66 +255,67 @@ const SandboxMenu: React.FC = () => {
       <Helmet>
         <title>Sandbox Menu</title>
       </Helmet>
-      <div style={{ zIndex: 99 }} className={`flex bg-white justify-center items-center fixed inset-0 interface ${interfaceOpen ? "open" : "closed"}`}>
+      <div className={`flex bg-white justify-center items-center fixed inset-0 interface ${interfaceOpen ? "open" : "closed"}`}>
         {renderMenuContent()}
       </div>
       <Modal style={{ zIndex: 100 }} isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} className="Modal" overlayClassName="Overlay">
-        <div style={{ zIndex: 99 }} className="flex  justify-center items-center fixed inset-0">
-          <div className="flex  flex-row bg-gray-200 p-4 rounded-lg">
+
+        <div className="flex justify-center items-center fixed inset-0">
+          <div className="flex flex-row bg-gray-200 p-4 rounded-lg">
             <form onSubmit={handleCreateUniverse} className="space-y-4">
               <div>
                 <label className="block mb-2">
                   Name:
-                  <Input type="text" name="name" className="input-field" />
+                  <Input
+                    type="text"
+                    name="name"
+                    required
+                    className="w-full"
+                  />
                 </label>
               </div>
               <div>
                 <label className="block mb-2">
-                  Age:
-                  <Input type="number" name="age" min="0" className="input-field" />
-                </label>
-              </div>
-              <div>
-                <label className="flex items-center mb-2">
-                  <Input type="checkbox" name="hasTime" className="mr-2" />
-                  <span>Has Time</span>
+                  Description:
+                  <Input
+                    type="text"
+                    name="description"
+                    className="w-full"
+                  />
                 </label>
               </div>
               <div>
                 <label className="block mb-2">
-                  Seed:
-                  <Input type="text" name="seed" className="input-field" />
+                  Data:
+                  <Input
+                    type="text"
+                    name="data"
+                    className="w-full"
+                  />
                 </label>
               </div>
-              <div className="flex justify-between">
+              <div>
+                <label className="block mb-2">
+                  Code:
+                  <Input
+                    type="text"
+                    name="code"
+                    className="w-full"
+                  />
+                </label>
+              </div>
+              <div className="flex justify-between mt-4">
                 <Button type="submit" className="button-primary">
-                  Create
+                  Save
                 </Button>
-                <Button type="button" onClick={() => setIsModalOpen(false)} className="button-secondary">
-                  Cancel
+                <Button onClick={() => setIsModalOpen(false)} className="button-secondary">
+                  Close
                 </Button>
               </div>
             </form>
           </div>
         </div>
       </Modal>
-      <Game
-        setInterfaceOpen={setInterfaceOpen}
-        interfaceOpen={interfaceOpen}
-        textures={["../assets/textures/dirt.jpg", "./assets/textures/grass.jpg"]}
-        chunks={[
-          {
-            position: [1, 0, 0],
-            cubesArray: [
-              [0, 0, 0, 0, { position: [1, 0, 0], cubesArray: [[0, 0, 0, 0, 0]] }],
-              [1, 0, 0, 1, 0],
-            ],
-          },
-        ]}
-        renderDistance={10}
-        canPlayerFly={true}
-        isMouseLocked={false}
-      />
     </>
   );
 };
