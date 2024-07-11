@@ -44,11 +44,7 @@ const schema = new Schema(
 
     isActive:{ type:Boolean },
 
-    createdAt:{
-      type:Date,
-      required:true,
-      unique:false
-    },
+    createdAt:{ type:Date },
 
     updatedAt:{ type:Date },
 

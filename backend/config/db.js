@@ -1,21 +1,22 @@
+/**
+ * db.js
+ * @description :: exports database connection using mongoose
+ */
+
 const mongoose = require('mongoose');
-require('dotenv').config();
-
 const uri = process.env.NODE_ENV === 'test' ? process.env.DB_TEST_URL : process.env.DB_URL;
-
 mongoose.connect(uri, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
+  useUnifiedTopology: true 
 });
-
-const db = mongoose.connection;
+let db = mongoose.connection;
 
 db.once('open', () => {
   console.log('Connection Successful');
 });
 
-db.on('error', (error) => {
-  console.error('Error in MongoDB connection:', error);
+db.on('error', () => {
+  console.log('Error in mongodb connection');
 });
 
 module.exports = mongoose;

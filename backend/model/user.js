@@ -11,8 +11,6 @@ const { USER_TYPES } = require('../constants/authConstant');
 const { convertObjectToEnum } = require('../utils/common');
 const authConstantEnum = require('../constants/authConstant');
         
-const userEnum = require('../constants/user');
-        
 const myCustomLabels = {
   totalDocs: 'itemCount',
   docs: 'data',
@@ -37,15 +35,7 @@ const schema = new Schema(
 
     name:{ type:String },
 
-    userType:{
-      type:Number,
-      enum:convertObjectToEnum(USER_TYPES),
-      required:true
-    },
-
     isActive:{ type:Boolean },
-
-    isDeleted:{ type:Boolean },
 
     createdAt:{ type:Date },
 
@@ -61,38 +51,24 @@ const schema = new Schema(
       ref:'user'
     },
 
-    righthand:{ type:String },
-
-    lefthand:{ type:String },
-
-    equipedeitens:{ type:String },
-
-    x:{ type:Number },
-
-    y:{ type:Number },
-
-    z:{ type:Number },
-
-    location:{
-      ref:'WorldData',
-      type:Schema.Types.ObjectId
+    userType:{
+      type:Number,
+      enum:convertObjectToEnum(USER_TYPES),
+      required:true
     },
 
-    universe:{ type:String },
-
-    data:{ type:Schema.Types.Mixed },
-
-    apearances:[{
+    data:[{
       _id:false,
-      code:{ type:String },
-      name:{ type:String },
-      description:{ type:String },
-      equiped:{ type:Boolean }
+      position:{ type:Array },
+      section:{ type:String },
+      inventory:{ type:Array },
+      stats:{ type:Array },
+      skills:{ type:Array }
     }],
 
-    status:{ type:String },
-
     mobileNo:{ type:String },
+
+    isDeleted:{ type:Boolean },
 
     resetPasswordLink:{
       code:String,

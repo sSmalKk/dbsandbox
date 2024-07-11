@@ -7,8 +7,6 @@ const joi = require('joi');
 const {
   options, isCountOnly, populate, select 
 } = require('./commonFilterValidation');
-const { convertObjectToEnum } = require('../common');  
-const Chat_groupDefault = require('../../constants/Chat_group');    
 
 /** validation keys and properties of Chat_group */
 exports.schemaKeys = joi.object({
@@ -17,9 +15,7 @@ exports.schemaKeys = joi.object({
   admin: joi.string().required(),
   member: joi.array().items(),
   isActive: joi.boolean(),
-  isDeleted: joi.boolean(),
-  type: joi.string().allow(null).allow(''),
-  location: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow('')
+  isDeleted: joi.boolean()
 }).unknown(true);
 
 /** validation keys and properties of Chat_group for updation */
@@ -42,8 +38,6 @@ exports.updateSchemaKeys = joi.object({
   member: joi.array().items(),
   isActive: joi.boolean(),
   isDeleted: joi.boolean(),
-  type: joi.string().allow(null).allow(''),
-  location: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   _id: joi.string().regex(/^[0-9a-fA-F]{24}$/)
 }).unknown(true);
 
@@ -59,7 +53,6 @@ exports.findFilterKeys = joi.object({
       member: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
       isActive: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
       isDeleted: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
-      location: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
       id: joi.any(),
       _id: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object())
     }).unknown(true),])

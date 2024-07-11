@@ -18,10 +18,10 @@ const listEndpoints = require('express-list-endpoints');
 const passport = require('passport');
 
 let logger = require('morgan');
-const { devicePassportStrategy } = require('./config/devicePassportStrategy');
 const { adminPassportStrategy } = require('./config/adminPassportStrategy');
+const { devicePassportStrategy } = require('./config/devicePassportStrategy');
+const { clientPassportStrategy } = require('./config/clientPassportStrategy');
 const app = express();
-const httpServer = require('http').createServer(app);
 const corsOptions = { origin: process.env.ALLOW_ORIGIN, };
 app.use(cors(corsOptions));
 
@@ -33,8 +33,11 @@ app.use(require('./utils/response/responseHandler'));
 //all routes 
 const routes =  require('./routes');
 
-devicePassportStrategy(passport);
+app.use(require('./middleware/activityLog').addActivityLog);
+
 adminPassportStrategy(passport);
+devicePassportStrategy(passport);
+clientPassportStrategy(passport);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -60,8 +63,7 @@ if (process.env.NODE_ENV !== 'test' ) {
   const seeder = require('./seeders');
   const allRegisterRoutes = listEndpoints(app);
   seeder(allRegisterRoutes).then(()=>{console.log('Seeding done.');});
-  require('./services/socket/socket')(httpServer);
-  httpServer.listen(process.env.PORT,()=>{
+  app.listen(process.env.PORT,()=>{
     console.log(`your application is running on ${process.env.PORT}`);
   });
 } else {

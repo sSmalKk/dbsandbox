@@ -1,6 +1,6 @@
 /**
- * Universe.js
- * @description :: model of a database collection Universe
+ * universe.js
+ * @description :: model of a database collection universe
  */
 
 const mongoose = require('mongoose');
@@ -22,23 +22,12 @@ const Schema = mongoose.Schema;
 const schema = new Schema(
   {
 
-    name:{ type:String },
+    isDeleted:{ type:Boolean },
 
-    description:{ type:String },
-
-    settings:[{
-      tickUpdate:{ type:Boolean },
-      tick:{ type:Number },
-      data:{ type:Date },
-      tickRate:{ type:Number },
-      resolution:{ type:Number },
-      xres:{ type:Number },
-      yres:{ type:Number },
-      zres:{ type:Number },
-      _id:false
-    }],
-
-    isActive:{ type:Boolean },
+    isActive:{
+      type:Boolean,
+      default:true
+    },
 
     createdAt:{ type:Date },
 
@@ -54,36 +43,7 @@ const schema = new Schema(
       ref:'user'
     },
 
-    isDeleted:{ type:Boolean },
-
-    universeData:{ teste:{ type:String } },
-
-    pattern:{
-      type:Schema.Types.ObjectId,
-      ref:'Pattern'
-    },
-
-    code:{ type:String },
-
-    innerDim:{
-      ref:'WorldData',
-      type:Schema.Types.ObjectId
-    },
-
-    God:{ type:String },
-
-    adms:{ type:Array },
-
-    helper:{ type:Array },
-
-    players:{ type:Array },
-
-    sizeMax:{
-      ref:'size',
-      type:Schema.Types.ObjectId
-    },
-
-    size:{ type:Number }
+    name:{ type:String }
   }
   ,{ 
     timestamps: { 
@@ -119,5 +79,5 @@ schema.method('toJSON', function () {
 });
 schema.plugin(mongoosePaginate);
 schema.plugin(idValidator);
-const Universe = mongoose.model('Universe',schema);
-module.exports = Universe;
+const universe = mongoose.model('universe',schema);
+module.exports = universe;

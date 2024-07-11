@@ -1,13 +1,14 @@
 /**
- * UniverseController.js
- * @description : exports action methods for Universe.
+ * universeController.js
+ * @description : exports action methods for universe.
  */
 
-const Universe = require('../../model/Universe');
-const UniverseSchemaKey = require('../../utils/validation/UniverseValidation');
+const Universe = require('../../model/universe');
+const universeSchemaKey = require('../../utils/validation/universeValidation');
 const validation = require('../../utils/validateRequest');
 const dbService = require('../../utils/dbService');
 const ObjectId = require('mongodb').ObjectId;
+const deleteDependentService = require('../../utils/deleteDependent');
 const utils = require('../../utils/common');
    
 /**
@@ -19,9 +20,16 @@ const utils = require('../../utils/common');
 const addUniverse = async (req, res) => {
   try {
     let dataToCreate = { ...req.body || {} };
+    dataToCreate = {
+      ...{
+        'createdAt':(Date.now()).toString(),
+        'addedBy':(req && req.user && req.user.id ? req.user.id.toString() : null)
+      },
+      ...dataToCreate,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToCreate,
-      UniverseSchemaKey.schemaKeys);
+      universeSchemaKey.schemaKeys);
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
@@ -48,6 +56,10 @@ const bulkInsertUniverse = async (req,res)=>{
     let dataToCreate = [ ...req.body.data ];
     for (let i = 0;i < dataToCreate.length;i++){
       dataToCreate[i] = {
+        ...{
+          'createdAt':(Date.now()).toString(),
+          'addedBy':(req && req.user && req.user.id ? req.user.id.toString() : null)
+        },
         ...dataToCreate[i],
         addedBy: req.user.id
       };
@@ -72,7 +84,7 @@ const findAllUniverse = async (req,res) => {
     let query = {};
     let validateRequest = validation.validateFilterWithJoi(
       req.body,
-      UniverseSchemaKey.findFilterKeys,
+      universeSchemaKey.findFilterKeys,
       Universe.schema.obj
     );
     if (!validateRequest.isValid) {
@@ -134,7 +146,7 @@ const getUniverseCount = async (req,res) => {
     let where = {};
     let validateRequest = validation.validateFilterWithJoi(
       req.body,
-      UniverseSchemaKey.findFilterKeys,
+      universeSchemaKey.findFilterKeys,
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message: `${validateRequest.message}` });
@@ -158,12 +170,16 @@ const getUniverseCount = async (req,res) => {
 const updateUniverse = async (req,res) => {
   try {
     let dataToUpdate = {
+      ...{
+        'updatedAt':(Date.now()).toString(),
+        'updatedBy':(req && req.user && req.user.id ? req.user.id.toString() : null)
+      },
       ...req.body,
       updatedBy:req.user.id,
     };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
-      UniverseSchemaKey.updateSchemaKeys
+      universeSchemaKey.updateSchemaKeys
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
@@ -192,6 +208,10 @@ const bulkUpdateUniverse = async (req,res)=>{
     delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
       dataToUpdate = { 
+        ...{
+          'updatedAt':(Date.now()).toString(),
+          'updatedBy':(req && req.user && req.user.id ? req.user.id.toString() : null)
+        },
         ...req.body.data,
         updatedBy : req.user.id
       };
@@ -224,7 +244,7 @@ const partialUpdateUniverse = async (req,res) => {
     };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
-      UniverseSchemaKey.updateSchemaKeys
+      universeSchemaKey.updateSchemaKeys
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
@@ -239,6 +259,7 @@ const partialUpdateUniverse = async (req,res) => {
     return res.internalServerError({ message:error.message });
   }
 };
+    
 /**
  * @description : deactivate document of Universe from table by id;
  * @param {Object} req : request including id in request params.
@@ -250,12 +271,12 @@ const softDeleteUniverse = async (req,res) => {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let query = { _id:req.params.id };
+    const query = { _id:req.params.id };
     const updateBody = {
       isDeleted: true,
       updatedBy: req.user.id,
     };
-    let updatedUniverse = await dbService.updateOne(Universe, query, updateBody);
+    let updatedUniverse = await deleteDependentService.softDeleteUniverse(query, updateBody);
     if (!updatedUniverse){
       return res.recordNotFound();
     }
@@ -264,7 +285,7 @@ const softDeleteUniverse = async (req,res) => {
     return res.internalServerError({ message:error.message }); 
   }
 };
-
+    
 /**
  * @description : delete document of Universe from table.
  * @param {Object} req : request including id as req param.
@@ -272,20 +293,24 @@ const softDeleteUniverse = async (req,res) => {
  * @return {Object} : deleted Universe. {status, message, data}
  */
 const deleteUniverse = async (req,res) => {
-  try { 
+  try {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const deletedUniverse = await dbService.deleteOne(Universe, query);
+    let deletedUniverse;
+    if (req.body.isWarning) { 
+      deletedUniverse = await deleteDependentService.countUniverse(query);
+    } else {
+      deletedUniverse = await deleteDependentService.deleteUniverse(query);
+    }
     if (!deletedUniverse){
       return res.recordNotFound();
     }
     return res.success({ data :deletedUniverse });
-        
   }
   catch (error){
-    return res.internalServerError({ message:error.message });
+    return res.internalServerError({ message:error.message }); 
   }
 };
     
@@ -302,15 +327,22 @@ const deleteManyUniverse = async (req, res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const deletedUniverse = await dbService.deleteMany(Universe,query);
+    let deletedUniverse;
+    if (req.body.isWarning) {
+      deletedUniverse = await deleteDependentService.countUniverse(query);
+    }
+    else {
+      deletedUniverse = await deleteDependentService.deleteUniverse(query);
+    }
     if (!deletedUniverse){
       return res.recordNotFound();
     }
-    return res.success({ data :{ count :deletedUniverse } });
+    return res.success({ data :deletedUniverse });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }
 };
+    
 /**
  * @description : deactivate multiple documents of Universe from table by ids;
  * @param {Object} req : request including array of ids in request body.
@@ -328,12 +360,11 @@ const softDeleteManyUniverse = async (req,res) => {
       isDeleted: true,
       updatedBy: req.user.id,
     };
-    let updatedUniverse = await dbService.updateMany(Universe,query, updateBody);
+    let updatedUniverse = await deleteDependentService.softDeleteUniverse(query, updateBody);
     if (!updatedUniverse) {
       return res.recordNotFound();
     }
-    return res.success({ data:{ count :updatedUniverse } });
-        
+    return res.success({ data:updatedUniverse });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }

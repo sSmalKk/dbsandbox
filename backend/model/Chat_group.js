@@ -6,8 +6,6 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 let idValidator = require('mongoose-id-validator');
-const Chat_groupEnum = require('../constants/Chat_group');
-        
 const myCustomLabels = {
   totalDocs: 'itemCount',
   docs: 'data',
@@ -57,14 +55,7 @@ const schema = new Schema(
       ref:'user'
     },
 
-    isDeleted:{ type:Boolean },
-
-    type:{ type:String },
-
-    location:{
-      ref:'WorldData',
-      type:Schema.Types.ObjectId
-    }
+    isDeleted:{ type:Boolean }
   }
   ,{ 
     timestamps: { 

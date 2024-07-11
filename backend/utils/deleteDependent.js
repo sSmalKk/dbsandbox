@@ -3,154 +3,45 @@
  * @description :: exports deleteDependent service for project.
  */
 
-let Wallpaper = require('../model/wallpaper');
-let HumanAperance = require('../model/humanAperance');
-let Size = require('../model/size');
-let Pattern = require('../model/Pattern');
-let ItemModel = require('../model/ItemModel');
-let Universe = require('../model/Universe');
-let WorldData = require('../model/WorldData');
-let Chat_message = require('../model/Chat_message');
 let Chat_group = require('../model/Chat_group');
-let Event = require('../model/Event');
+let Chat_message = require('../model/Chat_message');
+let Item = require('../model/item');
+let Model = require('../model/model');
+let Material = require('../model/material');
+let Blockstate = require('../model/blockstate');
+let Planet = require('../model/planet');
+let Cluster = require('../model/cluster');
+let Chunk = require('../model/chunk');
+let Universe = require('../model/universe');
 let User = require('../model/user');
 let UserTokens = require('../model/userTokens');
+let ActivityLog = require('../model/activityLog');
 let Role = require('../model/role');
 let ProjectRoute = require('../model/projectRoute');
 let RouteRole = require('../model/routeRole');
 let UserRole = require('../model/userRole');
 let dbService = require('.//dbService');
 
-const deleteWallpaper = async (filter) =>{
+const deleteChat_group = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Wallpaper,filter);
-    return response;
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
+    let chat_group = await dbService.findMany(Chat_group,filter);
+    if (chat_group && chat_group.length){
+      chat_group = chat_group.map((obj) => obj.id);
 
-const deleteHumanAperance = async (filter) =>{
-  try {
-    let response  = await dbService.deleteMany(HumanAperance,filter);
-    return response;
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
+      const Chat_messageFilter = { $or: [{ groupId : { $in : chat_group } }] };
+      const Chat_messageCnt = await dbService.deleteMany(Chat_message,Chat_messageFilter);
 
-const deleteSize = async (filter) =>{
-  try {
-    let size = await dbService.findMany(Size,filter);
-    if (size && size.length){
-      size = size.map((obj) => obj.id);
+      const chunkFilter = { $or: [{ chat : { $in : chat_group } }] };
+      const chunkCnt = await dbService.deleteMany(Chunk,chunkFilter);
 
-      const PatternFilter = { $or: [{ sizeMax : { $in : size } }] };
-      const PatternCnt = await dbService.deleteMany(Pattern,PatternFilter);
-
-      const ItemModelFilter = { $or: [{ sizeMax : { $in : size } }] };
-      const ItemModelCnt = await dbService.deleteMany(ItemModel,ItemModelFilter);
-
-      const UniverseFilter = { $or: [{ sizeMax : { $in : size } }] };
-      const UniverseCnt = await dbService.deleteMany(Universe,UniverseFilter);
-
-      const WorldDataFilter = { $or: [{ sizeMax : { $in : size } }] };
-      const WorldDataCnt = await dbService.deleteMany(WorldData,WorldDataFilter);
-
-      let deleted  = await dbService.deleteMany(Size,filter);
+      let deleted  = await dbService.deleteMany(Chat_group,filter);
       let response = {
-        Pattern :PatternCnt,
-        ItemModel :ItemModelCnt,
-        Universe :UniverseCnt,
-        WorldData :WorldDataCnt,
+        Chat_message :Chat_messageCnt,
+        chunk :chunkCnt,
       };
       return response; 
     } else {
-      return {  size : 0 };
-    }
-
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deletePattern = async (filter) =>{
-  try {
-    let pattern = await dbService.findMany(Pattern,filter);
-    if (pattern && pattern.length){
-      pattern = pattern.map((obj) => obj.id);
-
-      const sizeFilter = { $or: [{ Pattern : { $in : pattern } }] };
-      const sizeCnt = await dbService.deleteMany(Size,sizeFilter);
-
-      const ItemModelFilter = { $or: [{ Pattern : { $in : pattern } }] };
-      const ItemModelCnt = await dbService.deleteMany(ItemModel,ItemModelFilter);
-
-      const UniverseFilter = { $or: [{ pattern : { $in : pattern } }] };
-      const UniverseCnt = await dbService.deleteMany(Universe,UniverseFilter);
-
-      const WorldDataFilter = { $or: [{ pattern : { $in : pattern } }] };
-      const WorldDataCnt = await dbService.deleteMany(WorldData,WorldDataFilter);
-
-      let deleted  = await dbService.deleteMany(Pattern,filter);
-      let response = {
-        size :sizeCnt,
-        ItemModel :ItemModelCnt,
-        Universe :UniverseCnt,
-        WorldData :WorldDataCnt,
-      };
-      return response; 
-    } else {
-      return {  pattern : 0 };
-    }
-
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deleteItemModel = async (filter) =>{
-  try {
-    let response  = await dbService.deleteMany(ItemModel,filter);
-    return response;
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deleteUniverse = async (filter) =>{
-  try {
-    let response  = await dbService.deleteMany(Universe,filter);
-    return response;
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deleteWorldData = async (filter) =>{
-  try {
-    let worlddata = await dbService.findMany(WorldData,filter);
-    if (worlddata && worlddata.length){
-      worlddata = worlddata.map((obj) => obj.id);
-
-      const UniverseFilter = { $or: [{ innerDim : { $in : worlddata } }] };
-      const UniverseCnt = await dbService.deleteMany(Universe,UniverseFilter);
-
-      const Chat_groupFilter = { $or: [{ location : { $in : worlddata } }] };
-      const Chat_groupCnt = await dbService.deleteMany(Chat_group,Chat_groupFilter);
-
-      const userFilter = { $or: [{ location : { $in : worlddata } }] };
-      const userCnt = await dbService.deleteMany(User,userFilter);
-
-      let deleted  = await dbService.deleteMany(WorldData,filter);
-      let response = {
-        Universe :UniverseCnt,
-        Chat_group :Chat_groupCnt,
-        user :userCnt,
-      };
-      return response; 
-    } else {
-      return {  worlddata : 0 };
+      return {  chat_group : 0 };
     }
 
   } catch (error){
@@ -167,20 +58,29 @@ const deleteChat_message = async (filter) =>{
   }
 };
 
-const deleteChat_group = async (filter) =>{
+const deleteItem = async (filter) =>{
   try {
-    let chat_group = await dbService.findMany(Chat_group,filter);
-    if (chat_group && chat_group.length){
-      chat_group = chat_group.map((obj) => obj.id);
+    let response  = await dbService.deleteMany(Item,filter);
+    return response;
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
 
-      const Chat_messageFilter = { $or: [{ groupId : { $in : chat_group } }] };
-      const Chat_messageCnt = await dbService.deleteMany(Chat_message,Chat_messageFilter);
+const deleteModel = async (filter) =>{
+  try {
+    let model = await dbService.findMany(Model,filter);
+    if (model && model.length){
+      model = model.map((obj) => obj.id);
 
-      let deleted  = await dbService.deleteMany(Chat_group,filter);
-      let response = { Chat_message :Chat_messageCnt, };
+      const blockstateFilter = { $or: [{ model : { $in : model } }] };
+      const blockstateCnt = await dbService.deleteMany(Blockstate,blockstateFilter);
+
+      let deleted  = await dbService.deleteMany(Model,filter);
+      let response = { blockstate :blockstateCnt, };
       return response; 
     } else {
-      return {  chat_group : 0 };
+      return {  model : 0 };
     }
 
   } catch (error){
@@ -188,10 +88,115 @@ const deleteChat_group = async (filter) =>{
   }
 };
 
-const deleteEvent = async (filter) =>{
+const deleteMaterial = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Event,filter);
+    let material = await dbService.findMany(Material,filter);
+    if (material && material.length){
+      material = material.map((obj) => obj.id);
+
+      const blockstateFilter = { $or: [{ material : { $in : material } }] };
+      const blockstateCnt = await dbService.deleteMany(Blockstate,blockstateFilter);
+
+      let deleted  = await dbService.deleteMany(Material,filter);
+      let response = { blockstate :blockstateCnt, };
+      return response; 
+    } else {
+      return {  material : 0 };
+    }
+
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteBlockstate = async (filter) =>{
+  try {
+    let blockstate = await dbService.findMany(Blockstate,filter);
+    if (blockstate && blockstate.length){
+      blockstate = blockstate.map((obj) => obj.id);
+
+      const itemFilter = { $or: [{ blockstate : { $in : blockstate } }] };
+      const itemCnt = await dbService.deleteMany(Item,itemFilter);
+
+      let deleted  = await dbService.deleteMany(Blockstate,filter);
+      let response = { item :itemCnt, };
+      return response; 
+    } else {
+      return {  blockstate : 0 };
+    }
+
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deletePlanet = async (filter) =>{
+  try {
+    let planet = await dbService.findMany(Planet,filter);
+    if (planet && planet.length){
+      planet = planet.map((obj) => obj.id);
+
+      const clusterFilter = { $or: [{ planet : { $in : planet } }] };
+      const clusterCnt = await dbService.deleteMany(Cluster,clusterFilter);
+
+      let deleted  = await dbService.deleteMany(Planet,filter);
+      let response = { cluster :clusterCnt, };
+      return response; 
+    } else {
+      return {  planet : 0 };
+    }
+
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteCluster = async (filter) =>{
+  try {
+    let cluster = await dbService.findMany(Cluster,filter);
+    if (cluster && cluster.length){
+      cluster = cluster.map((obj) => obj.id);
+
+      const chunkFilter = { $or: [{ cluster : { $in : cluster } }] };
+      const chunkCnt = await dbService.deleteMany(Chunk,chunkFilter);
+
+      let deleted  = await dbService.deleteMany(Cluster,filter);
+      let response = { chunk :chunkCnt, };
+      return response; 
+    } else {
+      return {  cluster : 0 };
+    }
+
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteChunk = async (filter) =>{
+  try {
+    let response  = await dbService.deleteMany(Chunk,filter);
     return response;
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteUniverse = async (filter) =>{
+  try {
+    let universe = await dbService.findMany(Universe,filter);
+    if (universe && universe.length){
+      universe = universe.map((obj) => obj.id);
+
+      const planetFilter = { $or: [{ universe : { $in : universe } }] };
+      const planetCnt = await dbService.deleteMany(Planet,planetFilter);
+
+      let deleted  = await dbService.deleteMany(Universe,filter);
+      let response = { planet :planetCnt, };
+      return response; 
+    } else {
+      return {  universe : 0 };
+    }
+
   } catch (error){
     throw new Error(error.message);
   }
@@ -203,35 +208,35 @@ const deleteUser = async (filter) =>{
     if (user && user.length){
       user = user.map((obj) => obj.id);
 
-      const wallpaperFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const wallpaperCnt = await dbService.deleteMany(Wallpaper,wallpaperFilter);
-
-      const humanAperanceFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const humanAperanceCnt = await dbService.deleteMany(HumanAperance,humanAperanceFilter);
-
-      const sizeFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const sizeCnt = await dbService.deleteMany(Size,sizeFilter);
-
-      const PatternFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const PatternCnt = await dbService.deleteMany(Pattern,PatternFilter);
-
-      const ItemModelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const ItemModelCnt = await dbService.deleteMany(ItemModel,ItemModelFilter);
-
-      const UniverseFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const UniverseCnt = await dbService.deleteMany(Universe,UniverseFilter);
-
-      const WorldDataFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const WorldDataCnt = await dbService.deleteMany(WorldData,WorldDataFilter);
+      const Chat_groupFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
+      const Chat_groupCnt = await dbService.deleteMany(Chat_group,Chat_groupFilter);
 
       const Chat_messageFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
       const Chat_messageCnt = await dbService.deleteMany(Chat_message,Chat_messageFilter);
 
-      const Chat_groupFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
-      const Chat_groupCnt = await dbService.deleteMany(Chat_group,Chat_groupFilter);
+      const itemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const itemCnt = await dbService.deleteMany(Item,itemFilter);
 
-      const EventFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
-      const EventCnt = await dbService.deleteMany(Event,EventFilter);
+      const modelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const modelCnt = await dbService.deleteMany(Model,modelFilter);
+
+      const materialFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const materialCnt = await dbService.deleteMany(Material,materialFilter);
+
+      const blockstateFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const blockstateCnt = await dbService.deleteMany(Blockstate,blockstateFilter);
+
+      const planetFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const planetCnt = await dbService.deleteMany(Planet,planetFilter);
+
+      const clusterFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const clusterCnt = await dbService.deleteMany(Cluster,clusterFilter);
+
+      const chunkFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const chunkCnt = await dbService.deleteMany(Chunk,chunkFilter);
+
+      const universeFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const universeCnt = await dbService.deleteMany(Universe,universeFilter);
 
       const userFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const userCnt = await dbService.deleteMany(User,userFilter);
@@ -253,16 +258,16 @@ const deleteUser = async (filter) =>{
 
       let deleted  = await dbService.deleteMany(User,filter);
       let response = {
-        wallpaper :wallpaperCnt,
-        humanAperance :humanAperanceCnt,
-        size :sizeCnt,
-        Pattern :PatternCnt,
-        ItemModel :ItemModelCnt,
-        Universe :UniverseCnt,
-        WorldData :WorldDataCnt,
-        Chat_message :Chat_messageCnt,
         Chat_group :Chat_groupCnt,
-        Event :EventCnt,
+        Chat_message :Chat_messageCnt,
+        item :itemCnt,
+        model :modelCnt,
+        material :materialCnt,
+        blockstate :blockstateCnt,
+        planet :planetCnt,
+        cluster :clusterCnt,
+        chunk :chunkCnt,
+        universe :universeCnt,
         user :userCnt + deleted,
         userTokens :userTokensCnt,
         role :roleCnt,
@@ -283,6 +288,15 @@ const deleteUser = async (filter) =>{
 const deleteUserTokens = async (filter) =>{
   try {
     let response  = await dbService.deleteMany(UserTokens,filter);
+    return response;
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteActivityLog = async (filter) =>{
+  try {
+    let response  = await dbService.deleteMany(ActivityLog,filter);
     return response;
   } catch (error){
     throw new Error(error.message);
@@ -355,131 +369,25 @@ const deleteUserRole = async (filter) =>{
   }
 };
 
-const countWallpaper = async (filter) =>{
+const countChat_group = async (filter) =>{
   try {
-    const wallpaperCnt =  await dbService.count(Wallpaper,filter);
-    return { wallpaper : wallpaperCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
+    let chat_group = await dbService.findMany(Chat_group,filter);
+    if (chat_group && chat_group.length){
+      chat_group = chat_group.map((obj) => obj.id);
 
-const countHumanAperance = async (filter) =>{
-  try {
-    const humanAperanceCnt =  await dbService.count(HumanAperance,filter);
-    return { humanAperance : humanAperanceCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
+      const Chat_messageFilter = { $or: [{ groupId : { $in : chat_group } }] };
+      const Chat_messageCnt =  await dbService.count(Chat_message,Chat_messageFilter);
 
-const countSize = async (filter) =>{
-  try {
-    let size = await dbService.findMany(Size,filter);
-    if (size && size.length){
-      size = size.map((obj) => obj.id);
-
-      const PatternFilter = { $or: [{ sizeMax : { $in : size } }] };
-      const PatternCnt =  await dbService.count(Pattern,PatternFilter);
-
-      const ItemModelFilter = { $or: [{ sizeMax : { $in : size } }] };
-      const ItemModelCnt =  await dbService.count(ItemModel,ItemModelFilter);
-
-      const UniverseFilter = { $or: [{ sizeMax : { $in : size } }] };
-      const UniverseCnt =  await dbService.count(Universe,UniverseFilter);
-
-      const WorldDataFilter = { $or: [{ sizeMax : { $in : size } }] };
-      const WorldDataCnt =  await dbService.count(WorldData,WorldDataFilter);
+      const chunkFilter = { $or: [{ chat : { $in : chat_group } }] };
+      const chunkCnt =  await dbService.count(Chunk,chunkFilter);
 
       let response = {
-        Pattern : PatternCnt,
-        ItemModel : ItemModelCnt,
-        Universe : UniverseCnt,
-        WorldData : WorldDataCnt,
+        Chat_message : Chat_messageCnt,
+        chunk : chunkCnt,
       };
       return response; 
     } else {
-      return {  size : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const countPattern = async (filter) =>{
-  try {
-    let pattern = await dbService.findMany(Pattern,filter);
-    if (pattern && pattern.length){
-      pattern = pattern.map((obj) => obj.id);
-
-      const sizeFilter = { $or: [{ Pattern : { $in : pattern } }] };
-      const sizeCnt =  await dbService.count(Size,sizeFilter);
-
-      const ItemModelFilter = { $or: [{ Pattern : { $in : pattern } }] };
-      const ItemModelCnt =  await dbService.count(ItemModel,ItemModelFilter);
-
-      const UniverseFilter = { $or: [{ pattern : { $in : pattern } }] };
-      const UniverseCnt =  await dbService.count(Universe,UniverseFilter);
-
-      const WorldDataFilter = { $or: [{ pattern : { $in : pattern } }] };
-      const WorldDataCnt =  await dbService.count(WorldData,WorldDataFilter);
-
-      let response = {
-        size : sizeCnt,
-        ItemModel : ItemModelCnt,
-        Universe : UniverseCnt,
-        WorldData : WorldDataCnt,
-      };
-      return response; 
-    } else {
-      return {  pattern : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const countItemModel = async (filter) =>{
-  try {
-    const ItemModelCnt =  await dbService.count(ItemModel,filter);
-    return { ItemModel : ItemModelCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const countUniverse = async (filter) =>{
-  try {
-    const UniverseCnt =  await dbService.count(Universe,filter);
-    return { Universe : UniverseCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const countWorldData = async (filter) =>{
-  try {
-    let worlddata = await dbService.findMany(WorldData,filter);
-    if (worlddata && worlddata.length){
-      worlddata = worlddata.map((obj) => obj.id);
-
-      const UniverseFilter = { $or: [{ innerDim : { $in : worlddata } }] };
-      const UniverseCnt =  await dbService.count(Universe,UniverseFilter);
-
-      const Chat_groupFilter = { $or: [{ location : { $in : worlddata } }] };
-      const Chat_groupCnt =  await dbService.count(Chat_group,Chat_groupFilter);
-
-      const userFilter = { $or: [{ location : { $in : worlddata } }] };
-      const userCnt =  await dbService.count(User,userFilter);
-
-      let response = {
-        Universe : UniverseCnt,
-        Chat_group : Chat_groupCnt,
-        user : userCnt,
-      };
-      return response; 
-    } else {
-      return {  worlddata : 0 };
+      return {  chat_group : 0 };
     }
   } catch (error){
     throw new Error(error.message);
@@ -495,29 +403,133 @@ const countChat_message = async (filter) =>{
   }
 };
 
-const countChat_group = async (filter) =>{
+const countItem = async (filter) =>{
   try {
-    let chat_group = await dbService.findMany(Chat_group,filter);
-    if (chat_group && chat_group.length){
-      chat_group = chat_group.map((obj) => obj.id);
+    const itemCnt =  await dbService.count(Item,filter);
+    return { item : itemCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
 
-      const Chat_messageFilter = { $or: [{ groupId : { $in : chat_group } }] };
-      const Chat_messageCnt =  await dbService.count(Chat_message,Chat_messageFilter);
+const countModel = async (filter) =>{
+  try {
+    let model = await dbService.findMany(Model,filter);
+    if (model && model.length){
+      model = model.map((obj) => obj.id);
 
-      let response = { Chat_message : Chat_messageCnt, };
+      const blockstateFilter = { $or: [{ model : { $in : model } }] };
+      const blockstateCnt =  await dbService.count(Blockstate,blockstateFilter);
+
+      let response = { blockstate : blockstateCnt, };
       return response; 
     } else {
-      return {  chat_group : 0 };
+      return {  model : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const countEvent = async (filter) =>{
+const countMaterial = async (filter) =>{
   try {
-    const EventCnt =  await dbService.count(Event,filter);
-    return { Event : EventCnt };
+    let material = await dbService.findMany(Material,filter);
+    if (material && material.length){
+      material = material.map((obj) => obj.id);
+
+      const blockstateFilter = { $or: [{ material : { $in : material } }] };
+      const blockstateCnt =  await dbService.count(Blockstate,blockstateFilter);
+
+      let response = { blockstate : blockstateCnt, };
+      return response; 
+    } else {
+      return {  material : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countBlockstate = async (filter) =>{
+  try {
+    let blockstate = await dbService.findMany(Blockstate,filter);
+    if (blockstate && blockstate.length){
+      blockstate = blockstate.map((obj) => obj.id);
+
+      const itemFilter = { $or: [{ blockstate : { $in : blockstate } }] };
+      const itemCnt =  await dbService.count(Item,itemFilter);
+
+      let response = { item : itemCnt, };
+      return response; 
+    } else {
+      return {  blockstate : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countPlanet = async (filter) =>{
+  try {
+    let planet = await dbService.findMany(Planet,filter);
+    if (planet && planet.length){
+      planet = planet.map((obj) => obj.id);
+
+      const clusterFilter = { $or: [{ planet : { $in : planet } }] };
+      const clusterCnt =  await dbService.count(Cluster,clusterFilter);
+
+      let response = { cluster : clusterCnt, };
+      return response; 
+    } else {
+      return {  planet : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countCluster = async (filter) =>{
+  try {
+    let cluster = await dbService.findMany(Cluster,filter);
+    if (cluster && cluster.length){
+      cluster = cluster.map((obj) => obj.id);
+
+      const chunkFilter = { $or: [{ cluster : { $in : cluster } }] };
+      const chunkCnt =  await dbService.count(Chunk,chunkFilter);
+
+      let response = { chunk : chunkCnt, };
+      return response; 
+    } else {
+      return {  cluster : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countChunk = async (filter) =>{
+  try {
+    const chunkCnt =  await dbService.count(Chunk,filter);
+    return { chunk : chunkCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countUniverse = async (filter) =>{
+  try {
+    let universe = await dbService.findMany(Universe,filter);
+    if (universe && universe.length){
+      universe = universe.map((obj) => obj.id);
+
+      const planetFilter = { $or: [{ universe : { $in : universe } }] };
+      const planetCnt =  await dbService.count(Planet,planetFilter);
+
+      let response = { planet : planetCnt, };
+      return response; 
+    } else {
+      return {  universe : 0 };
+    }
   } catch (error){
     throw new Error(error.message);
   }
@@ -529,35 +541,35 @@ const countUser = async (filter) =>{
     if (user && user.length){
       user = user.map((obj) => obj.id);
 
-      const wallpaperFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const wallpaperCnt =  await dbService.count(Wallpaper,wallpaperFilter);
-
-      const humanAperanceFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const humanAperanceCnt =  await dbService.count(HumanAperance,humanAperanceFilter);
-
-      const sizeFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const sizeCnt =  await dbService.count(Size,sizeFilter);
-
-      const PatternFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const PatternCnt =  await dbService.count(Pattern,PatternFilter);
-
-      const ItemModelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const ItemModelCnt =  await dbService.count(ItemModel,ItemModelFilter);
-
-      const UniverseFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const UniverseCnt =  await dbService.count(Universe,UniverseFilter);
-
-      const WorldDataFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const WorldDataCnt =  await dbService.count(WorldData,WorldDataFilter);
+      const Chat_groupFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
+      const Chat_groupCnt =  await dbService.count(Chat_group,Chat_groupFilter);
 
       const Chat_messageFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
       const Chat_messageCnt =  await dbService.count(Chat_message,Chat_messageFilter);
 
-      const Chat_groupFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
-      const Chat_groupCnt =  await dbService.count(Chat_group,Chat_groupFilter);
+      const itemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const itemCnt =  await dbService.count(Item,itemFilter);
 
-      const EventFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
-      const EventCnt =  await dbService.count(Event,EventFilter);
+      const modelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const modelCnt =  await dbService.count(Model,modelFilter);
+
+      const materialFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const materialCnt =  await dbService.count(Material,materialFilter);
+
+      const blockstateFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const blockstateCnt =  await dbService.count(Blockstate,blockstateFilter);
+
+      const planetFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const planetCnt =  await dbService.count(Planet,planetFilter);
+
+      const clusterFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const clusterCnt =  await dbService.count(Cluster,clusterFilter);
+
+      const chunkFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const chunkCnt =  await dbService.count(Chunk,chunkFilter);
+
+      const universeFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const universeCnt =  await dbService.count(Universe,universeFilter);
 
       const userFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const userCnt =  await dbService.count(User,userFilter);
@@ -578,16 +590,16 @@ const countUser = async (filter) =>{
       const userRoleCnt =  await dbService.count(UserRole,userRoleFilter);
 
       let response = {
-        wallpaper : wallpaperCnt,
-        humanAperance : humanAperanceCnt,
-        size : sizeCnt,
-        Pattern : PatternCnt,
-        ItemModel : ItemModelCnt,
-        Universe : UniverseCnt,
-        WorldData : WorldDataCnt,
-        Chat_message : Chat_messageCnt,
         Chat_group : Chat_groupCnt,
-        Event : EventCnt,
+        Chat_message : Chat_messageCnt,
+        item : itemCnt,
+        model : modelCnt,
+        material : materialCnt,
+        blockstate : blockstateCnt,
+        planet : planetCnt,
+        cluster : clusterCnt,
+        chunk : chunkCnt,
+        universe : universeCnt,
         user : userCnt,
         userTokens : userTokensCnt,
         role : roleCnt,
@@ -608,6 +620,15 @@ const countUserTokens = async (filter) =>{
   try {
     const userTokensCnt =  await dbService.count(UserTokens,filter);
     return { userTokens : userTokensCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countActivityLog = async (filter) =>{
+  try {
+    const activityLogCnt =  await dbService.count(ActivityLog,filter);
+    return { activityLog : activityLogCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -675,134 +696,26 @@ const countUserRole = async (filter) =>{
   }
 };
 
-const softDeleteWallpaper = async (filter,updateBody) =>{  
+const softDeleteChat_group = async (filter,updateBody) =>{  
   try {
-    const wallpaperCnt =  await dbService.updateMany(Wallpaper,filter);
-    return { wallpaper : wallpaperCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
+    let chat_group = await dbService.findMany(Chat_group,filter, { id:1 });
+    if (chat_group.length){
+      chat_group = chat_group.map((obj) => obj.id);
 
-const softDeleteHumanAperance = async (filter,updateBody) =>{  
-  try {
-    const humanAperanceCnt =  await dbService.updateMany(HumanAperance,filter);
-    return { humanAperance : humanAperanceCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
+      const Chat_messageFilter = { '$or': [{ groupId : { '$in' : chat_group } }] };
+      const Chat_messageCnt = await dbService.updateMany(Chat_message,Chat_messageFilter,updateBody);
 
-const softDeleteSize = async (filter,updateBody) =>{  
-  try {
-    let size = await dbService.findMany(Size,filter, { id:1 });
-    if (size.length){
-      size = size.map((obj) => obj.id);
-
-      const PatternFilter = { '$or': [{ sizeMax : { '$in' : size } }] };
-      const PatternCnt = await dbService.updateMany(Pattern,PatternFilter,updateBody);
-
-      const ItemModelFilter = { '$or': [{ sizeMax : { '$in' : size } }] };
-      const ItemModelCnt = await dbService.updateMany(ItemModel,ItemModelFilter,updateBody);
-
-      const UniverseFilter = { '$or': [{ sizeMax : { '$in' : size } }] };
-      const UniverseCnt = await dbService.updateMany(Universe,UniverseFilter,updateBody);
-
-      const WorldDataFilter = { '$or': [{ sizeMax : { '$in' : size } }] };
-      const WorldDataCnt = await dbService.updateMany(WorldData,WorldDataFilter,updateBody);
-      let updated = await dbService.updateMany(Size,filter,updateBody);
+      const chunkFilter = { '$or': [{ chat : { '$in' : chat_group } }] };
+      const chunkCnt = await dbService.updateMany(Chunk,chunkFilter,updateBody);
+      let updated = await dbService.updateMany(Chat_group,filter,updateBody);
 
       let response = {
-        Pattern :PatternCnt,
-        ItemModel :ItemModelCnt,
-        Universe :UniverseCnt,
-        WorldData :WorldDataCnt,
+        Chat_message :Chat_messageCnt,
+        chunk :chunkCnt,
       };
       return response;
     } else {
-      return {  size : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const softDeletePattern = async (filter,updateBody) =>{  
-  try {
-    let pattern = await dbService.findMany(Pattern,filter, { id:1 });
-    if (pattern.length){
-      pattern = pattern.map((obj) => obj.id);
-
-      const sizeFilter = { '$or': [{ Pattern : { '$in' : pattern } }] };
-      const sizeCnt = await dbService.updateMany(Size,sizeFilter,updateBody);
-
-      const ItemModelFilter = { '$or': [{ Pattern : { '$in' : pattern } }] };
-      const ItemModelCnt = await dbService.updateMany(ItemModel,ItemModelFilter,updateBody);
-
-      const UniverseFilter = { '$or': [{ pattern : { '$in' : pattern } }] };
-      const UniverseCnt = await dbService.updateMany(Universe,UniverseFilter,updateBody);
-
-      const WorldDataFilter = { '$or': [{ pattern : { '$in' : pattern } }] };
-      const WorldDataCnt = await dbService.updateMany(WorldData,WorldDataFilter,updateBody);
-      let updated = await dbService.updateMany(Pattern,filter,updateBody);
-
-      let response = {
-        size :sizeCnt,
-        ItemModel :ItemModelCnt,
-        Universe :UniverseCnt,
-        WorldData :WorldDataCnt,
-      };
-      return response;
-    } else {
-      return {  pattern : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const softDeleteItemModel = async (filter,updateBody) =>{  
-  try {
-    const ItemModelCnt =  await dbService.updateMany(ItemModel,filter);
-    return { ItemModel : ItemModelCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const softDeleteUniverse = async (filter,updateBody) =>{  
-  try {
-    const UniverseCnt =  await dbService.updateMany(Universe,filter);
-    return { Universe : UniverseCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const softDeleteWorldData = async (filter,updateBody) =>{  
-  try {
-    let worlddata = await dbService.findMany(WorldData,filter, { id:1 });
-    if (worlddata.length){
-      worlddata = worlddata.map((obj) => obj.id);
-
-      const UniverseFilter = { '$or': [{ innerDim : { '$in' : worlddata } }] };
-      const UniverseCnt = await dbService.updateMany(Universe,UniverseFilter,updateBody);
-
-      const Chat_groupFilter = { '$or': [{ location : { '$in' : worlddata } }] };
-      const Chat_groupCnt = await dbService.updateMany(Chat_group,Chat_groupFilter,updateBody);
-
-      const userFilter = { '$or': [{ location : { '$in' : worlddata } }] };
-      const userCnt = await dbService.updateMany(User,userFilter,updateBody);
-      let updated = await dbService.updateMany(WorldData,filter,updateBody);
-
-      let response = {
-        Universe :UniverseCnt,
-        Chat_group :Chat_groupCnt,
-        user :userCnt,
-      };
-      return response;
-    } else {
-      return {  worlddata : 0 };
+      return {  chat_group : 0 };
     }
   } catch (error){
     throw new Error(error.message);
@@ -818,30 +731,139 @@ const softDeleteChat_message = async (filter,updateBody) =>{
   }
 };
 
-const softDeleteChat_group = async (filter,updateBody) =>{  
+const softDeleteItem = async (filter,updateBody) =>{  
   try {
-    let chat_group = await dbService.findMany(Chat_group,filter, { id:1 });
-    if (chat_group.length){
-      chat_group = chat_group.map((obj) => obj.id);
+    const itemCnt =  await dbService.updateMany(Item,filter);
+    return { item : itemCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
 
-      const Chat_messageFilter = { '$or': [{ groupId : { '$in' : chat_group } }] };
-      const Chat_messageCnt = await dbService.updateMany(Chat_message,Chat_messageFilter,updateBody);
-      let updated = await dbService.updateMany(Chat_group,filter,updateBody);
+const softDeleteModel = async (filter,updateBody) =>{  
+  try {
+    let model = await dbService.findMany(Model,filter, { id:1 });
+    if (model.length){
+      model = model.map((obj) => obj.id);
 
-      let response = { Chat_message :Chat_messageCnt, };
+      const blockstateFilter = { '$or': [{ model : { '$in' : model } }] };
+      const blockstateCnt = await dbService.updateMany(Blockstate,blockstateFilter,updateBody);
+      let updated = await dbService.updateMany(Model,filter,updateBody);
+
+      let response = { blockstate :blockstateCnt, };
       return response;
     } else {
-      return {  chat_group : 0 };
+      return {  model : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const softDeleteEvent = async (filter,updateBody) =>{  
+const softDeleteMaterial = async (filter,updateBody) =>{  
   try {
-    const EventCnt =  await dbService.updateMany(Event,filter);
-    return { Event : EventCnt };
+    let material = await dbService.findMany(Material,filter, { id:1 });
+    if (material.length){
+      material = material.map((obj) => obj.id);
+
+      const blockstateFilter = { '$or': [{ material : { '$in' : material } }] };
+      const blockstateCnt = await dbService.updateMany(Blockstate,blockstateFilter,updateBody);
+      let updated = await dbService.updateMany(Material,filter,updateBody);
+
+      let response = { blockstate :blockstateCnt, };
+      return response;
+    } else {
+      return {  material : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteBlockstate = async (filter,updateBody) =>{  
+  try {
+    let blockstate = await dbService.findMany(Blockstate,filter, { id:1 });
+    if (blockstate.length){
+      blockstate = blockstate.map((obj) => obj.id);
+
+      const itemFilter = { '$or': [{ blockstate : { '$in' : blockstate } }] };
+      const itemCnt = await dbService.updateMany(Item,itemFilter,updateBody);
+      let updated = await dbService.updateMany(Blockstate,filter,updateBody);
+
+      let response = { item :itemCnt, };
+      return response;
+    } else {
+      return {  blockstate : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeletePlanet = async (filter,updateBody) =>{  
+  try {
+    let planet = await dbService.findMany(Planet,filter, { id:1 });
+    if (planet.length){
+      planet = planet.map((obj) => obj.id);
+
+      const clusterFilter = { '$or': [{ planet : { '$in' : planet } }] };
+      const clusterCnt = await dbService.updateMany(Cluster,clusterFilter,updateBody);
+      let updated = await dbService.updateMany(Planet,filter,updateBody);
+
+      let response = { cluster :clusterCnt, };
+      return response;
+    } else {
+      return {  planet : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteCluster = async (filter,updateBody) =>{  
+  try {
+    let cluster = await dbService.findMany(Cluster,filter, { id:1 });
+    if (cluster.length){
+      cluster = cluster.map((obj) => obj.id);
+
+      const chunkFilter = { '$or': [{ cluster : { '$in' : cluster } }] };
+      const chunkCnt = await dbService.updateMany(Chunk,chunkFilter,updateBody);
+      let updated = await dbService.updateMany(Cluster,filter,updateBody);
+
+      let response = { chunk :chunkCnt, };
+      return response;
+    } else {
+      return {  cluster : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteChunk = async (filter,updateBody) =>{  
+  try {
+    const chunkCnt =  await dbService.updateMany(Chunk,filter);
+    return { chunk : chunkCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteUniverse = async (filter,updateBody) =>{  
+  try {
+    let universe = await dbService.findMany(Universe,filter, { id:1 });
+    if (universe.length){
+      universe = universe.map((obj) => obj.id);
+
+      const planetFilter = { '$or': [{ universe : { '$in' : universe } }] };
+      const planetCnt = await dbService.updateMany(Planet,planetFilter,updateBody);
+      let updated = await dbService.updateMany(Universe,filter,updateBody);
+
+      let response = { planet :planetCnt, };
+      return response;
+    } else {
+      return {  universe : 0 };
+    }
   } catch (error){
     throw new Error(error.message);
   }
@@ -853,35 +875,35 @@ const softDeleteUser = async (filter,updateBody) =>{
     if (user.length){
       user = user.map((obj) => obj.id);
 
-      const wallpaperFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const wallpaperCnt = await dbService.updateMany(Wallpaper,wallpaperFilter,updateBody);
-
-      const humanAperanceFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const humanAperanceCnt = await dbService.updateMany(HumanAperance,humanAperanceFilter,updateBody);
-
-      const sizeFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const sizeCnt = await dbService.updateMany(Size,sizeFilter,updateBody);
-
-      const PatternFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const PatternCnt = await dbService.updateMany(Pattern,PatternFilter,updateBody);
-
-      const ItemModelFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const ItemModelCnt = await dbService.updateMany(ItemModel,ItemModelFilter,updateBody);
-
-      const UniverseFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const UniverseCnt = await dbService.updateMany(Universe,UniverseFilter,updateBody);
-
-      const WorldDataFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const WorldDataCnt = await dbService.updateMany(WorldData,WorldDataFilter,updateBody);
+      const Chat_groupFilter = { '$or': [{ updatedBy : { '$in' : user } },{ addedBy : { '$in' : user } }] };
+      const Chat_groupCnt = await dbService.updateMany(Chat_group,Chat_groupFilter,updateBody);
 
       const Chat_messageFilter = { '$or': [{ updatedBy : { '$in' : user } },{ addedBy : { '$in' : user } }] };
       const Chat_messageCnt = await dbService.updateMany(Chat_message,Chat_messageFilter,updateBody);
 
-      const Chat_groupFilter = { '$or': [{ updatedBy : { '$in' : user } },{ addedBy : { '$in' : user } }] };
-      const Chat_groupCnt = await dbService.updateMany(Chat_group,Chat_groupFilter,updateBody);
+      const itemFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const itemCnt = await dbService.updateMany(Item,itemFilter,updateBody);
 
-      const EventFilter = { '$or': [{ updatedBy : { '$in' : user } },{ addedBy : { '$in' : user } }] };
-      const EventCnt = await dbService.updateMany(Event,EventFilter,updateBody);
+      const modelFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const modelCnt = await dbService.updateMany(Model,modelFilter,updateBody);
+
+      const materialFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const materialCnt = await dbService.updateMany(Material,materialFilter,updateBody);
+
+      const blockstateFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const blockstateCnt = await dbService.updateMany(Blockstate,blockstateFilter,updateBody);
+
+      const planetFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const planetCnt = await dbService.updateMany(Planet,planetFilter,updateBody);
+
+      const clusterFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const clusterCnt = await dbService.updateMany(Cluster,clusterFilter,updateBody);
+
+      const chunkFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const chunkCnt = await dbService.updateMany(Chunk,chunkFilter,updateBody);
+
+      const universeFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const universeCnt = await dbService.updateMany(Universe,universeFilter,updateBody);
 
       const userFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
       const userCnt = await dbService.updateMany(User,userFilter,updateBody);
@@ -903,16 +925,16 @@ const softDeleteUser = async (filter,updateBody) =>{
       let updated = await dbService.updateMany(User,filter,updateBody);
 
       let response = {
-        wallpaper :wallpaperCnt,
-        humanAperance :humanAperanceCnt,
-        size :sizeCnt,
-        Pattern :PatternCnt,
-        ItemModel :ItemModelCnt,
-        Universe :UniverseCnt,
-        WorldData :WorldDataCnt,
-        Chat_message :Chat_messageCnt,
         Chat_group :Chat_groupCnt,
-        Event :EventCnt,
+        Chat_message :Chat_messageCnt,
+        item :itemCnt,
+        model :modelCnt,
+        material :materialCnt,
+        blockstate :blockstateCnt,
+        planet :planetCnt,
+        cluster :clusterCnt,
+        chunk :chunkCnt,
+        universe :universeCnt,
         user :userCnt + updated,
         userTokens :userTokensCnt,
         role :roleCnt,
@@ -933,6 +955,15 @@ const softDeleteUserTokens = async (filter,updateBody) =>{
   try {
     const userTokensCnt =  await dbService.updateMany(UserTokens,filter);
     return { userTokens : userTokensCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteActivityLog = async (filter,updateBody) =>{  
+  try {
+    const activityLogCnt =  await dbService.updateMany(ActivityLog,filter);
+    return { activityLog : activityLogCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -1003,50 +1034,53 @@ const softDeleteUserRole = async (filter,updateBody) =>{
 };
 
 module.exports = {
-  deleteWallpaper,
-  deleteHumanAperance,
-  deleteSize,
-  deletePattern,
-  deleteItemModel,
-  deleteUniverse,
-  deleteWorldData,
-  deleteChat_message,
   deleteChat_group,
-  deleteEvent,
+  deleteChat_message,
+  deleteItem,
+  deleteModel,
+  deleteMaterial,
+  deleteBlockstate,
+  deletePlanet,
+  deleteCluster,
+  deleteChunk,
+  deleteUniverse,
   deleteUser,
   deleteUserTokens,
+  deleteActivityLog,
   deleteRole,
   deleteProjectRoute,
   deleteRouteRole,
   deleteUserRole,
-  countWallpaper,
-  countHumanAperance,
-  countSize,
-  countPattern,
-  countItemModel,
-  countUniverse,
-  countWorldData,
-  countChat_message,
   countChat_group,
-  countEvent,
+  countChat_message,
+  countItem,
+  countModel,
+  countMaterial,
+  countBlockstate,
+  countPlanet,
+  countCluster,
+  countChunk,
+  countUniverse,
   countUser,
   countUserTokens,
+  countActivityLog,
   countRole,
   countProjectRoute,
   countRouteRole,
   countUserRole,
-  softDeleteWallpaper,
-  softDeleteHumanAperance,
-  softDeleteSize,
-  softDeletePattern,
-  softDeleteItemModel,
-  softDeleteUniverse,
-  softDeleteWorldData,
-  softDeleteChat_message,
   softDeleteChat_group,
-  softDeleteEvent,
+  softDeleteChat_message,
+  softDeleteItem,
+  softDeleteModel,
+  softDeleteMaterial,
+  softDeleteBlockstate,
+  softDeletePlanet,
+  softDeleteCluster,
+  softDeleteChunk,
+  softDeleteUniverse,
   softDeleteUser,
   softDeleteUserTokens,
+  softDeleteActivityLog,
   softDeleteRole,
   softDeleteProjectRoute,
   softDeleteRouteRole,
