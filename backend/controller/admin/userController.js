@@ -9,6 +9,9 @@ const validation = require('../../utils/validateRequest');
 const dbService = require('../../utils/dbService');
 const ObjectId = require('mongodb').ObjectId;
 const auth = require('../../services/auth');
+const authConstant = require('../../constants/authConstant');
+const role = require('../../model/role');
+const userRole = require('../../model/userRole');
 const deleteDependentService = require('../../utils/deleteDependent');
 const utils = require('../../utils/common');
 
@@ -53,6 +56,15 @@ const addUser = async (req, res) => {
     dataToCreate.addedBy = req.user.id;
     dataToCreate = new User(dataToCreate);
     let createdUser = await dbService.create(User,dataToCreate);
+    if (createdUser && createdUser.id){
+      let defaultRole = await dbService.findOne(role,{ name:authConstant.DEFAULT_USER_ROLE });
+      if (defaultRole && defaultRole.id){
+        await dbService.create(userRole,{
+          userId:createdUser.id,
+          roleId:defaultRole.id
+        });
+      }
+    }
     return res.success({ data : createdUser });
   } catch (error) {
     return res.internalServerError({ message:error.message }); 
@@ -78,6 +90,20 @@ const bulkInsertUser = async (req,res)=>{
       };
     }
     let createdUsers = await dbService.create(User,dataToCreate);
+    if (createdUsers && createdUsers.length){
+      let defaultRole = await dbService.findMany(role, { name: authConstant.DEFAULT_USER_ROLE });
+      let userRoleData = createdUsers.map(r=> {
+        if (r.id){
+          return {
+            roleId: defaultRole.id,
+            userId: r.id,
+          };
+        }
+      });
+      if (userRoleData.length) {
+        await dbService.create(userRole, userRoleData);
+      }
+    }
     createdUsers = { count: createdUsers ? createdUsers.length : 0 };
     return res.success({ data:{ count:createdUsers.count || 0 } });
   } catch (error){

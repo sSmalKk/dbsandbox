@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Game from "components/Game";
 import { Helmet } from "react-helmet";
 import { Button, Input } from "../../components";
+import Modal from "react-modal";
 import "tailwindcss/tailwind.css"; // Ensure Tailwind CSS is imported
 
 type UniverseSettings = {

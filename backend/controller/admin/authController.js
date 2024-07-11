@@ -6,6 +6,8 @@
 const User = require('../../model/user');
 const dbService = require('../../utils/dbService');
 const userTokens = require('../../model/userTokens');
+const role = require('../../model/role');
+const userRole = require('../../model/userRole');
 const dayjs = require('dayjs');
 const userSchemaKey = require('../../utils/validation/userValidation');
 const validation = require('../../utils/validateRequest');
@@ -44,6 +46,15 @@ const register = async (req,res) =>{
     }
 
     const result = await dbService.create(User,data);
+    if (result && result.id){
+      let defaultRole = await dbService.findOne(role,{ name:authConstant.DEFAULT_USER_ROLE });
+      if (defaultRole && defaultRole.id){
+        await dbService.create(userRole,{
+          userId:result.id,
+          roleId:defaultRole.id
+        });
+      }
+    }
     if (isEmptyPassword && req.body.email){
       await authService.sendPasswordByEmail({
         email: req.body.email,
