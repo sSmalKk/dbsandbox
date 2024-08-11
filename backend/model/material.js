@@ -1,6 +1,6 @@
 /**
- * material.js
- * @description :: model of a database collection material
+ * Material.js
+ * @description :: model of a database collection Material
  */
 
 const mongoose = require('mongoose');
@@ -22,40 +22,29 @@ const Schema = mongoose.Schema;
 const schema = new Schema(
   {
 
+    name:{ type:String },
+
+    description:{ type:String },
+
+    texture:[{
+      _id:false,
+      name:{ type:String },
+      color:{ type:String },
+      value:{ type:Number }
+    }],
+
     isDeleted:{ type:Boolean },
 
-    isActive:{ type:Boolean },
-
-    createdAt:{ type:Date },
-
-    updatedAt:{ type:Date },
-
-    addedBy:{
-      type:Schema.Types.ObjectId,
-      ref:'user'
-    },
-
-    updatedBy:{
-      type:Schema.Types.ObjectId,
-      ref:'user'
-    },
-
-    material:[{
+    heat:[{
       _id:false,
-      type:{ type:Number },
-      map:{ type:Array }
+      color:{ type:String },
+      innervalue:{ type:Number },
+      finalvalue:{ type:Number }
     }]
-  }
-  ,{ 
-    timestamps: { 
-      createdAt: 'createdAt', 
-      updatedAt: 'updatedAt' 
-    } 
   }
 );
 schema.pre('save', async function (next) {
   this.isDeleted = false;
-  this.isActive = true;
   next();
 });
 
@@ -64,7 +53,6 @@ schema.pre('insertMany', async function (next, docs) {
     for (let index = 0; index < docs.length; index++) {
       const element = docs[index];
       element.isDeleted = false;
-      element.isActive = true;
     }
   }
   next();
@@ -80,5 +68,5 @@ schema.method('toJSON', function () {
 });
 schema.plugin(mongoosePaginate);
 schema.plugin(idValidator);
-const material = mongoose.model('material',schema);
-module.exports = material;
+const Material = mongoose.model('Material',schema);
+module.exports = Material;

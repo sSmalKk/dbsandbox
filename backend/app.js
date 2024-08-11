@@ -22,6 +22,7 @@ const { adminPassportStrategy } = require('./config/adminPassportStrategy');
 const { devicePassportStrategy } = require('./config/devicePassportStrategy');
 const { clientPassportStrategy } = require('./config/clientPassportStrategy');
 const app = express();
+const httpServer = require('http').createServer(app);
 const corsOptions = { origin: process.env.ALLOW_ORIGIN, };
 app.use(cors(corsOptions));
 
@@ -63,7 +64,8 @@ if (process.env.NODE_ENV !== 'test' ) {
   const seeder = require('./seeders');
   const allRegisterRoutes = listEndpoints(app);
   seeder(allRegisterRoutes).then(()=>{console.log('Seeding done.');});
-  app.listen(process.env.PORT,()=>{
+  require('./services/socket/socket')(httpServer);
+  httpServer.listen(process.env.PORT,()=>{
     console.log(`your application is running on ${process.env.PORT}`);
   });
 } else {

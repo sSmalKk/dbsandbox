@@ -26,7 +26,6 @@ const addChat_group = async (req, res) => {
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
-    dataToCreate.addedBy = req.user.id;
     dataToCreate = new Chat_group(dataToCreate);
     let createdChat_group = await dbService.create(Chat_group,dataToCreate);
     return res.success({ data : createdChat_group });
@@ -47,12 +46,6 @@ const bulkInsertChat_group = async (req,res)=>{
       return res.badRequest();
     }
     let dataToCreate = [ ...req.body.data ];
-    for (let i = 0;i < dataToCreate.length;i++){
-      dataToCreate[i] = {
-        ...dataToCreate[i],
-        addedBy: req.user.id
-      };
-    }
     let createdChat_groups = await dbService.create(Chat_group,dataToCreate);
     createdChat_groups = { count: createdChat_groups ? createdChat_groups.length : 0 };
     return res.success({ data:{ count:createdChat_groups.count || 0 } });
@@ -158,10 +151,7 @@ const getChat_groupCount = async (req,res) => {
  */
 const updateChat_group = async (req,res) => {
   try {
-    let dataToUpdate = {
-      ...req.body,
-      updatedBy:req.user.id,
-    };
+    let dataToUpdate = { ...req.body, };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Chat_groupSchemaKey.updateSchemaKeys
@@ -190,12 +180,8 @@ const bulkUpdateChat_group = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
-    delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
-      dataToUpdate = { 
-        ...req.body.data,
-        updatedBy : req.user.id
-      };
+      dataToUpdate = { ...req.body.data, };
     }
     let updatedChat_group = await dbService.updateMany(Chat_group,filter,dataToUpdate);
     if (!updatedChat_group){
@@ -218,11 +204,7 @@ const partialUpdateChat_group = async (req,res) => {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    delete req.body['addedBy'];
-    let dataToUpdate = {
-      ...req.body,
-      updatedBy:req.user.id,
-    };
+    let dataToUpdate = { ...req.body, };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Chat_groupSchemaKey.updateSchemaKeys
@@ -253,10 +235,7 @@ const softDeleteChat_group = async (req,res) => {
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const updateBody = {
-      isDeleted: true,
-      updatedBy: req.user.id,
-    };
+    const updateBody = { isDeleted: true, };
     let updatedChat_group = await deleteDependentService.softDeleteChat_group(query, updateBody);
     if (!updatedChat_group){
       return res.recordNotFound();
@@ -337,10 +316,7 @@ const softDeleteManyChat_group = async (req,res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const updateBody = {
-      isDeleted: true,
-      updatedBy: req.user.id,
-    };
+    const updateBody = { isDeleted: true, };
     let updatedChat_group = await deleteDependentService.softDeleteChat_group(query, updateBody);
     if (!updatedChat_group) {
       return res.recordNotFound();

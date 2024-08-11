@@ -1,6 +1,6 @@
 /**
- * universe.js
- * @description :: model of a database collection universe
+ * Universe.js
+ * @description :: model of a database collection Universe
  */
 
 const mongoose = require('mongoose');
@@ -24,37 +24,29 @@ const schema = new Schema(
 
     isDeleted:{ type:Boolean },
 
-    isActive:{
+    tick:{ type:Number },
+
+    name:{ type:String },
+
+    date:{ type:Date },
+
+    data:{ type:Array },
+
+    running:{
       type:Boolean,
-      default:true
+      default:false
     },
 
-    createdAt:{ type:Date },
-
-    updatedAt:{ type:Date },
-
-    addedBy:{
-      type:Schema.Types.ObjectId,
-      ref:'user'
+    created:{
+      type:Boolean,
+      default:false
     },
 
-    updatedBy:{
-      type:Schema.Types.ObjectId,
-      ref:'user'
-    },
-
-    name:{ type:String }
-  }
-  ,{ 
-    timestamps: { 
-      createdAt: 'createdAt', 
-      updatedAt: 'updatedAt' 
-    } 
+    seed:{ type:String }
   }
 );
 schema.pre('save', async function (next) {
   this.isDeleted = false;
-  this.isActive = true;
   next();
 });
 
@@ -63,7 +55,6 @@ schema.pre('insertMany', async function (next, docs) {
     for (let index = 0; index < docs.length; index++) {
       const element = docs[index];
       element.isDeleted = false;
-      element.isActive = true;
     }
   }
   next();
@@ -79,5 +70,5 @@ schema.method('toJSON', function () {
 });
 schema.plugin(mongoosePaginate);
 schema.plugin(idValidator);
-const universe = mongoose.model('universe',schema);
-module.exports = universe;
+const Universe = mongoose.model('Universe',schema);
+module.exports = Universe;

@@ -1,10 +1,10 @@
 /**
- * materialController.js
- * @description : exports action methods for material.
+ * MaterialController.js
+ * @description : exports action methods for Material.
  */
 
-const Material = require('../../model/material');
-const materialSchemaKey = require('../../utils/validation/materialValidation');
+const Material = require('../../model/Material');
+const MaterialSchemaKey = require('../../utils/validation/MaterialValidation');
 const validation = require('../../utils/validateRequest');
 const dbService = require('../../utils/dbService');
 const ObjectId = require('mongodb').ObjectId;
@@ -22,11 +22,10 @@ const addMaterial = async (req, res) => {
     let dataToCreate = { ...req.body || {} };
     let validateRequest = validation.validateParamsWithJoi(
       dataToCreate,
-      materialSchemaKey.schemaKeys);
+      MaterialSchemaKey.schemaKeys);
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
-    dataToCreate.addedBy = req.user.id;
     dataToCreate = new Material(dataToCreate);
     let createdMaterial = await dbService.create(Material,dataToCreate);
     return res.success({ data : createdMaterial });
@@ -47,12 +46,6 @@ const bulkInsertMaterial = async (req,res)=>{
       return res.badRequest();
     }
     let dataToCreate = [ ...req.body.data ];
-    for (let i = 0;i < dataToCreate.length;i++){
-      dataToCreate[i] = {
-        ...dataToCreate[i],
-        addedBy: req.user.id
-      };
-    }
     let createdMaterials = await dbService.create(Material,dataToCreate);
     createdMaterials = { count: createdMaterials ? createdMaterials.length : 0 };
     return res.success({ data:{ count:createdMaterials.count || 0 } });
@@ -73,7 +66,7 @@ const findAllMaterial = async (req,res) => {
     let query = {};
     let validateRequest = validation.validateFilterWithJoi(
       req.body,
-      materialSchemaKey.findFilterKeys,
+      MaterialSchemaKey.findFilterKeys,
       Material.schema.obj
     );
     if (!validateRequest.isValid) {
@@ -135,7 +128,7 @@ const getMaterialCount = async (req,res) => {
     let where = {};
     let validateRequest = validation.validateFilterWithJoi(
       req.body,
-      materialSchemaKey.findFilterKeys,
+      MaterialSchemaKey.findFilterKeys,
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message: `${validateRequest.message}` });
@@ -158,13 +151,10 @@ const getMaterialCount = async (req,res) => {
  */
 const updateMaterial = async (req,res) => {
   try {
-    let dataToUpdate = {
-      ...req.body,
-      updatedBy:req.user.id,
-    };
+    let dataToUpdate = { ...req.body, };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
-      materialSchemaKey.updateSchemaKeys
+      MaterialSchemaKey.updateSchemaKeys
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
@@ -190,12 +180,8 @@ const bulkUpdateMaterial = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
-    delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
-      dataToUpdate = { 
-        ...req.body.data,
-        updatedBy : req.user.id
-      };
+      dataToUpdate = { ...req.body.data, };
     }
     let updatedMaterial = await dbService.updateMany(Material,filter,dataToUpdate);
     if (!updatedMaterial){
@@ -218,14 +204,10 @@ const partialUpdateMaterial = async (req,res) => {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    delete req.body['addedBy'];
-    let dataToUpdate = {
-      ...req.body,
-      updatedBy:req.user.id,
-    };
+    let dataToUpdate = { ...req.body, };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
-      materialSchemaKey.updateSchemaKeys
+      MaterialSchemaKey.updateSchemaKeys
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
@@ -253,10 +235,7 @@ const softDeleteMaterial = async (req,res) => {
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const updateBody = {
-      isDeleted: true,
-      updatedBy: req.user.id,
-    };
+    const updateBody = { isDeleted: true, };
     let updatedMaterial = await deleteDependentService.softDeleteMaterial(query, updateBody);
     if (!updatedMaterial){
       return res.recordNotFound();
@@ -337,10 +316,7 @@ const softDeleteManyMaterial = async (req,res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const updateBody = {
-      isDeleted: true,
-      updatedBy: req.user.id,
-    };
+    const updateBody = { isDeleted: true, };
     let updatedMaterial = await deleteDependentService.softDeleteMaterial(query, updateBody);
     if (!updatedMaterial) {
       return res.recordNotFound();
