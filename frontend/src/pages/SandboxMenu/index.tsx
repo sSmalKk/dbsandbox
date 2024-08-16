@@ -93,6 +93,15 @@ const SandboxMenu: React.FC = () => {
   const token = localStorage.getItem("token") || process.env.JWT || "";
   const navigate = useNavigate();
 
+  // Definindo modelos customizados com nome para organização
+  const customModels = {
+    temmplatemodel: [
+      { position: [0, 0, 0.5], rotation: [0, 0, 0], render: true },   // Frente
+      { position: [0, 0, -0.5], rotation: [0, Math.PI, 0], render: true },  // Trás
+      // Adicione mais configurações de planos customizados aqui
+    ],
+    // Outros modelos podem ser adicionados aqui
+  };
   useEffect(() => {
     if (!token) {
       console.error("Token not configured");
@@ -342,6 +351,8 @@ const SandboxMenu: React.FC = () => {
         </div>
       </Modal>
       <Game
+        customModels={customModels}
+
         renderIndex={renderIndex}
         setInterfaceOpen={setInterfaceOpen}
         interfaceOpen={interfaceOpen}

@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 
 const VoxelCube = ({
@@ -12,10 +13,20 @@ const VoxelCube = ({
   hasCubeBottom,
   hasCubeFront,
   hasCubeBack,
-  hover = true, // Booleano para ativar/desativar o contorno
+  hasCubeTop,
+  hover = true,
+  customModels = [],
 }) => {
-  const modelType = renderIndex[id]?.model;
+  const modelType = renderIndex[id]?.model || 'box';
   const textureName = renderIndex[id]?.texture;
+  const rigidBodyType = renderIndex[id]?.RigidBody || "fixed";
+
+  // Definir o tipo de colisor corretamente, mapeando para as funções disponíveis
+  const rigidBodyShape = renderIndex[id]?.RigidBodyType === 'cuboid' 
+    ? 'cuboid' 
+    : renderIndex[id]?.RigidBodyType === 'sphere' 
+    ? 'ball' 
+    : 'cuboid'; // Default para 'cuboid'
 
   const material = useMemo(() => {
     const texturePath = textures[textureName];
@@ -25,56 +36,35 @@ const VoxelCube = ({
   }, [textures, textureName]);
 
   const geometry = useMemo(() => {
-    let geom;
-    switch (modelType) {
-      case 'box':
-        geom = new THREE.BufferGeometry();
-        const vertices = new Float32Array([
-          0, 0, 0,
-          1, 0, 0,
-          1, 1, 0,
-          0, 1, 0,
-          0, 1, 1,
-          1, 1, 1,
-          1, 0, 1,
-          0, 0, 1,
-        ]);
+    let geomArray = [];
 
-        const indices = [
-          0, 1, 2, 0, 2, 3, // Frente
-          4, 5, 6, 4, 6, 7, // Trás
-          2, 1, 5, 2, 5, 4, // Topo
-          3, 2, 4, 3, 4, 7, // Fundo
-          0, 3, 7, 0, 7, 6, // Esquerda
-          1, 0, 6, 1, 6, 5  // Direita
-        ];
-
-        geom.setIndex(indices);
-        geom.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-        geom.computeVertexNormals();
-        break;
-
-      case 'globe':
-        geom = new THREE.SphereGeometry(0.5, 32, 32);
-        break;
-
-      case 'stairs':
-        geom = new THREE.BoxGeometry(1, 1, 1);
-        break;
-
-      default:
-        geom = new THREE.BoxGeometry(1, 1, 1);
-        break;
+    if (modelType === 'box') {
+      geomArray = [
+        { geometry: new THREE.PlaneGeometry(1, 1), position: [0, 0, 0.5], rotation: [0, 0, 0], render: !hasCubeFront },
+        { geometry: new THREE.PlaneGeometry(1, 1), position: [0, 0, -0.5], rotation: [0, Math.PI, 0], render: !hasCubeBack },
+        { geometry: new THREE.PlaneGeometry(1, 1), position: [0, 0.5, 0], rotation: [-Math.PI / 2, 0, 0], render: !hasCubeTop },
+        { geometry: new THREE.PlaneGeometry(1, 1), position: [0, -0.5, 0], rotation: [Math.PI / 2, 0, 0], render: !hasCubeBottom },
+        { geometry: new THREE.PlaneGeometry(1, 1), position: [0.5, 0, 0], rotation: [0, Math.PI / 2, 0], render: !hasCubeRight },
+        { geometry: new THREE.PlaneGeometry(1, 1), position: [-0.5, 0, 0], rotation: [0, -Math.PI / 2, 0], render: !hasCubeLeft }
+      ];
+    } else if (modelType === 'globe') {
+      geomArray = [
+        { geometry: new THREE.SphereGeometry(0.5, 32, 32), position: [0, 0, 0], rotation: [0, 0, 0], render: true },
+      ];
+    } else if (customModels[modelType]) {
+      geomArray = customModels[modelType].map((config) => ({
+        geometry: new THREE.PlaneGeometry(1, 1),
+        position: config.position,
+        rotation: config.rotation,
+        render: config.render
+      }));
     }
-    return geom;
-  }, [modelType]);
 
-  // Movendo o bloco voxel (modelo de cubo) para -5 em todas as direções
-  const adjustedPosition = modelType === 'box' 
-    ? [position[0] - 5, position[1] - 5, position[2] - 5] 
-    : position;
+    return geomArray;
+  }, [modelType, hasCubeFront, hasCubeBack, hasCubeTop, hasCubeBottom, hasCubeRight, hasCubeLeft, customModels]);
 
-  // Linhas estáticas ao redor do voxel (contorno do cubo)
+  const adjustedPosition = position;
+
   const staticEdges = useMemo(() => {
     const edgeGeom = new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1, 1));
     return (
@@ -86,8 +76,20 @@ const VoxelCube = ({
 
   return (
     <group scale={clusterWidth} position={adjustedPosition}>
-      <mesh geometry={geometry} material={material} />
-      {hover && staticEdges} {/* Mostrar o contorno apenas se hover for verdadeiro */}
+      <RigidBody type={rigidBodyType} colliders={rigidBodyShape}>
+        {geometry.map(({ geometry, position, rotation, render }, index) =>
+          render ? (
+            <mesh
+              key={index}
+              geometry={geometry}
+              material={material}
+              position={position}
+              rotation={rotation}
+            />
+          ) : null
+        )}
+        {hover && staticEdges} {/* Mostrar o contorno apenas se hover for verdadeiro */}
+      </RigidBody>
     </group>
   );
 };

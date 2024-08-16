@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Game from "components/Game";
 import { Helmet } from "react-helmet";
 import { Button } from "../../components"; // Importei apenas o Button para o exemplo
+import { RigidBodyContext } from "@react-three/rapier/dist/declarations/src/RigidBody";
 
 type UniverseData = {
   name: string;
@@ -29,12 +30,27 @@ function SandboxSurvival() {
     layers: 1,
     actlayers: 1,
   });
+
+  // Definindo o renderIndex para diferentes tipos de blocos
   const renderIndex = {
-    0: { texture: 'stone', model: 'box' }, // Bloco voxel
-    1: { texture: 'wood', model: 'globe' }, // Globo
-    2: { texture: 'brick', model: 'stairs' }, // Forma personalizada (escada para teste)
+    0: { texture: 'stone', model: 'box', RigidBody: "fixed", RigidBodyType: "cuboid" }, // Bloco voxel padrão
+    1: { texture: 'wood', model: 'globe', RigidBody: "fixed", RigidBodyType: "cuboid" }, // Globo
+    2: { texture: 'brick', model: 'stairs', RigidBody: "fixed", RigidBodyType: "sphere" }, // Forma personalizada (escada para teste)
   };
   
+  const customModels = {
+    stairs: [
+      { position: [0, 0, 0.5], rotation: [0, 0, 0], render: true },   // Frente
+      { position: [0, 0, 0], rotation: [-Math.PI / 2, 0, 0], render: true },  // Trás
+      // Adicione mais configurações de planos customizados aqui
+    ],
+    customModelName: [
+      { position: [0, 0, 0.5], rotation: [0, 0, 0], render: true },   // Exemplo para um modelo customizado
+      // Adicione as configurações do modelo customizado aqui
+    ],
+  };
+  
+
   const setlayer = (increase: boolean) => {
     setUniverseData((prevData) => {
       let newActLayers = prevData.actlayers;
@@ -75,22 +91,19 @@ function SandboxSurvival() {
   const startTimeRef = useRef<Date | null>(null);
 
   const textures = {
-    stone: 'D:/GameDev/dbsandbox/frontend/src/assets/textures/cubes/stone.png',
-    wood: 'D:/GameDev/dbsandbox/frontend/src/assets/textures/cubes/wood.png',
-    brick: 'D:/GameDev/dbsandbox/frontend/src/assets/textures/stairs/brick.png',
+    stone: '/assets/textures/cubes/stone.png',
+    wood: '/assets/textures/cubes/wood.png',
+    brick: '/assets/textures/cubes/stone.png',
   };
 
   const chunks = [
     {
       position: [1, 0, 0],
       cubesArray: [
-        [1, 0, 0, 1, {
-          position: [1, 0, 0],
-          cubesArray: [
-            [5, 0, 0, 0, 0],
-          ],
-        }],
-        [2, 0, 0, 3, 0],
+        [0, 0, 0, 2],
+        [1, 0, 0, 0],
+        [2, 0, 0, 0],
+        [3, 0, 0, 0],
       ],
     },
   ];
@@ -158,7 +171,6 @@ function SandboxSurvival() {
     return () => clearInterval(intervalId);
   }, [token, navigate, universeData.hastime, universeData.expansionRate, universeData.layers]);
 
-
   const handleCloseInterface = () => {
     setInterfaceOpen(false);
     // Lógica para reativar o bloqueio do mouse, se necessário
@@ -198,8 +210,8 @@ function SandboxSurvival() {
       </div>
 
       <Game
-          renderIndex={renderIndex}
-
+        renderIndex={renderIndex}
+        customModels={customModels}
         setInterfaceOpen={setInterfaceOpen}
         interfaceOpen={interfaceOpen}
         textures={textures}

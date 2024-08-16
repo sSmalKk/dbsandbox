@@ -14,10 +14,10 @@ const useStore = create((set) => ({
   chunkPosition: [0, 0, 0],
   setChunkPosition: (newPosition) => set({ chunkPosition: newPosition }),
   canPlayerFly: true,
-  flying: true,
+  flying: false,
 }));
 
-export default function Game({ renderIndex, setInterfaceOpen, interfaceOpen, canPlayerFly, textures, chunks, renderDistance = 10, gravity = [0, -5, 0], pointLightPosition = [100, 100, 100], initialPlayerPosition = [0, 10, 0], isMouseLocked }) {
+export default function Game({ customModels, renderIndex, setInterfaceOpen, interfaceOpen, canPlayerFly, textures, chunks, renderDistance = 10, gravity = [0, -9, 0], pointLightPosition = [100, 100, 100], initialPlayerPosition = [0, 10, 0], isMouseLocked }) {
   const [fps, setFps] = useState(0);
   const tickRef = useRef(0);
 
@@ -56,12 +56,13 @@ export default function Game({ renderIndex, setInterfaceOpen, interfaceOpen, can
         <Canvas shadows camera={{ fov: 45 }} style={{ position: 'fixed', zIndex: 0 }} className="top-0 bottom-0 w-full h-full">
           <Sky sunPosition={[100, 20, 100]} />
           <ambientLight intensity={10} />
+
           <pointLight castShadow intensity={1} position={pointLightPosition} />
           <Physics gravity={gravity}>
-            <Player interfaceOpen={interfaceOpen} setInterfaceOpen={setInterfaceOpen} setFlying={setFlying} canPlayerFly={canPlayerFly} gravity={gravity} setChunkPosition={setChunkPosition} initialPosition={initialPlayerPosition} flying={flying} />
+            <Player interfaceOpen={interfaceOpen} setInterfaceOpen={setInterfaceOpen} canPlayerFly={canPlayerFly} gravity={gravity} setChunkPosition={setChunkPosition} initialPosition={initialPlayerPosition} flying={flying} />
             <PlayerModel position={[0, 5, 0]} />
-            <VoxelTerrain           renderIndex={renderIndex}
- fullrender={true} chunks={chunks} textures={textures} clusterWidth={1} renderDistance={renderDistance} />
+            <VoxelTerrain customModels={customModels} renderIndex={renderIndex}
+              fullrender={true} chunks={chunks} textures={textures} clusterWidth={1} renderDistance={renderDistance} />
           </Physics>
           {!interfaceOpen && (<PointerLockControls enabled={isMouseLocked} />)}
         </Canvas>

@@ -11,7 +11,7 @@ import Loading from "pages/Loading";
 import ItemCreator from "pages/ItemCreator";
 import Post from "pages/Post";
 import SandboxSurvival from "pages/SandboxSurvival";
-import SandboxAdmin from "pages/SandboxAdmin";
+import SandboxCreator from "pages/SandboxCreator";
 
 const ProjectRoutes = () => {
   let element = useRoutes([
@@ -29,8 +29,8 @@ const ProjectRoutes = () => {
       path: "/sandboxsurvival", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
       element: <SandboxSurvival />,
     }, {
-      path: "/sandboxadmin", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
-      element: <SandboxAdmin />,
+      path: "/sandboxcreator", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
+      element: <SandboxCreator />,
     }, {
       path: "/inventario", //modelo de inventario, vai de base logo logo
       element: <Inventario />,

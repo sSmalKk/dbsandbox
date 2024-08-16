@@ -2,14 +2,14 @@ import React from 'react';
 import Chunk from './Chunk';
 import { VoxelCube } from './VoxelCube';
 
-const VoxelTerrain = ({          renderIndex,  chunks = [], textures, clusterWidth, fullrender }) => {
+const VoxelTerrain = ({ customModels, renderIndex, chunks = [], textures, clusterWidth, fullrender }) => {
   console.log('VoxelTerrain props:', { chunks, textures, clusterWidth });
-
   return (
     <group>
       {fullrender ? (
         chunks.map((chunk, index) => (
           <Chunk
+          customModels={customModels}
           renderIndex={renderIndex}
 
             key={index}
@@ -22,13 +22,14 @@ const VoxelTerrain = ({          renderIndex,  chunks = [], textures, clusterWid
       ) : (
         chunks.map((chunk, index) => (
           <VoxelCube
-          renderIndex={renderIndex}
+            customModels={customModels}
+            renderIndex={renderIndex}
 
             key={index}
             position={chunk.position}
             cubesArray={chunk.cubesArray}
             textures={textures}
-            clusterWidth={clusterWidth*10}
+            clusterWidth={clusterWidth * 10}
           />
         ))
       )}
