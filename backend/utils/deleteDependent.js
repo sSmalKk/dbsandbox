@@ -3,16 +3,12 @@
  * @description :: exports deleteDependent service for project.
  */
 
-let Voxel = require('../model/Voxel');
-let Universe = require('../model/Universe');
-let Tick = require('../model/Tick');
-let Texture = require('../model/texture');
-let Size = require('../model/Size');
-let Part = require('../model/Part');
-let Material = require('../model/Material');
-let Itens = require('../model/Itens');
-let Biome = require('../model/Biome');
-let Action = require('../model/Action');
+let Friendship = require('../model/friendship');
+let Lobby = require('../model/lobby');
+let Model = require('../model/Model');
+let Item = require('../model/Item');
+let Room = require('../model/Room');
+let Roomtemplate = require('../model/roomtemplate');
 let Chat_group = require('../model/Chat_group');
 let Chat_message = require('../model/Chat_message');
 let User = require('../model/user');
@@ -24,56 +20,29 @@ let RouteRole = require('../model/routeRole');
 let UserRole = require('../model/userRole');
 let dbService = require('.//dbService');
 
-const deleteVoxel = async (filter) =>{
+const deleteFriendship = async (filter) =>{
   try {
-    let voxel = await dbService.findMany(Voxel,filter);
-    if (voxel && voxel.length){
-      voxel = voxel.map((obj) => obj.id);
-
-      const VoxelFilter = { $or: [{ parent : { $in : voxel } }] };
-      const VoxelCnt = await dbService.deleteMany(Voxel,VoxelFilter);
-
-      const TickFilter = { $or: [{ voxel : { $in : voxel } }] };
-      const TickCnt = await dbService.deleteMany(Tick,TickFilter);
-
-      let deleted  = await dbService.deleteMany(Voxel,filter);
-      let response = {
-        Voxel :VoxelCnt,
-        Tick :TickCnt,
-      };
-      return response; 
-    } else {
-      return {  voxel : 0 };
-    }
-
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deleteUniverse = async (filter) =>{
-  try {
-    let response  = await dbService.deleteMany(Universe,filter);
+    let response  = await dbService.deleteMany(Friendship,filter);
     return response;
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const deleteTick = async (filter) =>{
+const deleteLobby = async (filter) =>{
   try {
-    let tick = await dbService.findMany(Tick,filter);
-    if (tick && tick.length){
-      tick = tick.map((obj) => obj.id);
+    let lobby = await dbService.findMany(Lobby,filter);
+    if (lobby && lobby.length){
+      lobby = lobby.map((obj) => obj.id);
 
-      const TickFilter = { $or: [{ tickmain : { $in : tick } }] };
-      const TickCnt = await dbService.deleteMany(Tick,TickFilter);
+      const userFilter = { $or: [{ mainlobby : { $in : lobby } }] };
+      const userCnt = await dbService.deleteMany(User,userFilter);
 
-      let deleted  = await dbService.deleteMany(Tick,filter);
-      let response = { Tick :TickCnt, };
+      let deleted  = await dbService.deleteMany(Lobby,filter);
+      let response = { user :userCnt, };
       return response; 
     } else {
-      return {  tick : 0 };
+      return {  lobby : 0 };
     }
 
   } catch (error){
@@ -81,123 +50,48 @@ const deleteTick = async (filter) =>{
   }
 };
 
-const deleteTexture = async (filter) =>{
+const deleteModel = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Texture,filter);
+    let model = await dbService.findMany(Model,filter);
+    if (model && model.length){
+      model = model.map((obj) => obj.id);
+
+      const ItemFilter = { $or: [{ Model : { $in : model } }] };
+      const ItemCnt = await dbService.deleteMany(Item,ItemFilter);
+
+      let deleted  = await dbService.deleteMany(Model,filter);
+      let response = { Item :ItemCnt, };
+      return response; 
+    } else {
+      return {  model : 0 };
+    }
+
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteItem = async (filter) =>{
+  try {
+    let response  = await dbService.deleteMany(Item,filter);
     return response;
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const deleteSize = async (filter) =>{
+const deleteRoom = async (filter) =>{
   try {
-    let size = await dbService.findMany(Size,filter);
-    if (size && size.length){
-      size = size.map((obj) => obj.id);
-
-      const VoxelFilter = { $or: [{ size : { $in : size } }] };
-      const VoxelCnt = await dbService.deleteMany(Voxel,VoxelFilter);
-
-      let deleted  = await dbService.deleteMany(Size,filter);
-      let response = { Voxel :VoxelCnt, };
-      return response; 
-    } else {
-      return {  size : 0 };
-    }
-
+    let response  = await dbService.deleteMany(Room,filter);
+    return response;
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const deletePart = async (filter) =>{
+const deleteRoomtemplate = async (filter) =>{
   try {
-    let part = await dbService.findMany(Part,filter);
-    if (part && part.length){
-      part = part.map((obj) => obj.id);
-
-      const ItensFilter = { $or: [{ model : { $in : part } }] };
-      const ItensCnt = await dbService.deleteMany(Itens,ItensFilter);
-
-      let deleted  = await dbService.deleteMany(Part,filter);
-      let response = { Itens :ItensCnt, };
-      return response; 
-    } else {
-      return {  part : 0 };
-    }
-
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deleteMaterial = async (filter) =>{
-  try {
-    let material = await dbService.findMany(Material,filter);
-    if (material && material.length){
-      material = material.map((obj) => obj.id);
-
-      const ItensFilter = { $or: [{ material : { $in : material } }] };
-      const ItensCnt = await dbService.deleteMany(Itens,ItensFilter);
-
-      let deleted  = await dbService.deleteMany(Material,filter);
-      let response = { Itens :ItensCnt, };
-      return response; 
-    } else {
-      return {  material : 0 };
-    }
-
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deleteItens = async (filter) =>{
-  try {
-    let itens = await dbService.findMany(Itens,filter);
-    if (itens && itens.length){
-      itens = itens.map((obj) => obj.id);
-
-      const VoxelFilter = { $or: [{ item : { $in : itens } }] };
-      const VoxelCnt = await dbService.deleteMany(Voxel,VoxelFilter);
-
-      let deleted  = await dbService.deleteMany(Itens,filter);
-      let response = { Voxel :VoxelCnt, };
-      return response; 
-    } else {
-      return {  itens : 0 };
-    }
-
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deleteBiome = async (filter) =>{
-  try {
-    let biome = await dbService.findMany(Biome,filter);
-    if (biome && biome.length){
-      biome = biome.map((obj) => obj.id);
-
-      const VoxelFilter = { $or: [{ biome : { $in : biome } }] };
-      const VoxelCnt = await dbService.deleteMany(Voxel,VoxelFilter);
-
-      let deleted  = await dbService.deleteMany(Biome,filter);
-      let response = { Voxel :VoxelCnt, };
-      return response; 
-    } else {
-      return {  biome : 0 };
-    }
-
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deleteAction = async (filter) =>{
-  try {
-    let response  = await dbService.deleteMany(Action,filter);
+    let response  = await dbService.deleteMany(Roomtemplate,filter);
     return response;
   } catch (error){
     throw new Error(error.message);
@@ -210,11 +104,21 @@ const deleteChat_group = async (filter) =>{
     if (chat_group && chat_group.length){
       chat_group = chat_group.map((obj) => obj.id);
 
+      const lobbyFilter = { $or: [{ chat : { $in : chat_group } }] };
+      const lobbyCnt = await dbService.deleteMany(Lobby,lobbyFilter);
+
+      const RoomFilter = { $or: [{ chat : { $in : chat_group } }] };
+      const RoomCnt = await dbService.deleteMany(Room,RoomFilter);
+
       const Chat_messageFilter = { $or: [{ groupId : { $in : chat_group } }] };
       const Chat_messageCnt = await dbService.deleteMany(Chat_message,Chat_messageFilter);
 
       let deleted  = await dbService.deleteMany(Chat_group,filter);
-      let response = { Chat_message :Chat_messageCnt, };
+      let response = {
+        lobby :lobbyCnt,
+        Room :RoomCnt,
+        Chat_message :Chat_messageCnt,
+      };
       return response; 
     } else {
       return {  chat_group : 0 };
@@ -239,6 +143,21 @@ const deleteUser = async (filter) =>{
     let user = await dbService.findMany(User,filter);
     if (user && user.length){
       user = user.map((obj) => obj.id);
+
+      const friendshipFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const friendshipCnt = await dbService.deleteMany(Friendship,friendshipFilter);
+
+      const lobbyFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const lobbyCnt = await dbService.deleteMany(Lobby,lobbyFilter);
+
+      const ModelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const ModelCnt = await dbService.deleteMany(Model,ModelFilter);
+
+      const ItemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const ItemCnt = await dbService.deleteMany(Item,ItemFilter);
+
+      const RoomFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const RoomCnt = await dbService.deleteMany(Room,RoomFilter);
 
       const Chat_groupFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
       const Chat_groupCnt = await dbService.deleteMany(Chat_group,Chat_groupFilter);
@@ -266,6 +185,11 @@ const deleteUser = async (filter) =>{
 
       let deleted  = await dbService.deleteMany(User,filter);
       let response = {
+        friendship :friendshipCnt,
+        lobby :lobbyCnt,
+        Model :ModelCnt,
+        Item :ItemCnt,
+        Room :RoomCnt,
         Chat_group :Chat_groupCnt,
         Chat_message :Chat_messageCnt,
         user :userCnt + deleted,
@@ -369,167 +293,75 @@ const deleteUserRole = async (filter) =>{
   }
 };
 
-const countVoxel = async (filter) =>{
+const countFriendship = async (filter) =>{
   try {
-    let voxel = await dbService.findMany(Voxel,filter);
-    if (voxel && voxel.length){
-      voxel = voxel.map((obj) => obj.id);
+    const friendshipCnt =  await dbService.count(Friendship,filter);
+    return { friendship : friendshipCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
 
-      const VoxelFilter = { $or: [{ parent : { $in : voxel } }] };
-      const VoxelCnt =  await dbService.count(Voxel,VoxelFilter);
+const countLobby = async (filter) =>{
+  try {
+    let lobby = await dbService.findMany(Lobby,filter);
+    if (lobby && lobby.length){
+      lobby = lobby.map((obj) => obj.id);
 
-      const TickFilter = { $or: [{ voxel : { $in : voxel } }] };
-      const TickCnt =  await dbService.count(Tick,TickFilter);
+      const userFilter = { $or: [{ mainlobby : { $in : lobby } }] };
+      const userCnt =  await dbService.count(User,userFilter);
 
-      let response = {
-        Voxel : VoxelCnt,
-        Tick : TickCnt,
-      };
+      let response = { user : userCnt, };
       return response; 
     } else {
-      return {  voxel : 0 };
+      return {  lobby : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const countUniverse = async (filter) =>{
+const countModel = async (filter) =>{
   try {
-    const UniverseCnt =  await dbService.count(Universe,filter);
-    return { Universe : UniverseCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
+    let model = await dbService.findMany(Model,filter);
+    if (model && model.length){
+      model = model.map((obj) => obj.id);
 
-const countTick = async (filter) =>{
-  try {
-    let tick = await dbService.findMany(Tick,filter);
-    if (tick && tick.length){
-      tick = tick.map((obj) => obj.id);
+      const ItemFilter = { $or: [{ Model : { $in : model } }] };
+      const ItemCnt =  await dbService.count(Item,ItemFilter);
 
-      const TickFilter = { $or: [{ tickmain : { $in : tick } }] };
-      const TickCnt =  await dbService.count(Tick,TickFilter);
-
-      let response = { Tick : TickCnt, };
+      let response = { Item : ItemCnt, };
       return response; 
     } else {
-      return {  tick : 0 };
+      return {  model : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const countTexture = async (filter) =>{
+const countItem = async (filter) =>{
   try {
-    const textureCnt =  await dbService.count(Texture,filter);
-    return { texture : textureCnt };
+    const ItemCnt =  await dbService.count(Item,filter);
+    return { Item : ItemCnt };
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const countSize = async (filter) =>{
+const countRoom = async (filter) =>{
   try {
-    let size = await dbService.findMany(Size,filter);
-    if (size && size.length){
-      size = size.map((obj) => obj.id);
-
-      const VoxelFilter = { $or: [{ size : { $in : size } }] };
-      const VoxelCnt =  await dbService.count(Voxel,VoxelFilter);
-
-      let response = { Voxel : VoxelCnt, };
-      return response; 
-    } else {
-      return {  size : 0 };
-    }
+    const RoomCnt =  await dbService.count(Room,filter);
+    return { Room : RoomCnt };
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const countPart = async (filter) =>{
+const countRoomtemplate = async (filter) =>{
   try {
-    let part = await dbService.findMany(Part,filter);
-    if (part && part.length){
-      part = part.map((obj) => obj.id);
-
-      const ItensFilter = { $or: [{ model : { $in : part } }] };
-      const ItensCnt =  await dbService.count(Itens,ItensFilter);
-
-      let response = { Itens : ItensCnt, };
-      return response; 
-    } else {
-      return {  part : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const countMaterial = async (filter) =>{
-  try {
-    let material = await dbService.findMany(Material,filter);
-    if (material && material.length){
-      material = material.map((obj) => obj.id);
-
-      const ItensFilter = { $or: [{ material : { $in : material } }] };
-      const ItensCnt =  await dbService.count(Itens,ItensFilter);
-
-      let response = { Itens : ItensCnt, };
-      return response; 
-    } else {
-      return {  material : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const countItens = async (filter) =>{
-  try {
-    let itens = await dbService.findMany(Itens,filter);
-    if (itens && itens.length){
-      itens = itens.map((obj) => obj.id);
-
-      const VoxelFilter = { $or: [{ item : { $in : itens } }] };
-      const VoxelCnt =  await dbService.count(Voxel,VoxelFilter);
-
-      let response = { Voxel : VoxelCnt, };
-      return response; 
-    } else {
-      return {  itens : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const countBiome = async (filter) =>{
-  try {
-    let biome = await dbService.findMany(Biome,filter);
-    if (biome && biome.length){
-      biome = biome.map((obj) => obj.id);
-
-      const VoxelFilter = { $or: [{ biome : { $in : biome } }] };
-      const VoxelCnt =  await dbService.count(Voxel,VoxelFilter);
-
-      let response = { Voxel : VoxelCnt, };
-      return response; 
-    } else {
-      return {  biome : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const countAction = async (filter) =>{
-  try {
-    const ActionCnt =  await dbService.count(Action,filter);
-    return { Action : ActionCnt };
+    const roomtemplateCnt =  await dbService.count(Roomtemplate,filter);
+    return { roomtemplate : roomtemplateCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -541,10 +373,20 @@ const countChat_group = async (filter) =>{
     if (chat_group && chat_group.length){
       chat_group = chat_group.map((obj) => obj.id);
 
+      const lobbyFilter = { $or: [{ chat : { $in : chat_group } }] };
+      const lobbyCnt =  await dbService.count(Lobby,lobbyFilter);
+
+      const RoomFilter = { $or: [{ chat : { $in : chat_group } }] };
+      const RoomCnt =  await dbService.count(Room,RoomFilter);
+
       const Chat_messageFilter = { $or: [{ groupId : { $in : chat_group } }] };
       const Chat_messageCnt =  await dbService.count(Chat_message,Chat_messageFilter);
 
-      let response = { Chat_message : Chat_messageCnt, };
+      let response = {
+        lobby : lobbyCnt,
+        Room : RoomCnt,
+        Chat_message : Chat_messageCnt,
+      };
       return response; 
     } else {
       return {  chat_group : 0 };
@@ -568,6 +410,21 @@ const countUser = async (filter) =>{
     let user = await dbService.findMany(User,filter);
     if (user && user.length){
       user = user.map((obj) => obj.id);
+
+      const friendshipFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const friendshipCnt =  await dbService.count(Friendship,friendshipFilter);
+
+      const lobbyFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const lobbyCnt =  await dbService.count(Lobby,lobbyFilter);
+
+      const ModelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const ModelCnt =  await dbService.count(Model,ModelFilter);
+
+      const ItemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const ItemCnt =  await dbService.count(Item,ItemFilter);
+
+      const RoomFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const RoomCnt =  await dbService.count(Room,RoomFilter);
 
       const Chat_groupFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
       const Chat_groupCnt =  await dbService.count(Chat_group,Chat_groupFilter);
@@ -594,6 +451,11 @@ const countUser = async (filter) =>{
       const userRoleCnt =  await dbService.count(UserRole,userRoleFilter);
 
       let response = {
+        friendship : friendshipCnt,
+        lobby : lobbyCnt,
+        Model : ModelCnt,
+        Item : ItemCnt,
+        Room : RoomCnt,
         Chat_group : Chat_groupCnt,
         Chat_message : Chat_messageCnt,
         user : userCnt,
@@ -692,174 +554,77 @@ const countUserRole = async (filter) =>{
   }
 };
 
-const softDeleteVoxel = async (filter,updateBody) =>{  
+const softDeleteFriendship = async (filter,updateBody) =>{  
   try {
-    let voxel = await dbService.findMany(Voxel,filter, { id:1 });
-    if (voxel.length){
-      voxel = voxel.map((obj) => obj.id);
+    const friendshipCnt =  await dbService.updateMany(Friendship,filter);
+    return { friendship : friendshipCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
 
-      const VoxelFilter = { '$or': [{ parent : { '$in' : voxel } }] };
-      const VoxelCnt = await dbService.updateMany(Voxel,VoxelFilter,updateBody);
+const softDeleteLobby = async (filter,updateBody) =>{  
+  try {
+    let lobby = await dbService.findMany(Lobby,filter, { id:1 });
+    if (lobby.length){
+      lobby = lobby.map((obj) => obj.id);
 
-      const TickFilter = { '$or': [{ voxel : { '$in' : voxel } }] };
-      const TickCnt = await dbService.updateMany(Tick,TickFilter,updateBody);
-      let updated = await dbService.updateMany(Voxel,filter,updateBody);
+      const userFilter = { '$or': [{ mainlobby : { '$in' : lobby } }] };
+      const userCnt = await dbService.updateMany(User,userFilter,updateBody);
+      let updated = await dbService.updateMany(Lobby,filter,updateBody);
 
-      let response = {
-        Voxel :VoxelCnt,
-        Tick :TickCnt,
-      };
+      let response = { user :userCnt, };
       return response;
     } else {
-      return {  voxel : 0 };
+      return {  lobby : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const softDeleteUniverse = async (filter,updateBody) =>{  
+const softDeleteModel = async (filter,updateBody) =>{  
   try {
-    const UniverseCnt =  await dbService.updateMany(Universe,filter);
-    return { Universe : UniverseCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
+    let model = await dbService.findMany(Model,filter, { id:1 });
+    if (model.length){
+      model = model.map((obj) => obj.id);
 
-const softDeleteTick = async (filter,updateBody) =>{  
-  try {
-    let tick = await dbService.findMany(Tick,filter, { id:1 });
-    if (tick.length){
-      tick = tick.map((obj) => obj.id);
+      const ItemFilter = { '$or': [{ Model : { '$in' : model } }] };
+      const ItemCnt = await dbService.updateMany(Item,ItemFilter,updateBody);
+      let updated = await dbService.updateMany(Model,filter,updateBody);
 
-      const TickFilter = { '$or': [{ tickmain : { '$in' : tick } }] };
-      const TickCnt = await dbService.updateMany(Tick,TickFilter,updateBody);
-      let updated = await dbService.updateMany(Tick,filter,updateBody);
-
-      let response = { Tick :TickCnt, };
+      let response = { Item :ItemCnt, };
       return response;
     } else {
-      return {  tick : 0 };
+      return {  model : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const softDeleteTexture = async (filter,updateBody) =>{  
+const softDeleteItem = async (filter,updateBody) =>{  
   try {
-    const textureCnt =  await dbService.updateMany(Texture,filter);
-    return { texture : textureCnt };
+    const ItemCnt =  await dbService.updateMany(Item,filter);
+    return { Item : ItemCnt };
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const softDeleteSize = async (filter,updateBody) =>{  
+const softDeleteRoom = async (filter,updateBody) =>{  
   try {
-    let size = await dbService.findMany(Size,filter, { id:1 });
-    if (size.length){
-      size = size.map((obj) => obj.id);
-
-      const VoxelFilter = { '$or': [{ size : { '$in' : size } }] };
-      const VoxelCnt = await dbService.updateMany(Voxel,VoxelFilter,updateBody);
-      let updated = await dbService.updateMany(Size,filter,updateBody);
-
-      let response = { Voxel :VoxelCnt, };
-      return response;
-    } else {
-      return {  size : 0 };
-    }
+    const RoomCnt =  await dbService.updateMany(Room,filter);
+    return { Room : RoomCnt };
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const softDeletePart = async (filter,updateBody) =>{  
+const softDeleteRoomtemplate = async (filter,updateBody) =>{  
   try {
-    let part = await dbService.findMany(Part,filter, { id:1 });
-    if (part.length){
-      part = part.map((obj) => obj.id);
-
-      const ItensFilter = { '$or': [{ model : { '$in' : part } }] };
-      const ItensCnt = await dbService.updateMany(Itens,ItensFilter,updateBody);
-      let updated = await dbService.updateMany(Part,filter,updateBody);
-
-      let response = { Itens :ItensCnt, };
-      return response;
-    } else {
-      return {  part : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const softDeleteMaterial = async (filter,updateBody) =>{  
-  try {
-    let material = await dbService.findMany(Material,filter, { id:1 });
-    if (material.length){
-      material = material.map((obj) => obj.id);
-
-      const ItensFilter = { '$or': [{ material : { '$in' : material } }] };
-      const ItensCnt = await dbService.updateMany(Itens,ItensFilter,updateBody);
-      let updated = await dbService.updateMany(Material,filter,updateBody);
-
-      let response = { Itens :ItensCnt, };
-      return response;
-    } else {
-      return {  material : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const softDeleteItens = async (filter,updateBody) =>{  
-  try {
-    let itens = await dbService.findMany(Itens,filter, { id:1 });
-    if (itens.length){
-      itens = itens.map((obj) => obj.id);
-
-      const VoxelFilter = { '$or': [{ item : { '$in' : itens } }] };
-      const VoxelCnt = await dbService.updateMany(Voxel,VoxelFilter,updateBody);
-      let updated = await dbService.updateMany(Itens,filter,updateBody);
-
-      let response = { Voxel :VoxelCnt, };
-      return response;
-    } else {
-      return {  itens : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const softDeleteBiome = async (filter,updateBody) =>{  
-  try {
-    let biome = await dbService.findMany(Biome,filter, { id:1 });
-    if (biome.length){
-      biome = biome.map((obj) => obj.id);
-
-      const VoxelFilter = { '$or': [{ biome : { '$in' : biome } }] };
-      const VoxelCnt = await dbService.updateMany(Voxel,VoxelFilter,updateBody);
-      let updated = await dbService.updateMany(Biome,filter,updateBody);
-
-      let response = { Voxel :VoxelCnt, };
-      return response;
-    } else {
-      return {  biome : 0 };
-    }
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const softDeleteAction = async (filter,updateBody) =>{  
-  try {
-    const ActionCnt =  await dbService.updateMany(Action,filter);
-    return { Action : ActionCnt };
+    const roomtemplateCnt =  await dbService.updateMany(Roomtemplate,filter);
+    return { roomtemplate : roomtemplateCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -871,11 +636,21 @@ const softDeleteChat_group = async (filter,updateBody) =>{
     if (chat_group.length){
       chat_group = chat_group.map((obj) => obj.id);
 
+      const lobbyFilter = { '$or': [{ chat : { '$in' : chat_group } }] };
+      const lobbyCnt = await dbService.updateMany(Lobby,lobbyFilter,updateBody);
+
+      const RoomFilter = { '$or': [{ chat : { '$in' : chat_group } }] };
+      const RoomCnt = await dbService.updateMany(Room,RoomFilter,updateBody);
+
       const Chat_messageFilter = { '$or': [{ groupId : { '$in' : chat_group } }] };
       const Chat_messageCnt = await dbService.updateMany(Chat_message,Chat_messageFilter,updateBody);
       let updated = await dbService.updateMany(Chat_group,filter,updateBody);
 
-      let response = { Chat_message :Chat_messageCnt, };
+      let response = {
+        lobby :lobbyCnt,
+        Room :RoomCnt,
+        Chat_message :Chat_messageCnt,
+      };
       return response;
     } else {
       return {  chat_group : 0 };
@@ -899,6 +674,21 @@ const softDeleteUser = async (filter,updateBody) =>{
     let user = await dbService.findMany(User,filter, { id:1 });
     if (user.length){
       user = user.map((obj) => obj.id);
+
+      const friendshipFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const friendshipCnt = await dbService.updateMany(Friendship,friendshipFilter,updateBody);
+
+      const lobbyFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const lobbyCnt = await dbService.updateMany(Lobby,lobbyFilter,updateBody);
+
+      const ModelFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const ModelCnt = await dbService.updateMany(Model,ModelFilter,updateBody);
+
+      const ItemFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const ItemCnt = await dbService.updateMany(Item,ItemFilter,updateBody);
+
+      const RoomFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const RoomCnt = await dbService.updateMany(Room,RoomFilter,updateBody);
 
       const Chat_groupFilter = { '$or': [{ updatedBy : { '$in' : user } },{ addedBy : { '$in' : user } }] };
       const Chat_groupCnt = await dbService.updateMany(Chat_group,Chat_groupFilter,updateBody);
@@ -926,6 +716,11 @@ const softDeleteUser = async (filter,updateBody) =>{
       let updated = await dbService.updateMany(User,filter,updateBody);
 
       let response = {
+        friendship :friendshipCnt,
+        lobby :lobbyCnt,
+        Model :ModelCnt,
+        Item :ItemCnt,
+        Room :RoomCnt,
         Chat_group :Chat_groupCnt,
         Chat_message :Chat_messageCnt,
         user :userCnt + updated,
@@ -1027,16 +822,12 @@ const softDeleteUserRole = async (filter,updateBody) =>{
 };
 
 module.exports = {
-  deleteVoxel,
-  deleteUniverse,
-  deleteTick,
-  deleteTexture,
-  deleteSize,
-  deletePart,
-  deleteMaterial,
-  deleteItens,
-  deleteBiome,
-  deleteAction,
+  deleteFriendship,
+  deleteLobby,
+  deleteModel,
+  deleteItem,
+  deleteRoom,
+  deleteRoomtemplate,
   deleteChat_group,
   deleteChat_message,
   deleteUser,
@@ -1046,16 +837,12 @@ module.exports = {
   deleteProjectRoute,
   deleteRouteRole,
   deleteUserRole,
-  countVoxel,
-  countUniverse,
-  countTick,
-  countTexture,
-  countSize,
-  countPart,
-  countMaterial,
-  countItens,
-  countBiome,
-  countAction,
+  countFriendship,
+  countLobby,
+  countModel,
+  countItem,
+  countRoom,
+  countRoomtemplate,
   countChat_group,
   countChat_message,
   countUser,
@@ -1065,16 +852,12 @@ module.exports = {
   countProjectRoute,
   countRouteRole,
   countUserRole,
-  softDeleteVoxel,
-  softDeleteUniverse,
-  softDeleteTick,
-  softDeleteTexture,
-  softDeleteSize,
-  softDeletePart,
-  softDeleteMaterial,
-  softDeleteItens,
-  softDeleteBiome,
-  softDeleteAction,
+  softDeleteFriendship,
+  softDeleteLobby,
+  softDeleteModel,
+  softDeleteItem,
+  softDeleteRoom,
+  softDeleteRoomtemplate,
   softDeleteChat_group,
   softDeleteChat_message,
   softDeleteUser,
