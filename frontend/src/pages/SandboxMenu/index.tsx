@@ -30,6 +30,31 @@ type UniverseData = {
   sizeMax: string;
   size: number;
 };
+const textures = {
+  stone: '/assets/textures/cubes/stone.png',
+  wood: '/assets/textures/cubes/wood.png',
+  brick: '/assets/textures/stairs/brick.png',
+};
+const renderIndex = {
+  0: { texture: 1, model: 'box' }, // Bloco voxel
+  1: { texture: 2, model: 'globe' }, // Globo
+  2: { texture: 1, model: 'stairs' }, // Forma personalizada (escada para teste)
+};
+
+const chunks = [
+  {
+    position: [1, 0, 0],
+    cubesArray: [
+      [0, 0, 0, 1, {
+        position: [1, 0, 0],
+        cubesArray: [
+          [0, 0, 0, 2, 0],
+        ],
+      }],
+      [1, 0, 0, 1, 0],
+    ],
+  },
+];
 
 const initialUniverseData: UniverseData = {
   name: "",
@@ -316,6 +341,16 @@ const SandboxMenu: React.FC = () => {
           </div>
         </div>
       </Modal>
+      <Game
+        renderIndex={renderIndex}
+        setInterfaceOpen={setInterfaceOpen}
+        interfaceOpen={interfaceOpen}
+        textures={textures}
+        chunks={chunks}
+        renderDistance={10}
+        canPlayerFly={true}
+        isMouseLocked={true}
+      />
     </>
   );
 };

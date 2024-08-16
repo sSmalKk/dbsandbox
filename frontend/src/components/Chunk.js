@@ -1,7 +1,7 @@
 import React from 'react';
-import VoxelCube from './VoxelCube';
+import { VoxelCube } from './VoxelCube';
 
-const Chunk = ({ position, cubesArray, textures, clusterWidth }) => {
+const Chunk = ({ renderIndex, position, cubesArray, textures, clusterWidth }) => {
   return (
     <group position={position}>
       {cubesArray.map(([x, y, z, id]) => {
@@ -14,6 +14,7 @@ const Chunk = ({ position, cubesArray, textures, clusterWidth }) => {
 
         return (
           <VoxelCube
+            renderIndex={renderIndex}
             key={`${x}-${y}-${z}-${id}`} // Garante que a chave seja única combinando posição e id
             position={[x, y, z]}
             textures={textures}

@@ -17,7 +17,7 @@ const useStore = create((set) => ({
   flying: true,
 }));
 
-export default function Game({ setInterfaceOpen, interfaceOpen, canPlayerFly, textures, chunks, renderDistance = 10, gravity = [0, -5, 0], pointLightPosition = [100, 100, 100], initialPlayerPosition = [0, 10, 0], isMouseLocked }) {
+export default function Game({ renderIndex, setInterfaceOpen, interfaceOpen, canPlayerFly, textures, chunks, renderDistance = 10, gravity = [0, -5, 0], pointLightPosition = [100, 100, 100], initialPlayerPosition = [0, 10, 0], isMouseLocked }) {
   const [fps, setFps] = useState(0);
   const tickRef = useRef(0);
 
@@ -60,7 +60,8 @@ export default function Game({ setInterfaceOpen, interfaceOpen, canPlayerFly, te
           <Physics gravity={gravity}>
             <Player interfaceOpen={interfaceOpen} setInterfaceOpen={setInterfaceOpen} setFlying={setFlying} canPlayerFly={canPlayerFly} gravity={gravity} setChunkPosition={setChunkPosition} initialPosition={initialPlayerPosition} flying={flying} />
             <PlayerModel position={[0, 5, 0]} />
-            <VoxelTerrain fullrender={true} chunks={chunks} textures={textures} clusterWidth={1} renderDistance={renderDistance} />
+            <VoxelTerrain           renderIndex={renderIndex}
+ fullrender={true} chunks={chunks} textures={textures} clusterWidth={1} renderDistance={renderDistance} />
           </Physics>
           {!interfaceOpen && (<PointerLockControls enabled={isMouseLocked} />)}
         </Canvas>

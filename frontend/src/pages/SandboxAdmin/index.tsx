@@ -38,7 +38,17 @@ const SandboxAdmin: React.FC = () => {
   const navigate = useNavigate();
   const startTimeRef = useRef<Date | null>(null);
   const sessionStartRef = useRef<string | null>(null);
-
+  const textures = {
+    stone: '/assets/textures/cubes/stone.png',
+    wood: '/assets/textures/cubes/wood.png',
+    brick: '/assets/textures/stairs/brick.png',
+  };
+  const renderIndex = {
+    0: { texture: 1, model: 'box' }, // Bloco voxel
+    1: { texture: 2, model: 'globe' }, // Globo
+    2: { texture: 1, model: 'stairs' }, // Forma personalizada (escada para teste)
+  };
+  
   useEffect(() => {
     if (!token) {
       console.error("Token not configured");
@@ -248,6 +258,8 @@ const SandboxAdmin: React.FC = () => {
       </Helmet>
       {renderMenuContent()}
       <Game
+              renderIndex={renderIndex}
+
         setInterfaceOpen={setInterfaceOpen}
         interfaceOpen={interfaceOpen}
         textures={["../assets/textures/dirt.jpg", "./assets/textures/grass.jpg"]}

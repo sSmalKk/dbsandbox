@@ -39,7 +39,7 @@ export default function LoginPage() {
         localStorage.setItem('token', authToken);
         setLoginSuccess(true);
         setLoginError(false);
-        window.location.href = "/sandbox";
+        window.location.href = "/sandboxmenu";
       } else {
         const errorMessage = await response.text();
         setMessage(errorMessage);

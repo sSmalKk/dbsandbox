@@ -29,7 +29,12 @@ function SandboxSurvival() {
     layers: 1,
     actlayers: 1,
   });
-
+  const renderIndex = {
+    0: { texture: 'stone', model: 'box' }, // Bloco voxel
+    1: { texture: 'wood', model: 'globe' }, // Globo
+    2: { texture: 'brick', model: 'stairs' }, // Forma personalizada (escada para teste)
+  };
+  
   const setlayer = (increase: boolean) => {
     setUniverseData((prevData) => {
       let newActLayers = prevData.actlayers;
@@ -69,19 +74,23 @@ function SandboxSurvival() {
   const navigate = useNavigate();
   const startTimeRef = useRef<Date | null>(null);
 
-  const textures = ['../assets/textures/dirt.jpg', './assets/textures/grass.jpg'];
+  const textures = {
+    stone: 'D:/GameDev/dbsandbox/frontend/src/assets/textures/cubes/stone.png',
+    wood: 'D:/GameDev/dbsandbox/frontend/src/assets/textures/cubes/wood.png',
+    brick: 'D:/GameDev/dbsandbox/frontend/src/assets/textures/stairs/brick.png',
+  };
 
   const chunks = [
     {
       position: [1, 0, 0],
       cubesArray: [
-        [0, 0, 0, 0, {
+        [1, 0, 0, 1, {
           position: [1, 0, 0],
           cubesArray: [
-            [0, 0, 0, 0, 0],
+            [5, 0, 0, 0, 0],
           ],
         }],
-        [1, 0, 0, 1, 0],
+        [2, 0, 0, 3, 0],
       ],
     },
   ];
@@ -189,6 +198,7 @@ function SandboxSurvival() {
       </div>
 
       <Game
+          renderIndex={renderIndex}
 
         setInterfaceOpen={setInterfaceOpen}
         interfaceOpen={interfaceOpen}
