@@ -31,8 +31,8 @@ function SandboxSurvival() {
     actlayers: 1,
   });
 
-  // Definindo o renderIndex para diferentes tipos de blocos
-  const renderIndex = {
+  // Definindo o blockState para diferentes tipos de blocos
+  const blockState = {
     0: { texture: 'stone', model: 'box', RigidBody: "fixed", RigidBodyType: "cuboid" }, // Bloco voxel padrão
     1: { texture: 'wood', model: 'globe', RigidBody: "fixed", RigidBodyType: "cuboid" }, // Globo
     2: { texture: 'brick', model: 'stairs', RigidBody: "fixed", RigidBodyType: "sphere" }, // Forma personalizada (escada para teste)
@@ -210,7 +210,7 @@ function SandboxSurvival() {
       </div>
 
       <Game
-        renderIndex={renderIndex}
+        blockState={blockState}
         customModels={customModels}
         setInterfaceOpen={setInterfaceOpen}
         interfaceOpen={interfaceOpen}

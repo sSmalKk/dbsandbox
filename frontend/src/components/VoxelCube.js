@@ -6,7 +6,7 @@ const VoxelCube = ({
   position,
   id,
   textures,
-  renderIndex,
+  blockState,
   clusterWidth,
   hasCubeLeft,
   hasCubeRight,
@@ -17,14 +17,14 @@ const VoxelCube = ({
   hover = true,
   customModels = [],
 }) => {
-  const modelType = renderIndex[id]?.model || 'box';
-  const textureName = renderIndex[id]?.texture;
-  const rigidBodyType = renderIndex[id]?.RigidBody || "fixed";
+  const modelType = blockState[id]?.model || 'box';
+  const textureName = blockState[id]?.texture;
+  const rigidBodyType = blockState[id]?.RigidBody || "fixed";
 
   // Definir o tipo de colisor corretamente, mapeando para as funções disponíveis
-  const rigidBodyShape = renderIndex[id]?.RigidBodyType === 'cuboid' 
+  const rigidBodyShape = blockState[id]?.RigidBodyType === 'cuboid' 
     ? 'cuboid' 
-    : renderIndex[id]?.RigidBodyType === 'sphere' 
+    : blockState[id]?.RigidBodyType === 'sphere' 
     ? 'ball' 
     : 'cuboid'; // Default para 'cuboid'
 

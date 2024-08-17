@@ -35,7 +35,7 @@ const textures = {
   wood: '/assets/textures/cubes/wood.png',
   brick: '/assets/textures/stairs/brick.png',
 };
-const renderIndex = {
+const blockState = {
   0: { texture: 1, model: 'box' }, // Bloco voxel
   1: { texture: 2, model: 'globe' }, // Globo
   2: { texture: 1, model: 'stairs' }, // Forma personalizada (escada para teste)
@@ -353,7 +353,7 @@ const SandboxMenu: React.FC = () => {
       <Game
         customModels={customModels}
 
-        renderIndex={renderIndex}
+        blockState={blockState}
         setInterfaceOpen={setInterfaceOpen}
         interfaceOpen={interfaceOpen}
         textures={textures}
