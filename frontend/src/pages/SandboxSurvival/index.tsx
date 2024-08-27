@@ -18,7 +18,7 @@ type UniverseData = {
 
 function SandboxSurvival() {
   const [userData, setUserData] = useState<any>(null);
-  const [interfaceOpen, setInterfaceOpen] = useState(true);
+  const [interfaceOpen] = useState(true);
   const [loadingLayer, setLoadingLayer] = useState<number>(1); // Estado para o layer que está sendo carregado
   const [universeData, setUniverseData] = useState<UniverseData>({
     name: "test",
@@ -35,9 +35,9 @@ function SandboxSurvival() {
   const blockState = {
     0: { texture: 'stone', model: 'box', RigidBody: "fixed", RigidBodyType: "cuboid" }, // Bloco voxel padrão
     1: { texture: 'wood', model: 'globe', RigidBody: "fixed", RigidBodyType: "cuboid" }, // Globo
-    2: { texture: 'brick', model: 'stairs', RigidBody: "fixed", RigidBodyType: "sphere" }, // Forma personalizada (escada para teste)
+    2: { texture: 'brick', model: 'stairs', RigidBody: "fixed", RigidBodyType: "cuboid" }, // Forma personalizada (escada para teste)
   };
-  
+
   const customModels = {
     stairs: [
       { position: [0, 0, 0.5], rotation: [0, 0, 0], render: true },   // Frente
@@ -49,7 +49,7 @@ function SandboxSurvival() {
       // Adicione as configurações do modelo customizado aqui
     ],
   };
-  
+
 
   const setlayer = (increase: boolean) => {
     setUniverseData((prevData) => {
@@ -171,10 +171,6 @@ function SandboxSurvival() {
     return () => clearInterval(intervalId);
   }, [token, navigate, universeData.hastime, universeData.expansionRate, universeData.layers]);
 
-  const handleCloseInterface = () => {
-    setInterfaceOpen(false);
-    // Lógica para reativar o bloqueio do mouse, se necessário
-  };
 
   if (!userData) {
     return null;
@@ -188,7 +184,7 @@ function SandboxSurvival() {
 
       {interfaceOpen && (
         <div className="w-full top-0 bottom-0 left-0 right-0" style={{ position: 'fixed', zIndex: 100 }}>
-          <Button className="top-5 right-5" onClick={handleCloseInterface}>x</Button>
+          <Button className="top-5 right-5" >x</Button>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '50px' }}>
             <Button onClick={handleDecrease}>-</Button>
             <input
@@ -212,8 +208,6 @@ function SandboxSurvival() {
       <Game
         blockState={blockState}
         customModels={customModels}
-        setInterfaceOpen={setInterfaceOpen}
-        interfaceOpen={interfaceOpen}
         textures={textures}
         chunks={chunks}
         renderDistance={10}

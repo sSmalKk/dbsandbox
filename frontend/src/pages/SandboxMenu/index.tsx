@@ -87,7 +87,7 @@ const SandboxMenu: React.FC = () => {
   const [universes, setUniverses] = useState<UniverseData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newUniverseData, setNewUniverseData] = useState<UniverseData>(initialUniverseData);
-  const [interfaceOpen, setInterfaceOpen] = useState<boolean>(true);
+  const [interfaceOpen] = useState<boolean>(true);
 
   const apiUrl = process.env.REACT_APP_API_URL || "";
   const token = localStorage.getItem("token") || process.env.JWT || "";
@@ -193,7 +193,6 @@ const SandboxMenu: React.FC = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
         setNewUniverseData(initialUniverseData);
         setIsModalOpen(false);
       } else {
@@ -354,8 +353,6 @@ const SandboxMenu: React.FC = () => {
         customModels={customModels}
 
         blockState={blockState}
-        setInterfaceOpen={setInterfaceOpen}
-        interfaceOpen={interfaceOpen}
         textures={textures}
         chunks={chunks}
         renderDistance={10}

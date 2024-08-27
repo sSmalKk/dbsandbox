@@ -26,9 +26,8 @@ export function Player({ setChunkPosition, initialPosition, speed, direction,
     const { forward, backward, left, right, jump, shift, inventory, escape, layerp, layerm } = get();
     if (!ref.current) return;
     if (inventory) {
-      setInterfaceOpen(true);
+      setInterfaceOpen(true);  // Aqui usamos a função para abrir a interface
     }
-
 
     const velocity = ref.current.linvel();
 

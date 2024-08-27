@@ -11,4 +11,5 @@ import { SelectBox } from "./SelectBox";
 import { SeekBar } from "./SeekBar";
 import { Radio } from "./Radio";
 import { GoogleMap } from "./GoogleMap";
-export { Card, Text, Heading, Img, Button, Slider, Input, SelectBox, SeekBar, Radio, GoogleMap };
+import Dashboard from "./Dashboard"
+export { Dashboard, Card, Text, Heading, Img, Button, Slider, Input, SelectBox, SeekBar, Radio, GoogleMap };
