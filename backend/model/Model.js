@@ -1,6 +1,6 @@
 /**
- * Model.js
- * @description :: model of a database collection Model
+ * model.js
+ * @description :: model of a database collection model
  */
 
 const mongoose = require('mongoose');
@@ -22,9 +22,9 @@ const Schema = mongoose.Schema;
 const schema = new Schema(
   {
 
-    Name:{ type:String },
+    name:{ type:String },
 
-    Voxel:{ type:Array },
+    type:{ type:Number },
 
     isDeleted:{ type:Boolean },
 
@@ -42,7 +42,9 @@ const schema = new Schema(
     updatedBy:{
       type:Schema.Types.ObjectId,
       ref:'user'
-    }
+    },
+
+    modelmap:{ type:Array }
   }
   ,{ 
     timestamps: { 
@@ -78,5 +80,5 @@ schema.method('toJSON', function () {
 });
 schema.plugin(mongoosePaginate);
 schema.plugin(idValidator);
-const Model = mongoose.model('Model',schema);
-module.exports = Model;
+const model = mongoose.model('model',schema);
+module.exports = model;

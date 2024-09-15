@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Game from "components/Game";
+import Game from "components/Game/Game";
 import { Helmet } from "react-helmet";
 import { Button, Input } from "../../components";
 import Modal from "react-modal";
-import "tailwindcss/tailwind.css"; // Ensure Tailwind CSS is imported
+import "../../styles/tailwind.css";
 
 type UniverseSettings = {
   tickUpdate: boolean;

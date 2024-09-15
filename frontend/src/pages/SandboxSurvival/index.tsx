@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Game from "components/Game";
+import Game from "components/Game/Game";
 import { Helmet } from "react-helmet";
 import { Button } from "../../components"; // Importei apenas o Button para o exemplo
 import { RigidBodyContext } from "@react-three/rapier/dist/declarations/src/RigidBody";

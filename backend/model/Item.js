@@ -1,6 +1,6 @@
 /**
- * Item.js
- * @description :: model of a database collection Item
+ * item.js
+ * @description :: model of a database collection item
  */
 
 const mongoose = require('mongoose');
@@ -22,19 +22,6 @@ const Schema = mongoose.Schema;
 const schema = new Schema(
   {
 
-    Name:{ type:String },
-
-    Description:{ type:String },
-
-    Value:{ type:Number },
-
-    Texture:{ type:String },
-
-    Model:{
-      type:Schema.Types.ObjectId,
-      ref:'Model'
-    },
-
     isDeleted:{ type:Boolean },
 
     isActive:{ type:Boolean },
@@ -51,6 +38,20 @@ const schema = new Schema(
     updatedBy:{
       type:Schema.Types.ObjectId,
       ref:'user'
+    },
+
+    name:{ type:String },
+
+    description:{ type:String },
+
+    model:{
+      ref:'model',
+      type:Schema.Types.ObjectId
+    },
+
+    texture:{
+      ref:'texturemap',
+      type:Schema.Types.ObjectId
     }
   }
   ,{ 
@@ -87,5 +88,5 @@ schema.method('toJSON', function () {
 });
 schema.plugin(mongoosePaginate);
 schema.plugin(idValidator);
-const Item = mongoose.model('Item',schema);
-module.exports = Item;
+const item = mongoose.model('item',schema);
+module.exports = item;

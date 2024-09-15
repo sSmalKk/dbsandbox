@@ -45,7 +45,7 @@ async function seedUser () {
 /* seeds roles */
 async function seedRole () {
   try {
-    const roles = [ 'Customer', 'Admin', 'Seller', 'System_User' ];
+    const roles = [ 'Manager', 'Admin', 'System_User', 'user' ];
     const insertedRoles = await dbService.findMany(Role, { code: { '$in': roles.map(role => role.toUpperCase()) } });
     const rolesToInsert = [];
     roles.forEach(role => {
@@ -108,8 +108,438 @@ async function seedRouteRole () {
   try {
     const routeRoles = [ 
       {
+        route: '/admin/chat_group/create',
+        role: 'Manager',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_group/create',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_group/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_group/addbulk',
+        role: 'Manager',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_group/addbulk',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_group/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_group/list',
+        role: 'Manager',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_group/list',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_group/list',
+        role: 'user',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_group/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_group/:id',
+        role: 'Manager',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/chat_group/:id',
+        role: 'Admin',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/chat_group/:id',
+        role: 'user',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/chat_group/:id',
+        role: 'System_User',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/chat_group/count',
+        role: 'Manager',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_group/count',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_group/count',
+        role: 'user',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_group/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_group/update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/update/:id',
+        role: 'Admin',
+        method: 'PUT' 
+      },
+      {
+        route: '/admin/chat_group/update/:id',
+        role: 'user',
+        method: 'PUT' 
+      },
+      {
+        route: '/admin/chat_group/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/partial-update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/partial-update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/partial-update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/updatebulk',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/updatebulk',
+        role: 'Admin',
+        method: 'PUT' 
+      },
+      {
+        route: '/admin/chat_group/updatebulk',
+        role: 'user',
+        method: 'PUT' 
+      },
+      {
+        route: '/admin/chat_group/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/softdelete/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/softdelete/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/softdeletemany',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_group/delete/:id',
+        role: 'Manager',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/chat_group/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/chat_group/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/chat_group/deletemany',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_group/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_group/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_message/create',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_message/create',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_message/create',
+        role: 'user',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_message/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_message/addbulk',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_message/addbulk',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_message/addbulk',
+        role: 'user',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_message/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_message/list',
+        role: 'Manager',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_message/list',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_message/list',
+        role: 'user',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_message/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_message/:id',
+        role: 'Manager',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/chat_message/:id',
+        role: 'Admin',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/chat_message/:id',
+        role: 'user',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/chat_message/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/chat_message/count',
+        role: 'Manager',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_message/count',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_message/count',
+        role: 'user',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/chat_message/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_message/update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/partial-update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/partial-update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/partial-update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/updatebulk',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/updatebulk',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/softdelete/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/softdelete/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/softdeletemany',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/chat_message/delete/:id',
+        role: 'Manager',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/chat_message/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/chat_message/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/chat_message/deletemany',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_message/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/chat_message/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
         route: '/admin/user/create',
-        role: 'Customer',
+        role: 'Manager',
         method: 'POST' 
       },
       {
@@ -119,7 +549,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/create',
-        role: 'Seller',
+        role: 'user',
         method: 'POST' 
       },
       {
@@ -129,7 +559,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/addbulk',
-        role: 'Customer',
+        role: 'Manager',
         method: 'POST' 
       },
       {
@@ -139,7 +569,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/addbulk',
-        role: 'Seller',
+        role: 'user',
         method: 'POST' 
       },
       {
@@ -149,7 +579,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/list',
-        role: 'Customer',
+        role: 'Manager',
         method: 'POST' 
       },
       {
@@ -159,7 +589,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/list',
-        role: 'Seller',
+        role: 'user',
         method: 'POST' 
       },
       {
@@ -169,7 +599,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/:id',
-        role: 'Customer',
+        role: 'Manager',
         method: 'GET' 
       },
       {
@@ -179,7 +609,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/:id',
-        role: 'Seller',
+        role: 'user',
         method: 'GET' 
       },
       {
@@ -189,7 +619,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/count',
-        role: 'Customer',
+        role: 'Manager',
         method: 'POST' 
       },
       {
@@ -199,7 +629,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/count',
-        role: 'Seller',
+        role: 'user',
         method: 'POST' 
       },
       {
@@ -209,7 +639,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/update/:id',
-        role: 'Customer',
+        role: 'Manager',
         method: 'PUT' 
       },
       {
@@ -219,7 +649,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/update/:id',
-        role: 'Seller',
+        role: 'user',
         method: 'PUT' 
       },
       {
@@ -229,7 +659,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/partial-update/:id',
-        role: 'Customer',
+        role: 'Manager',
         method: 'PUT'
       },
       {
@@ -239,7 +669,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/partial-update/:id',
-        role: 'Seller',
+        role: 'user',
         method: 'PUT'
       },
       {
@@ -249,7 +679,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/updatebulk',
-        role: 'Customer',
+        role: 'Manager',
         method: 'PUT' 
       },
       {
@@ -259,7 +689,7 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/updatebulk',
-        role: 'Seller',
+        role: 'user',
         method: 'PUT' 
       },
       {
@@ -304,186 +734,6 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/user/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/friendship/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/friendship/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/friendship/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/friendship/:id',
-        role: 'System_User',
-        method: 'GET' 
-      },
-      {
-        route: '/admin/friendship/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/friendship/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/friendship/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/friendship/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/friendship/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/friendship/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/friendship/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/admin/friendship/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/lobby/create',
-        role: 'System_User',
-        method: 'POST' 
-      },
-      {
-        route: '/admin/lobby/addbulk',
-        role: 'System_User',
-        method: 'POST' 
-      },
-      {
-        route: '/admin/lobby/list',
-        role: 'System_User',
-        method: 'POST' 
-      },
-      {
-        route: '/admin/lobby/:id',
-        role: 'System_User',
-        method: 'GET' 
-      },
-      {
-        route: '/admin/lobby/count',
-        role: 'System_User',
-        method: 'POST' 
-      },
-      {
-        route: '/admin/lobby/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/lobby/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/lobby/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/lobby/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/lobby/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/lobby/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/admin/lobby/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/model/create',
-        role: 'System_User',
-        method: 'POST' 
-      },
-      {
-        route: '/admin/model/addbulk',
-        role: 'System_User',
-        method: 'POST' 
-      },
-      {
-        route: '/admin/model/list',
-        role: 'System_User',
-        method: 'POST' 
-      },
-      {
-        route: '/admin/model/:id',
-        role: 'System_User',
-        method: 'GET' 
-      },
-      {
-        route: '/admin/model/count',
-        role: 'System_User',
-        method: 'POST' 
-      },
-      {
-        route: '/admin/model/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/model/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/model/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/model/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/model/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/model/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/admin/model/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -548,242 +798,182 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
-        route: '/admin/room/create',
+        route: '/admin/texturemap/create',
         role: 'System_User',
-        method: 'POST' 
+        method: 'POST'
       },
       {
-        route: '/admin/room/addbulk',
+        route: '/admin/texturemap/addbulk',
         role: 'System_User',
-        method: 'POST' 
+        method: 'POST'
       },
       {
-        route: '/admin/room/list',
+        route: '/admin/texturemap/list',
         role: 'System_User',
-        method: 'POST' 
+        method: 'POST'
       },
       {
-        route: '/admin/room/:id',
+        route: '/admin/texturemap/:id',
         role: 'System_User',
         method: 'GET' 
       },
       {
-        route: '/admin/room/count',
+        route: '/admin/texturemap/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/texturemap/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/texturemap/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/texturemap/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/texturemap/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/texturemap/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/texturemap/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/texturemap/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/model/create',
         role: 'System_User',
         method: 'POST' 
       },
       {
-        route: '/admin/room/update/:id',
+        route: '/admin/model/addbulk',
         role: 'System_User',
-        method: 'PUT' 
+        method: 'POST' 
       },
       {
-        route: '/admin/room/partial-update/:id',
+        route: '/admin/model/list',
         role: 'System_User',
-        method: 'PUT'
+        method: 'POST' 
       },
       {
-        route: '/admin/room/updatebulk',
-        role: 'System_User',
-        method: 'PUT' 
-      },
-      {
-        route: '/admin/room/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/room/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/room/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/admin/room/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/roomtemplate/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/roomtemplate/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/roomtemplate/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/roomtemplate/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/admin/roomtemplate/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/roomtemplate/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/roomtemplate/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/roomtemplate/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/roomtemplate/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/roomtemplate/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/roomtemplate/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/admin/roomtemplate/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/chat_group/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/chat_group/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/chat_group/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/chat_group/:id',
+        route: '/admin/model/:id',
         role: 'System_User',
         method: 'GET' 
       },
       {
-        route: '/admin/chat_group/count',
+        route: '/admin/model/count',
         role: 'System_User',
-        method: 'POST'
+        method: 'POST' 
       },
       {
-        route: '/admin/chat_group/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/chat_group/partial-update/:id',
+        route: '/admin/model/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/chat_group/updatebulk',
+        route: '/admin/model/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/chat_group/softdelete/:id',
+        route: '/admin/model/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/chat_group/softdeletemany',
+        route: '/admin/model/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/chat_group/delete/:id',
+        route: '/admin/model/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/model/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/admin/chat_group/deletemany',
+        route: '/admin/model/deletemany',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/admin/chat_message/create',
+        route: '/admin/universe/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/admin/chat_message/addbulk',
+        route: '/admin/universe/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/admin/chat_message/list',
+        route: '/admin/universe/list',
         role: 'System_User',
-        method: 'POST'
+        method: 'POST' 
       },
       {
-        route: '/admin/chat_message/:id',
+        route: '/admin/universe/:id',
         role: 'System_User',
-        method: 'GET'
+        method: 'GET' 
       },
       {
-        route: '/admin/chat_message/count',
+        route: '/admin/universe/count',
         role: 'System_User',
-        method: 'POST'
+        method: 'POST' 
       },
       {
-        route: '/admin/chat_message/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/chat_message/partial-update/:id',
+        route: '/admin/universe/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/chat_message/updatebulk',
+        route: '/admin/universe/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/chat_message/softdelete/:id',
+        route: '/admin/universe/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/chat_message/softdeletemany',
+        route: '/admin/universe/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/chat_message/delete/:id',
+        route: '/admin/universe/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/admin/chat_message/deletemany',
+        route: '/admin/universe/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -1148,8 +1338,438 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
+        route: '/device/api/v1/chat_group/create',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/create',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/addbulk',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/list',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/list',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/list',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/:id',
+        role: 'Manager',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/chat_group/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/chat_group/:id',
+        role: 'user',
+        method: 'GET' 
+      },
+      {
+        route: '/device/api/v1/chat_group/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/chat_group/count',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/count',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/count',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/partial-update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/partial-update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/partial-update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/updatebulk',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/updatebulk',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/softdelete/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/softdelete/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/softdeletemany',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_group/delete/:id',
+        role: 'Manager',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/chat_group/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/chat_group/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/chat_group/deletemany',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_group/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/create',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/create',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/create',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/addbulk',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/addbulk',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/list',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/list',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/list',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/:id',
+        role: 'Manager',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/chat_message/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/chat_message/:id',
+        role: 'user',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/chat_message/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/chat_message/count',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/count',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/count',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/partial-update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/partial-update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/partial-update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/updatebulk',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/updatebulk',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/softdelete/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/softdelete/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/softdeletemany',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/chat_message/delete/:id',
+        role: 'Manager',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/chat_message/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/chat_message/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/chat_message/deletemany',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/chat_message/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
         route: '/device/api/v1/user/create',
-        role: 'Customer',
+        role: 'Manager',
         method: 'POST'
       },
       {
@@ -1159,7 +1779,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/create',
-        role: 'Seller',
+        role: 'user',
         method: 'POST' 
       },
       {
@@ -1169,7 +1789,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/addbulk',
-        role: 'Customer',
+        role: 'Manager',
         method: 'POST'
       },
       {
@@ -1179,8 +1799,8 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/addbulk',
-        role: 'Seller',
-        method: 'POST'
+        role: 'user',
+        method: 'POST' 
       },
       {
         route: '/device/api/v1/user/addbulk',
@@ -1189,7 +1809,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/list',
-        role: 'Customer',
+        role: 'Manager',
         method: 'POST' 
       },
       {
@@ -1199,7 +1819,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/list',
-        role: 'Seller',
+        role: 'user',
         method: 'POST' 
       },
       {
@@ -1209,7 +1829,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/:id',
-        role: 'Customer',
+        role: 'Manager',
         method: 'GET' 
       },
       {
@@ -1219,7 +1839,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/:id',
-        role: 'Seller',
+        role: 'user',
         method: 'GET' 
       },
       {
@@ -1229,8 +1849,8 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/count',
-        role: 'Customer',
-        method: 'POST'
+        role: 'Manager',
+        method: 'POST' 
       },
       {
         route: '/device/api/v1/user/count',
@@ -1239,7 +1859,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/count',
-        role: 'Seller',
+        role: 'user',
         method: 'POST' 
       },
       {
@@ -1249,7 +1869,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/update/:id',
-        role: 'Customer',
+        role: 'Manager',
         method: 'PUT'
       },
       {
@@ -1259,7 +1879,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/update/:id',
-        role: 'Seller',
+        role: 'user',
         method: 'PUT'
       },
       {
@@ -1269,7 +1889,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/partial-update/:id',
-        role: 'Customer',
+        role: 'Manager',
         method: 'PUT'
       },
       {
@@ -1279,7 +1899,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/partial-update/:id',
-        role: 'Seller',
+        role: 'user',
         method: 'PUT'
       },
       {
@@ -1289,7 +1909,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/updatebulk',
-        role: 'Customer',
+        role: 'Manager',
         method: 'PUT'
       },
       {
@@ -1299,7 +1919,7 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/updatebulk',
-        role: 'Seller',
+        role: 'user',
         method: 'PUT'
       },
       {
@@ -1344,186 +1964,6 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/user/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/friendship/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/friendship/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/friendship/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/friendship/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/device/api/v1/friendship/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/friendship/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/friendship/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/friendship/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/friendship/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/friendship/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/friendship/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/device/api/v1/friendship/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/lobby/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/lobby/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/lobby/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/lobby/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/device/api/v1/lobby/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/lobby/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/lobby/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/lobby/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/lobby/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/lobby/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/lobby/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/device/api/v1/lobby/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/model/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/model/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/model/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/model/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/device/api/v1/model/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/model/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/model/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/model/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/model/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/model/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/model/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/device/api/v1/model/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -1588,242 +2028,182 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
-        route: '/device/api/v1/room/create',
+        route: '/device/api/v1/texturemap/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/room/addbulk',
+        route: '/device/api/v1/texturemap/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/room/list',
+        route: '/device/api/v1/texturemap/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/room/:id',
+        route: '/device/api/v1/texturemap/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/device/api/v1/room/count',
+        route: '/device/api/v1/texturemap/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/room/update/:id',
+        route: '/device/api/v1/texturemap/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/room/partial-update/:id',
+        route: '/device/api/v1/texturemap/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/room/updatebulk',
+        route: '/device/api/v1/texturemap/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/room/softdelete/:id',
+        route: '/device/api/v1/texturemap/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/room/softdeletemany',
+        route: '/device/api/v1/texturemap/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/room/delete/:id',
+        route: '/device/api/v1/texturemap/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/device/api/v1/room/deletemany',
+        route: '/device/api/v1/texturemap/deletemany',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/roomtemplate/create',
+        route: '/device/api/v1/model/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/roomtemplate/addbulk',
+        route: '/device/api/v1/model/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/roomtemplate/list',
+        route: '/device/api/v1/model/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/roomtemplate/:id',
+        route: '/device/api/v1/model/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/device/api/v1/roomtemplate/count',
+        route: '/device/api/v1/model/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/roomtemplate/update/:id',
+        route: '/device/api/v1/model/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/roomtemplate/partial-update/:id',
+        route: '/device/api/v1/model/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/roomtemplate/updatebulk',
+        route: '/device/api/v1/model/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/roomtemplate/softdelete/:id',
+        route: '/device/api/v1/model/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/roomtemplate/softdeletemany',
+        route: '/device/api/v1/model/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/roomtemplate/delete/:id',
+        route: '/device/api/v1/model/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/device/api/v1/roomtemplate/deletemany',
+        route: '/device/api/v1/model/deletemany',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/chat_group/create',
+        route: '/device/api/v1/universe/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/chat_group/addbulk',
+        route: '/device/api/v1/universe/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/chat_group/list',
+        route: '/device/api/v1/universe/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/chat_group/:id',
+        route: '/device/api/v1/universe/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/device/api/v1/chat_group/count',
+        route: '/device/api/v1/universe/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/chat_group/update/:id',
+        route: '/device/api/v1/universe/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/chat_group/partial-update/:id',
+        route: '/device/api/v1/universe/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/chat_group/updatebulk',
+        route: '/device/api/v1/universe/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/chat_group/softdelete/:id',
+        route: '/device/api/v1/universe/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/chat_group/softdeletemany',
+        route: '/device/api/v1/universe/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/chat_group/delete/:id',
+        route: '/device/api/v1/universe/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/device/api/v1/chat_group/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/chat_message/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/chat_message/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/chat_message/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/chat_message/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/device/api/v1/chat_message/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/chat_message/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/chat_message/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/chat_message/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/chat_message/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/chat_message/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/chat_message/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/device/api/v1/chat_message/deletemany',
+        route: '/device/api/v1/universe/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -2188,8 +2568,438 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
+        route: '/client/api/v1/chat_group/create',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/create',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/addbulk',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/list',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/list',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/list',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/:id',
+        role: 'Manager',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/chat_group/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/chat_group/:id',
+        role: 'user',
+        method: 'GET' 
+      },
+      {
+        route: '/client/api/v1/chat_group/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/chat_group/count',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/count',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/count',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/partial-update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/partial-update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/partial-update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/updatebulk',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/updatebulk',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/softdelete/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/softdelete/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/softdeletemany',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_group/delete/:id',
+        role: 'Manager',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/chat_group/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/chat_group/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/chat_group/deletemany',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_group/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/create',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/create',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/create',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/addbulk',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/addbulk',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/list',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/list',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/list',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/:id',
+        role: 'Manager',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/chat_message/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/chat_message/:id',
+        role: 'user',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/chat_message/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/chat_message/count',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/count',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/count',
+        role: 'user',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/partial-update/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/partial-update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/partial-update/:id',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/updatebulk',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/updatebulk',
+        role: 'user',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/softdelete/:id',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/softdelete/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/softdeletemany',
+        role: 'Manager',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/chat_message/delete/:id',
+        role: 'Manager',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/chat_message/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/chat_message/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/chat_message/deletemany',
+        role: 'Manager',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/chat_message/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
         route: '/client/api/v1/user/create',
-        role: 'Customer',
+        role: 'Manager',
         method: 'POST'
       },
       {
@@ -2199,7 +3009,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/create',
-        role: 'Seller',
+        role: 'user',
         method: 'POST' 
       },
       {
@@ -2209,7 +3019,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/addbulk',
-        role: 'Customer',
+        role: 'Manager',
         method: 'POST'
       },
       {
@@ -2219,8 +3029,8 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/addbulk',
-        role: 'Seller',
-        method: 'POST'
+        role: 'user',
+        method: 'POST' 
       },
       {
         route: '/client/api/v1/user/addbulk',
@@ -2229,7 +3039,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/list',
-        role: 'Customer',
+        role: 'Manager',
         method: 'POST' 
       },
       {
@@ -2239,7 +3049,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/list',
-        role: 'Seller',
+        role: 'user',
         method: 'POST' 
       },
       {
@@ -2249,7 +3059,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/:id',
-        role: 'Customer',
+        role: 'Manager',
         method: 'GET' 
       },
       {
@@ -2259,7 +3069,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/:id',
-        role: 'Seller',
+        role: 'user',
         method: 'GET' 
       },
       {
@@ -2269,8 +3079,8 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/count',
-        role: 'Customer',
-        method: 'POST'
+        role: 'Manager',
+        method: 'POST' 
       },
       {
         route: '/client/api/v1/user/count',
@@ -2279,7 +3089,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/count',
-        role: 'Seller',
+        role: 'user',
         method: 'POST' 
       },
       {
@@ -2289,7 +3099,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/update/:id',
-        role: 'Customer',
+        role: 'Manager',
         method: 'PUT'
       },
       {
@@ -2299,7 +3109,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/update/:id',
-        role: 'Seller',
+        role: 'user',
         method: 'PUT'
       },
       {
@@ -2309,7 +3119,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/partial-update/:id',
-        role: 'Customer',
+        role: 'Manager',
         method: 'PUT'
       },
       {
@@ -2319,7 +3129,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/partial-update/:id',
-        role: 'Seller',
+        role: 'user',
         method: 'PUT'
       },
       {
@@ -2329,7 +3139,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/updatebulk',
-        role: 'Customer',
+        role: 'Manager',
         method: 'PUT'
       },
       {
@@ -2339,7 +3149,7 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/updatebulk',
-        role: 'Seller',
+        role: 'user',
         method: 'PUT'
       },
       {
@@ -2384,186 +3194,6 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/user/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/friendship/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/friendship/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/friendship/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/friendship/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/client/api/v1/friendship/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/friendship/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/friendship/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/friendship/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/friendship/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/friendship/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/friendship/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/client/api/v1/friendship/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/lobby/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/lobby/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/lobby/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/lobby/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/client/api/v1/lobby/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/lobby/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/lobby/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/lobby/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/lobby/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/lobby/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/lobby/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/client/api/v1/lobby/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/model/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/model/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/model/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/model/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/client/api/v1/model/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/model/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/model/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/model/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/model/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/model/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/model/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/client/api/v1/model/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -2628,242 +3258,182 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
-        route: '/client/api/v1/room/create',
+        route: '/client/api/v1/texturemap/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/room/addbulk',
+        route: '/client/api/v1/texturemap/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/room/list',
+        route: '/client/api/v1/texturemap/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/room/:id',
+        route: '/client/api/v1/texturemap/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/client/api/v1/room/count',
+        route: '/client/api/v1/texturemap/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/room/update/:id',
+        route: '/client/api/v1/texturemap/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/room/partial-update/:id',
+        route: '/client/api/v1/texturemap/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/room/updatebulk',
+        route: '/client/api/v1/texturemap/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/room/softdelete/:id',
+        route: '/client/api/v1/texturemap/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/room/softdeletemany',
+        route: '/client/api/v1/texturemap/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/room/delete/:id',
+        route: '/client/api/v1/texturemap/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/client/api/v1/room/deletemany',
+        route: '/client/api/v1/texturemap/deletemany',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/roomtemplate/create',
+        route: '/client/api/v1/model/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/roomtemplate/addbulk',
+        route: '/client/api/v1/model/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/roomtemplate/list',
+        route: '/client/api/v1/model/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/roomtemplate/:id',
+        route: '/client/api/v1/model/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/client/api/v1/roomtemplate/count',
+        route: '/client/api/v1/model/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/roomtemplate/update/:id',
+        route: '/client/api/v1/model/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/roomtemplate/partial-update/:id',
+        route: '/client/api/v1/model/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/roomtemplate/updatebulk',
+        route: '/client/api/v1/model/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/roomtemplate/softdelete/:id',
+        route: '/client/api/v1/model/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/roomtemplate/softdeletemany',
+        route: '/client/api/v1/model/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/roomtemplate/delete/:id',
+        route: '/client/api/v1/model/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/client/api/v1/roomtemplate/deletemany',
+        route: '/client/api/v1/model/deletemany',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/chat_group/create',
+        route: '/client/api/v1/universe/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/chat_group/addbulk',
+        route: '/client/api/v1/universe/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/chat_group/list',
+        route: '/client/api/v1/universe/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/chat_group/:id',
+        route: '/client/api/v1/universe/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/client/api/v1/chat_group/count',
+        route: '/client/api/v1/universe/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/chat_group/update/:id',
+        route: '/client/api/v1/universe/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/chat_group/partial-update/:id',
+        route: '/client/api/v1/universe/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/chat_group/updatebulk',
+        route: '/client/api/v1/universe/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/chat_group/softdelete/:id',
+        route: '/client/api/v1/universe/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/chat_group/softdeletemany',
+        route: '/client/api/v1/universe/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/chat_group/delete/:id',
+        route: '/client/api/v1/universe/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/client/api/v1/chat_group/deletemany',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/chat_message/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/chat_message/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/chat_message/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/chat_message/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/client/api/v1/chat_message/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/chat_message/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/chat_message/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/chat_message/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/chat_message/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/chat_message/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/chat_message/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/client/api/v1/chat_message/deletemany',
+        route: '/client/api/v1/universe/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -3232,7 +3802,7 @@ async function seedRouteRole () {
     if (routeRoles && routeRoles.length) {
       const routes = [...new Set(routeRoles.map(routeRole => routeRole.route.toLowerCase()))];
       const routeMethods = [...new Set(routeRoles.map(routeRole => routeRole.method))];
-      const roles = [ 'Customer', 'Admin', 'Seller', 'System_User' ];
+      const roles = [ 'Manager', 'Admin', 'System_User', 'user' ];
       const insertedProjectRoute = await dbService.findMany(ProjectRoute, {
         uri: { '$in': routes },
         method: { '$in': routeMethods },

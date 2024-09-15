@@ -3,12 +3,10 @@
  * @description :: exports deleteDependent service for project.
  */
 
-let Friendship = require('../model/friendship');
-let Lobby = require('../model/lobby');
-let Model = require('../model/Model');
-let Item = require('../model/Item');
-let Room = require('../model/Room');
-let Roomtemplate = require('../model/roomtemplate');
+let Item = require('../model/item');
+let Texturemap = require('../model/texturemap');
+let Model = require('../model/model');
+let Universe = require('../model/Universe');
 let Chat_group = require('../model/Chat_group');
 let Chat_message = require('../model/Chat_message');
 let User = require('../model/user');
@@ -20,29 +18,29 @@ let RouteRole = require('../model/routeRole');
 let UserRole = require('../model/userRole');
 let dbService = require('.//dbService');
 
-const deleteFriendship = async (filter) =>{
+const deleteItem = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Friendship,filter);
+    let response  = await dbService.deleteMany(Item,filter);
     return response;
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const deleteLobby = async (filter) =>{
+const deleteTexturemap = async (filter) =>{
   try {
-    let lobby = await dbService.findMany(Lobby,filter);
-    if (lobby && lobby.length){
-      lobby = lobby.map((obj) => obj.id);
+    let texturemap = await dbService.findMany(Texturemap,filter);
+    if (texturemap && texturemap.length){
+      texturemap = texturemap.map((obj) => obj.id);
 
-      const userFilter = { $or: [{ mainlobby : { $in : lobby } }] };
-      const userCnt = await dbService.deleteMany(User,userFilter);
+      const itemFilter = { $or: [{ texture : { $in : texturemap } }] };
+      const itemCnt = await dbService.deleteMany(Item,itemFilter);
 
-      let deleted  = await dbService.deleteMany(Lobby,filter);
-      let response = { user :userCnt, };
+      let deleted  = await dbService.deleteMany(Texturemap,filter);
+      let response = { item :itemCnt, };
       return response; 
     } else {
-      return {  lobby : 0 };
+      return {  texturemap : 0 };
     }
 
   } catch (error){
@@ -56,11 +54,11 @@ const deleteModel = async (filter) =>{
     if (model && model.length){
       model = model.map((obj) => obj.id);
 
-      const ItemFilter = { $or: [{ Model : { $in : model } }] };
-      const ItemCnt = await dbService.deleteMany(Item,ItemFilter);
+      const itemFilter = { $or: [{ model : { $in : model } }] };
+      const itemCnt = await dbService.deleteMany(Item,itemFilter);
 
       let deleted  = await dbService.deleteMany(Model,filter);
-      let response = { Item :ItemCnt, };
+      let response = { item :itemCnt, };
       return response; 
     } else {
       return {  model : 0 };
@@ -71,27 +69,9 @@ const deleteModel = async (filter) =>{
   }
 };
 
-const deleteItem = async (filter) =>{
+const deleteUniverse = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Item,filter);
-    return response;
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deleteRoom = async (filter) =>{
-  try {
-    let response  = await dbService.deleteMany(Room,filter);
-    return response;
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const deleteRoomtemplate = async (filter) =>{
-  try {
-    let response  = await dbService.deleteMany(Roomtemplate,filter);
+    let response  = await dbService.deleteMany(Universe,filter);
     return response;
   } catch (error){
     throw new Error(error.message);
@@ -104,21 +84,11 @@ const deleteChat_group = async (filter) =>{
     if (chat_group && chat_group.length){
       chat_group = chat_group.map((obj) => obj.id);
 
-      const lobbyFilter = { $or: [{ chat : { $in : chat_group } }] };
-      const lobbyCnt = await dbService.deleteMany(Lobby,lobbyFilter);
-
-      const RoomFilter = { $or: [{ chat : { $in : chat_group } }] };
-      const RoomCnt = await dbService.deleteMany(Room,RoomFilter);
-
       const Chat_messageFilter = { $or: [{ groupId : { $in : chat_group } }] };
       const Chat_messageCnt = await dbService.deleteMany(Chat_message,Chat_messageFilter);
 
       let deleted  = await dbService.deleteMany(Chat_group,filter);
-      let response = {
-        lobby :lobbyCnt,
-        Room :RoomCnt,
-        Chat_message :Chat_messageCnt,
-      };
+      let response = { Chat_message :Chat_messageCnt, };
       return response; 
     } else {
       return {  chat_group : 0 };
@@ -144,20 +114,17 @@ const deleteUser = async (filter) =>{
     if (user && user.length){
       user = user.map((obj) => obj.id);
 
-      const friendshipFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const friendshipCnt = await dbService.deleteMany(Friendship,friendshipFilter);
+      const itemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const itemCnt = await dbService.deleteMany(Item,itemFilter);
 
-      const lobbyFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const lobbyCnt = await dbService.deleteMany(Lobby,lobbyFilter);
+      const texturemapFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const texturemapCnt = await dbService.deleteMany(Texturemap,texturemapFilter);
 
-      const ModelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const ModelCnt = await dbService.deleteMany(Model,ModelFilter);
+      const modelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const modelCnt = await dbService.deleteMany(Model,modelFilter);
 
-      const ItemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const ItemCnt = await dbService.deleteMany(Item,ItemFilter);
-
-      const RoomFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const RoomCnt = await dbService.deleteMany(Room,RoomFilter);
+      const UniverseFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const UniverseCnt = await dbService.deleteMany(Universe,UniverseFilter);
 
       const Chat_groupFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
       const Chat_groupCnt = await dbService.deleteMany(Chat_group,Chat_groupFilter);
@@ -185,11 +152,10 @@ const deleteUser = async (filter) =>{
 
       let deleted  = await dbService.deleteMany(User,filter);
       let response = {
-        friendship :friendshipCnt,
-        lobby :lobbyCnt,
-        Model :ModelCnt,
-        Item :ItemCnt,
-        Room :RoomCnt,
+        item :itemCnt,
+        texturemap :texturemapCnt,
+        model :modelCnt,
+        Universe :UniverseCnt,
         Chat_group :Chat_groupCnt,
         Chat_message :Chat_messageCnt,
         user :userCnt + deleted,
@@ -293,28 +259,28 @@ const deleteUserRole = async (filter) =>{
   }
 };
 
-const countFriendship = async (filter) =>{
+const countItem = async (filter) =>{
   try {
-    const friendshipCnt =  await dbService.count(Friendship,filter);
-    return { friendship : friendshipCnt };
+    const itemCnt =  await dbService.count(Item,filter);
+    return { item : itemCnt };
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const countLobby = async (filter) =>{
+const countTexturemap = async (filter) =>{
   try {
-    let lobby = await dbService.findMany(Lobby,filter);
-    if (lobby && lobby.length){
-      lobby = lobby.map((obj) => obj.id);
+    let texturemap = await dbService.findMany(Texturemap,filter);
+    if (texturemap && texturemap.length){
+      texturemap = texturemap.map((obj) => obj.id);
 
-      const userFilter = { $or: [{ mainlobby : { $in : lobby } }] };
-      const userCnt =  await dbService.count(User,userFilter);
+      const itemFilter = { $or: [{ texture : { $in : texturemap } }] };
+      const itemCnt =  await dbService.count(Item,itemFilter);
 
-      let response = { user : userCnt, };
+      let response = { item : itemCnt, };
       return response; 
     } else {
-      return {  lobby : 0 };
+      return {  texturemap : 0 };
     }
   } catch (error){
     throw new Error(error.message);
@@ -327,10 +293,10 @@ const countModel = async (filter) =>{
     if (model && model.length){
       model = model.map((obj) => obj.id);
 
-      const ItemFilter = { $or: [{ Model : { $in : model } }] };
-      const ItemCnt =  await dbService.count(Item,ItemFilter);
+      const itemFilter = { $or: [{ model : { $in : model } }] };
+      const itemCnt =  await dbService.count(Item,itemFilter);
 
-      let response = { Item : ItemCnt, };
+      let response = { item : itemCnt, };
       return response; 
     } else {
       return {  model : 0 };
@@ -340,28 +306,10 @@ const countModel = async (filter) =>{
   }
 };
 
-const countItem = async (filter) =>{
+const countUniverse = async (filter) =>{
   try {
-    const ItemCnt =  await dbService.count(Item,filter);
-    return { Item : ItemCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const countRoom = async (filter) =>{
-  try {
-    const RoomCnt =  await dbService.count(Room,filter);
-    return { Room : RoomCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const countRoomtemplate = async (filter) =>{
-  try {
-    const roomtemplateCnt =  await dbService.count(Roomtemplate,filter);
-    return { roomtemplate : roomtemplateCnt };
+    const UniverseCnt =  await dbService.count(Universe,filter);
+    return { Universe : UniverseCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -373,20 +321,10 @@ const countChat_group = async (filter) =>{
     if (chat_group && chat_group.length){
       chat_group = chat_group.map((obj) => obj.id);
 
-      const lobbyFilter = { $or: [{ chat : { $in : chat_group } }] };
-      const lobbyCnt =  await dbService.count(Lobby,lobbyFilter);
-
-      const RoomFilter = { $or: [{ chat : { $in : chat_group } }] };
-      const RoomCnt =  await dbService.count(Room,RoomFilter);
-
       const Chat_messageFilter = { $or: [{ groupId : { $in : chat_group } }] };
       const Chat_messageCnt =  await dbService.count(Chat_message,Chat_messageFilter);
 
-      let response = {
-        lobby : lobbyCnt,
-        Room : RoomCnt,
-        Chat_message : Chat_messageCnt,
-      };
+      let response = { Chat_message : Chat_messageCnt, };
       return response; 
     } else {
       return {  chat_group : 0 };
@@ -411,20 +349,17 @@ const countUser = async (filter) =>{
     if (user && user.length){
       user = user.map((obj) => obj.id);
 
-      const friendshipFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const friendshipCnt =  await dbService.count(Friendship,friendshipFilter);
+      const itemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const itemCnt =  await dbService.count(Item,itemFilter);
 
-      const lobbyFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const lobbyCnt =  await dbService.count(Lobby,lobbyFilter);
+      const texturemapFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const texturemapCnt =  await dbService.count(Texturemap,texturemapFilter);
 
-      const ModelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const ModelCnt =  await dbService.count(Model,ModelFilter);
+      const modelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const modelCnt =  await dbService.count(Model,modelFilter);
 
-      const ItemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const ItemCnt =  await dbService.count(Item,ItemFilter);
-
-      const RoomFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const RoomCnt =  await dbService.count(Room,RoomFilter);
+      const UniverseFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const UniverseCnt =  await dbService.count(Universe,UniverseFilter);
 
       const Chat_groupFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
       const Chat_groupCnt =  await dbService.count(Chat_group,Chat_groupFilter);
@@ -451,11 +386,10 @@ const countUser = async (filter) =>{
       const userRoleCnt =  await dbService.count(UserRole,userRoleFilter);
 
       let response = {
-        friendship : friendshipCnt,
-        lobby : lobbyCnt,
-        Model : ModelCnt,
-        Item : ItemCnt,
-        Room : RoomCnt,
+        item : itemCnt,
+        texturemap : texturemapCnt,
+        model : modelCnt,
+        Universe : UniverseCnt,
         Chat_group : Chat_groupCnt,
         Chat_message : Chat_messageCnt,
         user : userCnt,
@@ -554,29 +488,29 @@ const countUserRole = async (filter) =>{
   }
 };
 
-const softDeleteFriendship = async (filter,updateBody) =>{  
+const softDeleteItem = async (filter,updateBody) =>{  
   try {
-    const friendshipCnt =  await dbService.updateMany(Friendship,filter);
-    return { friendship : friendshipCnt };
+    const itemCnt =  await dbService.updateMany(Item,filter);
+    return { item : itemCnt };
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const softDeleteLobby = async (filter,updateBody) =>{  
+const softDeleteTexturemap = async (filter,updateBody) =>{  
   try {
-    let lobby = await dbService.findMany(Lobby,filter, { id:1 });
-    if (lobby.length){
-      lobby = lobby.map((obj) => obj.id);
+    let texturemap = await dbService.findMany(Texturemap,filter, { id:1 });
+    if (texturemap.length){
+      texturemap = texturemap.map((obj) => obj.id);
 
-      const userFilter = { '$or': [{ mainlobby : { '$in' : lobby } }] };
-      const userCnt = await dbService.updateMany(User,userFilter,updateBody);
-      let updated = await dbService.updateMany(Lobby,filter,updateBody);
+      const itemFilter = { '$or': [{ texture : { '$in' : texturemap } }] };
+      const itemCnt = await dbService.updateMany(Item,itemFilter,updateBody);
+      let updated = await dbService.updateMany(Texturemap,filter,updateBody);
 
-      let response = { user :userCnt, };
+      let response = { item :itemCnt, };
       return response;
     } else {
-      return {  lobby : 0 };
+      return {  texturemap : 0 };
     }
   } catch (error){
     throw new Error(error.message);
@@ -589,11 +523,11 @@ const softDeleteModel = async (filter,updateBody) =>{
     if (model.length){
       model = model.map((obj) => obj.id);
 
-      const ItemFilter = { '$or': [{ Model : { '$in' : model } }] };
-      const ItemCnt = await dbService.updateMany(Item,ItemFilter,updateBody);
+      const itemFilter = { '$or': [{ model : { '$in' : model } }] };
+      const itemCnt = await dbService.updateMany(Item,itemFilter,updateBody);
       let updated = await dbService.updateMany(Model,filter,updateBody);
 
-      let response = { Item :ItemCnt, };
+      let response = { item :itemCnt, };
       return response;
     } else {
       return {  model : 0 };
@@ -603,28 +537,10 @@ const softDeleteModel = async (filter,updateBody) =>{
   }
 };
 
-const softDeleteItem = async (filter,updateBody) =>{  
+const softDeleteUniverse = async (filter,updateBody) =>{  
   try {
-    const ItemCnt =  await dbService.updateMany(Item,filter);
-    return { Item : ItemCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const softDeleteRoom = async (filter,updateBody) =>{  
-  try {
-    const RoomCnt =  await dbService.updateMany(Room,filter);
-    return { Room : RoomCnt };
-  } catch (error){
-    throw new Error(error.message);
-  }
-};
-
-const softDeleteRoomtemplate = async (filter,updateBody) =>{  
-  try {
-    const roomtemplateCnt =  await dbService.updateMany(Roomtemplate,filter);
-    return { roomtemplate : roomtemplateCnt };
+    const UniverseCnt =  await dbService.updateMany(Universe,filter);
+    return { Universe : UniverseCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -636,21 +552,11 @@ const softDeleteChat_group = async (filter,updateBody) =>{
     if (chat_group.length){
       chat_group = chat_group.map((obj) => obj.id);
 
-      const lobbyFilter = { '$or': [{ chat : { '$in' : chat_group } }] };
-      const lobbyCnt = await dbService.updateMany(Lobby,lobbyFilter,updateBody);
-
-      const RoomFilter = { '$or': [{ chat : { '$in' : chat_group } }] };
-      const RoomCnt = await dbService.updateMany(Room,RoomFilter,updateBody);
-
       const Chat_messageFilter = { '$or': [{ groupId : { '$in' : chat_group } }] };
       const Chat_messageCnt = await dbService.updateMany(Chat_message,Chat_messageFilter,updateBody);
       let updated = await dbService.updateMany(Chat_group,filter,updateBody);
 
-      let response = {
-        lobby :lobbyCnt,
-        Room :RoomCnt,
-        Chat_message :Chat_messageCnt,
-      };
+      let response = { Chat_message :Chat_messageCnt, };
       return response;
     } else {
       return {  chat_group : 0 };
@@ -675,20 +581,17 @@ const softDeleteUser = async (filter,updateBody) =>{
     if (user.length){
       user = user.map((obj) => obj.id);
 
-      const friendshipFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const friendshipCnt = await dbService.updateMany(Friendship,friendshipFilter,updateBody);
+      const itemFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const itemCnt = await dbService.updateMany(Item,itemFilter,updateBody);
 
-      const lobbyFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const lobbyCnt = await dbService.updateMany(Lobby,lobbyFilter,updateBody);
+      const texturemapFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const texturemapCnt = await dbService.updateMany(Texturemap,texturemapFilter,updateBody);
 
-      const ModelFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const ModelCnt = await dbService.updateMany(Model,ModelFilter,updateBody);
+      const modelFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const modelCnt = await dbService.updateMany(Model,modelFilter,updateBody);
 
-      const ItemFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const ItemCnt = await dbService.updateMany(Item,ItemFilter,updateBody);
-
-      const RoomFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const RoomCnt = await dbService.updateMany(Room,RoomFilter,updateBody);
+      const UniverseFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const UniverseCnt = await dbService.updateMany(Universe,UniverseFilter,updateBody);
 
       const Chat_groupFilter = { '$or': [{ updatedBy : { '$in' : user } },{ addedBy : { '$in' : user } }] };
       const Chat_groupCnt = await dbService.updateMany(Chat_group,Chat_groupFilter,updateBody);
@@ -716,11 +619,10 @@ const softDeleteUser = async (filter,updateBody) =>{
       let updated = await dbService.updateMany(User,filter,updateBody);
 
       let response = {
-        friendship :friendshipCnt,
-        lobby :lobbyCnt,
-        Model :ModelCnt,
-        Item :ItemCnt,
-        Room :RoomCnt,
+        item :itemCnt,
+        texturemap :texturemapCnt,
+        model :modelCnt,
+        Universe :UniverseCnt,
         Chat_group :Chat_groupCnt,
         Chat_message :Chat_messageCnt,
         user :userCnt + updated,
@@ -822,12 +724,10 @@ const softDeleteUserRole = async (filter,updateBody) =>{
 };
 
 module.exports = {
-  deleteFriendship,
-  deleteLobby,
-  deleteModel,
   deleteItem,
-  deleteRoom,
-  deleteRoomtemplate,
+  deleteTexturemap,
+  deleteModel,
+  deleteUniverse,
   deleteChat_group,
   deleteChat_message,
   deleteUser,
@@ -837,12 +737,10 @@ module.exports = {
   deleteProjectRoute,
   deleteRouteRole,
   deleteUserRole,
-  countFriendship,
-  countLobby,
-  countModel,
   countItem,
-  countRoom,
-  countRoomtemplate,
+  countTexturemap,
+  countModel,
+  countUniverse,
   countChat_group,
   countChat_message,
   countUser,
@@ -852,12 +750,10 @@ module.exports = {
   countProjectRoute,
   countRouteRole,
   countUserRole,
-  softDeleteFriendship,
-  softDeleteLobby,
-  softDeleteModel,
   softDeleteItem,
-  softDeleteRoom,
-  softDeleteRoomtemplate,
+  softDeleteTexturemap,
+  softDeleteModel,
+  softDeleteUniverse,
   softDeleteChat_group,
   softDeleteChat_message,
   softDeleteUser,

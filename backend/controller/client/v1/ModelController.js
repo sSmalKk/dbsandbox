@@ -1,10 +1,10 @@
 /**
- * ModelController.js
- * @description : exports action methods for Model.
+ * modelController.js
+ * @description : exports action methods for model.
  */
 
-const Model = require('../../../model/Model');
-const ModelSchemaKey = require('../../../utils/validation/ModelValidation');
+const Model = require('../../../model/model');
+const modelSchemaKey = require('../../../utils/validation/modelValidation');
 const validation = require('../../../utils/validateRequest');
 const dbService = require('../../../utils/dbService');
 const ObjectId = require('mongodb').ObjectId;
@@ -22,7 +22,7 @@ const addModel = async (req, res) => {
     let dataToCreate = { ...req.body || {} };
     let validateRequest = validation.validateParamsWithJoi(
       dataToCreate,
-      ModelSchemaKey.schemaKeys);
+      modelSchemaKey.schemaKeys);
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
@@ -73,7 +73,7 @@ const findAllModel = async (req,res) => {
     let query = {};
     let validateRequest = validation.validateFilterWithJoi(
       req.body,
-      ModelSchemaKey.findFilterKeys,
+      modelSchemaKey.findFilterKeys,
       Model.schema.obj
     );
     if (!validateRequest.isValid) {
@@ -135,7 +135,7 @@ const getModelCount = async (req,res) => {
     let where = {};
     let validateRequest = validation.validateFilterWithJoi(
       req.body,
-      ModelSchemaKey.findFilterKeys,
+      modelSchemaKey.findFilterKeys,
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message: `${validateRequest.message}` });
@@ -164,7 +164,7 @@ const updateModel = async (req,res) => {
     };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
-      ModelSchemaKey.updateSchemaKeys
+      modelSchemaKey.updateSchemaKeys
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
@@ -225,7 +225,7 @@ const partialUpdateModel = async (req,res) => {
     };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
-      ModelSchemaKey.updateSchemaKeys
+      modelSchemaKey.updateSchemaKeys
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });

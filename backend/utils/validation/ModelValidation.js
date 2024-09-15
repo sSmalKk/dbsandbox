@@ -1,6 +1,6 @@
 /**
- * ModelValidation.js
- * @description :: validate each post and put request as per Model model
+ * modelValidation.js
+ * @description :: validate each post and put request as per model model
  */
 
 const joi = require('joi');
@@ -8,33 +8,36 @@ const {
   options, isCountOnly, populate, select 
 } = require('./commonFilterValidation');
 
-/** validation keys and properties of Model */
+/** validation keys and properties of model */
 exports.schemaKeys = joi.object({
-  Name: joi.string().allow(null).allow(''),
-  Voxel: joi.array().items(),
-  isDeleted: joi.boolean(),
-  isActive: joi.boolean()
-}).unknown(true);
-
-/** validation keys and properties of Model for updation */
-exports.updateSchemaKeys = joi.object({
-  Name: joi.string().allow(null).allow(''),
-  Voxel: joi.array().items(),
+  name: joi.string().allow(null).allow(''),
+  type: joi.number().integer().allow(0),
   isDeleted: joi.boolean(),
   isActive: joi.boolean(),
+  modelmap: joi.array().items()
+}).unknown(true);
+
+/** validation keys and properties of model for updation */
+exports.updateSchemaKeys = joi.object({
+  name: joi.string().allow(null).allow(''),
+  type: joi.number().integer().allow(0),
+  isDeleted: joi.boolean(),
+  isActive: joi.boolean(),
+  modelmap: joi.array().items(),
   _id: joi.string().regex(/^[0-9a-fA-F]{24}$/)
 }).unknown(true);
 
 let keys = ['query', 'where'];
-/** validation keys and properties of Model for filter documents from collection */
+/** validation keys and properties of model for filter documents from collection */
 exports.findFilterKeys = joi.object({
   options: options,
   ...Object.fromEntries(
     keys.map(key => [key, joi.object({
-      Name: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
-      Voxel: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
+      name: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      type: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),
       isDeleted: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
       isActive: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
+      modelmap: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
       id: joi.any(),
       _id: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object())
     }).unknown(true),])
