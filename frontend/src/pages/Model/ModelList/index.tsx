@@ -10,32 +10,37 @@ const ModelList = () => {
   const { blockState, customModels, chunks, textures } = useGameStore();
   const { navegar } = Navegador(); // Usar o Navegador
 
-  useEffect(() => {
+  const fetchRecentModels = async () => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
+    try {
+      const response = await fetch(
+        `http://localhost:5000/admin/modelos_model/list`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
 
-    const fetchRecentUniverses = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/admin/universe/list`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({}),
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch recent universes");
+          }),
         }
+      );
 
-        const data = await response.json();
-      } catch (error) {
-        console.error("Error fetching recent universes:", error);
+      const data = await response.json();
+      if (Array.isArray(data.data.data)) {
+        setModelos(data.data.data); // Use data.data assuming the API response contains a "data" array
+      } else {
+        console.error("Unexpected API response format", data);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching recent models:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecentModels();
   }, []);
 
   const handleEdit = (modeloId) => {
@@ -43,6 +48,37 @@ const ModelList = () => {
     localStorage.setItem("selectedModelId", modeloId);
     // Redirecionar para a página de edição
     navegar(`/ItemCreator/EditModel/`);
+  };
+
+  const handleDelete = async (modeloId) => {
+    const token = localStorage.getItem("token") || process.env.JWT || "";
+    const confirmDelete = window.confirm("Are you sure you want to delete this model?");
+    
+    if (confirmDelete) {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/admin/modelos_model/delete/${modeloId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const result = await response.json();
+        if (result.status === "SUCCESS") {
+          alert("Model deleted successfully!");
+          // Re-fetch models to force refresh after deletion
+          fetchRecentModels();
+        } else {
+          console.error("Error deleting model:", result);
+        }
+      } catch (error) {
+        console.error("Error deleting model:", error);
+      }
+    }
   };
 
   return (
@@ -65,12 +101,17 @@ const ModelList = () => {
         >
           <h2>Lista de Modelos</h2>
           <ul>
-            {modelos.map((modelo) => (
-              <li key={modelo.id}>
-                {modelo.name} (Tipo: {modelo.type}){" "}
-                <button onClick={() => handleEdit(modelo.id)}>Editar</button>
-              </li>
-            ))}
+            {Array.isArray(modelos) && modelos.length > 0 ? (
+              modelos.map((modelo) => (
+                <li key={modelo._id || modelo.id}>
+                  {modelo.name} (Tipo: {modelo.type}){" "}
+                  <button onClick={() => handleEdit(modelo._id || modelo.id)}>Editar</button>
+                  <button onClick={() => handleDelete(modelo._id || modelo.id)}>Excluir</button>
+                </li>
+              ))
+            ) : (
+              <li>Nenhum modelo encontrado</li>
+            )}
           </ul>
         </div>
       </div>

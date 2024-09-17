@@ -739,8 +739,18 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_item/create',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/modelos_item/create',
         role: 'System_User',
         method: 'POST'
+      },
+      {
+        route: '/admin/modelos_item/addbulk',
+        role: 'Admin',
+        method: 'POST' 
       },
       {
         route: '/admin/modelos_item/addbulk',
@@ -749,8 +759,18 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_item/list',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/modelos_item/list',
         role: 'System_User',
         method: 'POST'
+      },
+      {
+        route: '/admin/modelos_item/:id',
+        role: 'Admin',
+        method: 'GET' 
       },
       {
         route: '/admin/modelos_item/:id',
@@ -759,12 +779,27 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_item/count',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/modelos_item/count',
         role: 'System_User',
         method: 'POST'
       },
       {
         route: '/admin/modelos_item/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_item/update/:id',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_item/partial-update/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -774,7 +809,17 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_item/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_item/updatebulk',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_item/softdelete/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -784,8 +829,18 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_item/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_item/softdeletemany',
         role: 'System_User',
         method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_item/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
       },
       {
         route: '/admin/modelos_item/delete/:id',
@@ -794,72 +849,27 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_item/deletemany',
-        role: 'System_User',
+        role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_texturemap/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/modelos_texturemap/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/modelos_texturemap/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/modelos_texturemap/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/admin/modelos_texturemap/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/modelos_texturemap/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_texturemap/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_texturemap/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_texturemap/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_texturemap/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_texturemap/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/admin/modelos_texturemap/deletemany',
+        route: '/admin/modelos_item/deletemany',
         role: 'System_User',
         method: 'POST'
       },
       {
         route: '/admin/modelos_model/create',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/modelos_model/create',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_model/addbulk',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -869,8 +879,18 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_model/list',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/modelos_model/list',
         role: 'System_User',
         method: 'POST'
+      },
+      {
+        route: '/admin/modelos_model/:id',
+        role: 'Admin',
+        method: 'GET' 
       },
       {
         route: '/admin/modelos_model/:id',
@@ -879,12 +899,27 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_model/count',
+        role: 'Admin',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/modelos_model/count',
         role: 'System_User',
         method: 'POST'
       },
       {
         route: '/admin/modelos_model/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_model/update/:id',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_model/partial-update/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -894,7 +929,17 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_model/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_model/updatebulk',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_model/softdelete/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -904,8 +949,18 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_model/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_model/softdeletemany',
         role: 'System_User',
         method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_model/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
       },
       {
         route: '/admin/modelos_model/delete/:id',
@@ -914,7 +969,137 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/modelos_model/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_model/deletemany',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturemap/create',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturemap/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturemap/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturemap/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturemap/list',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturemap/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturemap/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/admin/modelos_texturemap/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/modelos_texturemap/count',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturemap/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturemap/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturemap/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturemap/partial-update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturemap/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturemap/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturemap/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturemap/softdelete/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturemap/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturemap/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturemap/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturemap/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_texturemap/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_texturemap/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturemap/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_settings/create',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -924,7 +1109,17 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/universe_settings/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_settings/addbulk',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_settings/list',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -934,8 +1129,18 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/universe_settings/:id',
+        role: 'Admin',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/universe_settings/:id',
         role: 'System_User',
         method: 'GET'
+      },
+      {
+        route: '/admin/universe_settings/count',
+        role: 'Admin',
+        method: 'POST'
       },
       {
         route: '/admin/universe_settings/count',
@@ -944,7 +1149,17 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/universe_settings/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_settings/update/:id',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_settings/partial-update/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -954,7 +1169,17 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/universe_settings/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_settings/updatebulk',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_settings/softdelete/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -964,13 +1189,28 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/universe_settings/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_settings/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
         route: '/admin/universe_settings/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_settings/delete/:id',
         role: 'System_User',
         method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_settings/deletemany',
+        role: 'Admin',
+        method: 'POST'
       },
       {
         route: '/admin/universe_settings/deletemany',
@@ -1969,7 +2209,17 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_item/create',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_item/create',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_item/addbulk',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -1979,8 +2229,18 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_item/list',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_item/list',
         role: 'System_User',
         method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_item/:id',
+        role: 'Admin',
+        method: 'GET'
       },
       {
         route: '/device/api/v1/modelos_item/:id',
@@ -1989,12 +2249,27 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_item/count',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_item/count',
         role: 'System_User',
         method: 'POST'
       },
       {
         route: '/device/api/v1/modelos_item/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_item/update/:id',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_item/partial-update/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -2004,7 +2279,17 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_item/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_item/updatebulk',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_item/softdelete/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -2014,8 +2299,18 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_item/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_item/softdeletemany',
         role: 'System_User',
         method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_item/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
       },
       {
         route: '/device/api/v1/modelos_item/delete/:id',
@@ -2024,67 +2319,17 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_item/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_item/deletemany',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texturemap/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/device/api/v1/modelos_texturemap/deletemany',
-        role: 'System_User',
+        route: '/device/api/v1/modelos_model/create',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -2094,7 +2339,17 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_model/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_model/addbulk',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_model/list',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -2104,8 +2359,18 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_model/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_model/:id',
         role: 'System_User',
         method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_model/count',
+        role: 'Admin',
+        method: 'POST'
       },
       {
         route: '/device/api/v1/modelos_model/count',
@@ -2114,7 +2379,17 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_model/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_model/update/:id',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_model/partial-update/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -2124,7 +2399,17 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_model/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_model/updatebulk',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_model/softdelete/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -2134,8 +2419,18 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_model/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_model/softdeletemany',
         role: 'System_User',
         method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_model/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
       },
       {
         route: '/device/api/v1/modelos_model/delete/:id',
@@ -2144,7 +2439,137 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/modelos_model/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_model/deletemany',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/create',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/list',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/count',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/partial-update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/softdelete/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturemap/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_settings/create',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -2154,7 +2579,17 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/universe_settings/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_settings/addbulk',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_settings/list',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -2164,8 +2599,18 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/universe_settings/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_settings/:id',
         role: 'System_User',
         method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_settings/count',
+        role: 'Admin',
+        method: 'POST'
       },
       {
         route: '/device/api/v1/universe_settings/count',
@@ -2174,7 +2619,17 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/universe_settings/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_settings/update/:id',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_settings/partial-update/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -2184,7 +2639,17 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/universe_settings/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_settings/updatebulk',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_settings/softdelete/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -2194,13 +2659,28 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/universe_settings/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_settings/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
         route: '/device/api/v1/universe_settings/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_settings/delete/:id',
         role: 'System_User',
         method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_settings/deletemany',
+        role: 'Admin',
+        method: 'POST'
       },
       {
         route: '/device/api/v1/universe_settings/deletemany',
@@ -3199,7 +3679,17 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_item/create',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_item/create',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_item/addbulk',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -3209,8 +3699,18 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_item/list',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_item/list',
         role: 'System_User',
         method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_item/:id',
+        role: 'Admin',
+        method: 'GET'
       },
       {
         route: '/client/api/v1/modelos_item/:id',
@@ -3219,12 +3719,27 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_item/count',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_item/count',
         role: 'System_User',
         method: 'POST'
       },
       {
         route: '/client/api/v1/modelos_item/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_item/update/:id',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_item/partial-update/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -3234,7 +3749,17 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_item/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_item/updatebulk',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_item/softdelete/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -3244,8 +3769,18 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_item/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_item/softdeletemany',
         role: 'System_User',
         method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_item/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
       },
       {
         route: '/client/api/v1/modelos_item/delete/:id',
@@ -3254,67 +3789,17 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_item/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_item/deletemany',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texturemap/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/addbulk',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/list',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/:id',
-        role: 'System_User',
-        method: 'GET'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/client/api/v1/modelos_texturemap/deletemany',
-        role: 'System_User',
+        route: '/client/api/v1/modelos_model/create',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -3324,7 +3809,17 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_model/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_model/addbulk',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_model/list',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -3334,8 +3829,18 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_model/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_model/:id',
         role: 'System_User',
         method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_model/count',
+        role: 'Admin',
+        method: 'POST'
       },
       {
         route: '/client/api/v1/modelos_model/count',
@@ -3344,7 +3849,17 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_model/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_model/update/:id',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_model/partial-update/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -3354,7 +3869,17 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_model/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_model/updatebulk',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_model/softdelete/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -3364,8 +3889,18 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_model/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_model/softdeletemany',
         role: 'System_User',
         method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_model/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
       },
       {
         route: '/client/api/v1/modelos_model/delete/:id',
@@ -3374,7 +3909,137 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/modelos_model/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_model/deletemany',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/create',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/list',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/count',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/partial-update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/softdelete/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturemap/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_settings/create',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -3384,7 +4049,17 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/universe_settings/addbulk',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_settings/addbulk',
         role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_settings/list',
+        role: 'Admin',
         method: 'POST'
       },
       {
@@ -3394,8 +4069,18 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/universe_settings/:id',
+        role: 'Admin',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_settings/:id',
         role: 'System_User',
         method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_settings/count',
+        role: 'Admin',
+        method: 'POST'
       },
       {
         route: '/client/api/v1/universe_settings/count',
@@ -3404,7 +4089,17 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/universe_settings/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_settings/update/:id',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_settings/partial-update/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -3414,7 +4109,17 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/universe_settings/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_settings/updatebulk',
         role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_settings/softdelete/:id',
+        role: 'Admin',
         method: 'PUT'
       },
       {
@@ -3424,13 +4129,28 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/universe_settings/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_settings/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
         route: '/client/api/v1/universe_settings/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_settings/delete/:id',
         role: 'System_User',
         method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_settings/deletemany',
+        role: 'Admin',
+        method: 'POST'
       },
       {
         route: '/client/api/v1/universe_settings/deletemany',

@@ -44,7 +44,13 @@ const schema = new Schema(
       ref:'user'
     },
 
-    modelmap:{ type:Array }
+    modelmap:{
+      position:{ type:Array },
+      rotation:{ type:Array },
+      texture:{ type:String }
+    },
+
+    file:{ type:String }
   }
   ,{ 
     timestamps: { 

@@ -15,41 +15,13 @@ const EditModel = () => {
     isDeleted: false,
     isActive: true,
     modelmap: [
-      { position: [0, 0, 0], rotation: [0, 0, 0] }, // Plane 1
-      { position: [1, 1, 1], rotation: [0, 0, 0] }, // Plane 2
+      { position: [0, 0, 0], rotation: [0, 0, 0], texture: "string" }, // Plane 1
+      { position: [1, 1, 1], rotation: [0, 0, 0], texture: "string" }, // Plane 2
     ],
   });
 
   const [newModel, setNewModel] = useState(false);
   const [tipoSelecionado, setTipoSelecionado] = useState(1);
-
-  useEffect(() => {
-    const selectedModelId = localStorage.getItem("selectedModelId");
-
-    if (selectedModelId) {
-      fetch(`http://localhost:5000/admin/modelos_model/${selectedModelId}`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data) {
-            setModelData(data);
-          } else {
-            setNewModel(true);
-          }
-        })
-        .catch(() => {
-          setNewModel(true);
-        });
-    } else {
-      setNewModel(true);
-    }
-  }, []);
 
   // Handle changes to individual planes' position and rotation
   const handleMapInputChange = (planeIndex, field, axis, value) => {
@@ -109,14 +81,25 @@ const EditModel = () => {
     }
   };
   console.log("token:", token);
+  console.log("token:", modelData);
 
   return (
     <>
       <Helmet>
-        <title>{newModel ? "Criar Novo Modelo" : `Editando: ${modelData.name}`}</title>
+        <title>
+          {newModel ? "Criar Novo Modelo" : `Editando: ${modelData.name}`}
+        </title>
       </Helmet>
 
-      <div style={{ display: "flex", width: "100%", height: "100%", backgroundColor: "rgba(128, 128, 128, 0.5)", color: "#fff" }}>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(128, 128, 128, 0.5)",
+          color: "#fff",
+        }}
+      >
         <Sidebar />
         <div style={{ padding: "20px", width: "100%" }}>
           {newModel ? (
@@ -147,7 +130,12 @@ const EditModel = () => {
 
               <button
                 onClick={handleCreateModel}
-                style={{ padding: "10px", marginTop: "20px", backgroundColor: "#444", color: "#fff" }}
+                style={{
+                  padding: "10px",
+                  marginTop: "20px",
+                  backgroundColor: "#444",
+                  color: "#fff",
+                }}
               >
                 Criar Modelo
               </button>
@@ -163,7 +151,12 @@ const EditModel = () => {
                       type="number"
                       value={plane.position[0]}
                       onChange={(e) =>
-                        handleMapInputChange(index, "position", 0, e.target.value)
+                        handleMapInputChange(
+                          index,
+                          "position",
+                          0,
+                          e.target.value
+                        )
                       }
                       style={{ margin: "10px" }}
                     />
@@ -171,7 +164,12 @@ const EditModel = () => {
                       type="number"
                       value={plane.position[1]}
                       onChange={(e) =>
-                        handleMapInputChange(index, "position", 1, e.target.value)
+                        handleMapInputChange(
+                          index,
+                          "position",
+                          1,
+                          e.target.value
+                        )
                       }
                       style={{ margin: "10px" }}
                     />
@@ -179,7 +177,12 @@ const EditModel = () => {
                       type="number"
                       value={plane.position[2]}
                       onChange={(e) =>
-                        handleMapInputChange(index, "position", 2, e.target.value)
+                        handleMapInputChange(
+                          index,
+                          "position",
+                          2,
+                          e.target.value
+                        )
                       }
                       style={{ margin: "10px" }}
                     />
@@ -189,7 +192,12 @@ const EditModel = () => {
                       type="number"
                       value={plane.rotation[0]}
                       onChange={(e) =>
-                        handleMapInputChange(index, "rotation", 0, e.target.value)
+                        handleMapInputChange(
+                          index,
+                          "rotation",
+                          0,
+                          e.target.value
+                        )
                       }
                       style={{ margin: "10px" }}
                     />
@@ -197,7 +205,12 @@ const EditModel = () => {
                       type="number"
                       value={plane.rotation[1]}
                       onChange={(e) =>
-                        handleMapInputChange(index, "rotation", 1, e.target.value)
+                        handleMapInputChange(
+                          index,
+                          "rotation",
+                          1,
+                          e.target.value
+                        )
                       }
                       style={{ margin: "10px" }}
                     />
@@ -205,7 +218,12 @@ const EditModel = () => {
                       type="number"
                       value={plane.rotation[2]}
                       onChange={(e) =>
-                        handleMapInputChange(index, "rotation", 2, e.target.value)
+                        handleMapInputChange(
+                          index,
+                          "rotation",
+                          2,
+                          e.target.value
+                        )
                       }
                       style={{ margin: "10px" }}
                     />
