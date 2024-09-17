@@ -75,6 +75,7 @@ export default function Game({
         setInterfaceOpen(true);
       }
     };
+    console.log("customModels",customModels,"blockState",blockState,"chunks",chunks)
 
     document.addEventListener("pointerlockchange", handlePointerLockChange);
     document.addEventListener("pointerlockerror", handlePointerLockChange);
@@ -94,7 +95,6 @@ export default function Game({
       setInterfaceOpen(false);
     }
   };
-
   return (
     <>
       <KeyboardControls map={keyboardMap}>

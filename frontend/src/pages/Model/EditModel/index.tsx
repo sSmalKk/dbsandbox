@@ -1,22 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Sidebar } from "../../../components";
 import Game from "components/Game/Game";
 import { Helmet } from "react-helmet";
 import { useGameStore } from "../../../store/gameStore";
+import "./EditModel.css"; // Import CSS for styling
+
 const token = localStorage.getItem("token") || process.env.JWT || "";
 
 const EditModel = () => {
-  const { blockState, customModels, chunks, textures } = useGameStore();
+  const {
+    blockState,
+    customModels,
+    chunks,
+    textures,
+    setCustomModels,
+    setBlockState,
+  } = useGameStore();
 
   const [modelData, setModelData] = useState({
     name: "",
     type: 1,
-    texture: [],
+    texture: "",
     isDeleted: false,
     isActive: true,
     modelmap: [
-      { position: [0, 0, 0], rotation: [0, 0, 0], texture: "string" }, // Plane 1
-      { position: [1, 1, 1], rotation: [0, 0, 0], texture: "string" }, // Plane 2
+      {
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+        texture: "string",
+        render: true,
+      }, // Plane 1
+      {
+        position: [1, 1, 1],
+        rotation: [0, 0, 0],
+        texture: "string",
+        render: true,
+      }, // Plane 2
     ],
   });
 
@@ -29,9 +48,12 @@ const EditModel = () => {
       const updatedMap = [...prev.modelmap];
       updatedMap[planeIndex] = {
         ...updatedMap[planeIndex],
-        [field]: updatedMap[planeIndex][field].map((v, i) =>
-          i === axis ? parseFloat(value) : v
-        ),
+        [field]:
+          axis !== null
+            ? updatedMap[planeIndex][field].map((v, i) =>
+                i === axis ? parseFloat(value) : v
+              )
+            : value,
       };
       return { ...prev, modelmap: updatedMap };
     });
@@ -61,7 +83,7 @@ const EditModel = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(modelData),
+          body: JSON.stringify({data:modelData}),
         }
       );
 
@@ -69,20 +91,34 @@ const EditModel = () => {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
 
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.indexOf("application/json") !== -1) {
-        const result = await response.json();
-        console.log("Model created successfully:", result);
-      } else {
-        console.error("Response is not JSON");
-      }
+      const result = await response.json();
+      console.log("Model created successfully:", result);
+
+      // Update Zustand store with new model
+      setCustomModels(modelData.name, modelData.modelmap);
     } catch (error) {
       console.error("Error creating model:", error);
     }
   };
-  console.log("token:", token);
-  console.log("token:", modelData);
 
+  // Handle saving the model to the Zustand store
+  const handleSaveModel = () => {
+    console.log("Saving model to Zustand store:", modelData);
+  
+    // Set the block state with the name "stairs" and its properties
+    setBlockState(0, {
+      name: "stairs", // Force the name to be "stairs"
+      texture: modelData.modelmap[0].texture, // Assign only the first texture
+      model: "stairs", // Set the model name to "stairs"
+      textures: modelData.modelmap.map((plane) => plane.texture), // Keep multiple textures in the textures array
+      RigidBody: blockState[0].RigidBody,
+      RigidBodyType: blockState[0].RigidBodyType,
+    });
+  
+    // Update Zustand store with the custom model named "stairs"
+    setCustomModels("stairs", modelData.modelmap);
+  };
+  
   return (
     <>
       <Helmet>
@@ -91,62 +127,55 @@ const EditModel = () => {
         </title>
       </Helmet>
 
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(128, 128, 128, 0.5)",
-          color: "#fff",
-        }}
-      >
+      <div className="edit-model-container">
         <Sidebar />
-        <div style={{ padding: "20px", width: "100%" }}>
-          {newModel ? (
-            <div>
-              <h2>Criar Novo Modelo</h2>
-              <label>
-                Nome do Modelo:
-                <input
-                  type="text"
-                  value={modelData.name}
-                  onChange={handleNameChange}
-                  style={{ color: "#000", margin: "10px", padding: "10px" }}
-                />
-              </label>
+        <div className="edit-model-content">
+          <h2>
+            {newModel ? "Criar Novo Modelo" : `Editando: ${modelData.name}`}
+          </h2>
 
-              <label>
-                Tipo do Modelo:
-                <select
-                  value={tipoSelecionado}
-                  onChange={handleDropdownChange}
-                  style={{ color: "#000", margin: "10px", padding: "10px" }}
-                >
-                  <option value={1}>Bloco</option>
-                  <option value={2}>Esfera</option>
-                  <option value={3}>Plano</option>
-                </select>
-              </label>
+          <div className="edit-model-sidebar">
+            <h3>Lista de Planos</h3>
+            <ul>
+              {modelData.modelmap.map((plane, index) => (
+                <li key={index}>
+                  <strong>Plano {index + 1}</strong> - Posição:{" "}
+                  {plane.position.join(", ")}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-              <button
-                onClick={handleCreateModel}
-                style={{
-                  padding: "10px",
-                  marginTop: "20px",
-                  backgroundColor: "#444",
-                  color: "#fff",
-                }}
+          <div className="edit-model-form">
+            <label>
+              Nome do Modelo:
+              <input
+                type="text"
+                value={modelData.name}
+                onChange={handleNameChange}
+                className="input-field"
+              />
+            </label>
+
+            <label>
+              Tipo do Modelo:
+              <select
+                value={tipoSelecionado}
+                onChange={handleDropdownChange}
+                className="input-field"
               >
-                Criar Modelo
-              </button>
-            </div>
-          ) : (
-            <div>
-              <h2>Editando: {modelData.name}</h2>
-              <div>
-                {modelData.modelmap.map((plane, index) => (
-                  <div key={index}>
-                    <h4>Plane {index + 1} - Position</h4>
+                <option value={1}>Bloco</option>
+                <option value={2}>Esfera</option>
+                <option value={3}>Plano</option>
+              </select>
+            </label>
+
+            <div className="plane-edit-section">
+              {modelData.modelmap.map((plane, index) => (
+                <div key={index} className="plane-edit">
+                  <h4>Plano {index + 1} - Editar</h4>
+                  <label>
+                    Posição:
                     <input
                       type="number"
                       value={plane.position[0]}
@@ -158,7 +187,7 @@ const EditModel = () => {
                           e.target.value
                         )
                       }
-                      style={{ margin: "10px" }}
+                      className="input-small"
                     />
                     <input
                       type="number"
@@ -171,7 +200,7 @@ const EditModel = () => {
                           e.target.value
                         )
                       }
-                      style={{ margin: "10px" }}
+                      className="input-small"
                     />
                     <input
                       type="number"
@@ -184,10 +213,12 @@ const EditModel = () => {
                           e.target.value
                         )
                       }
-                      style={{ margin: "10px" }}
+                      className="input-small"
                     />
+                  </label>
 
-                    <h4>Plane {index + 1} - Rotation</h4>
+                  <label>
+                    Rotação:
                     <input
                       type="number"
                       value={plane.rotation[0]}
@@ -199,7 +230,7 @@ const EditModel = () => {
                           e.target.value
                         )
                       }
-                      style={{ margin: "10px" }}
+                      className="input-small"
                     />
                     <input
                       type="number"
@@ -212,7 +243,7 @@ const EditModel = () => {
                           e.target.value
                         )
                       }
-                      style={{ margin: "10px" }}
+                      className="input-small"
                     />
                     <input
                       type="number"
@@ -225,13 +256,38 @@ const EditModel = () => {
                           e.target.value
                         )
                       }
-                      style={{ margin: "10px" }}
+                      className="input-small"
                     />
-                  </div>
-                ))}
-              </div>
+                  </label>
+
+                  <label>
+                    Renderizar:
+                    <input
+                      type="checkbox"
+                      checked={plane.render}
+                      onChange={(e) =>
+                        handleMapInputChange(
+                          index,
+                          "render",
+                          null,
+                          e.target.checked
+                        )
+                      }
+                    />
+                  </label>
+                </div>
+              ))}
             </div>
-          )}
+
+            <div className="button-container">
+              <button onClick={handleSaveModel} className="btn-save">
+                Salvar
+              </button>
+              <button onClick={handleCreateModel} className="btn-create-new">
+                Criar Novo
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
