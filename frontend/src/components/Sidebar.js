@@ -64,7 +64,8 @@ const pages = [
   {
     name: "ItemCreator",
     subPages: [
-      { name: "Model", route: "/ItemCreator/Model" },
+      { name: "Model", route: "/ItemCreator/EditModel" },
+      { name: "ModelList", route: "/ItemCreator/ModelList" },
       { name: "Item", route: "/ItemCreator/Item" },
       { name: "Texture", route: "/ItemCreator/texture" },
     ],

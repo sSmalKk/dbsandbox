@@ -31,26 +31,30 @@ type UniverseData = {
   size: number;
 };
 const textures = {
-  stone: '/assets/textures/cubes/stone.png',
-  wood: '/assets/textures/cubes/wood.png',
-  brick: '/assets/textures/stairs/brick.png',
+  stone: "/assets/textures/cubes/stone.png",
+  wood: "/assets/textures/cubes/wood.png",
+  brick: "/assets/textures/stairs/brick.png",
 };
 const blockState = {
-  0: { texture: 1, model: 'box' }, // Bloco voxel
-  1: { texture: 2, model: 'globe' }, // Globo
-  2: { texture: 1, model: 'stairs' }, // Forma personalizada (escada para teste)
+  0: { texture: 1, model: "box" }, // Bloco voxel
+  1: { texture: 2, model: "globe" }, // Globo
+  2: { texture: 1, model: "stairs" }, // Forma personalizada (escada para teste)
 };
 
 const chunks = [
   {
     position: [1, 0, 0],
     cubesArray: [
-      [0, 0, 0, 1, {
-        position: [1, 0, 0],
-        cubesArray: [
-          [0, 0, 0, 2, 0],
-        ],
-      }],
+      [
+        0,
+        0,
+        0,
+        1,
+        {
+          position: [1, 0, 0],
+          cubesArray: [[0, 0, 0, 2, 0]],
+        },
+      ],
       [1, 0, 0, 1, 0],
     ],
   },
@@ -86,21 +90,19 @@ const SandboxMenu: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string>("main");
   const [universes, setUniverses] = useState<UniverseData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newUniverseData, setNewUniverseData] = useState<UniverseData>(initialUniverseData);
+  const [newUniverseData, setNewUniverseData] =
+    useState<UniverseData>(initialUniverseData);
   const [interfaceOpen] = useState<boolean>(true);
 
   const apiUrl = process.env.REACT_APP_API_URL || "";
   const token = localStorage.getItem("token") || process.env.JWT || "";
   const navigate = useNavigate();
 
-  // Definindo modelos customizados com nome para organização
   const customModels = {
     temmplatemodel: [
-      { position: [0, 0, 0.5], rotation: [0, 0, 0], render: true },   // Frente
-      { position: [0, 0, -0.5], rotation: [0, Math.PI, 0], render: true },  // Trás
-      // Adicione mais configurações de planos customizados aqui
+      { position: [0, 0, 0.5], rotation: [0, 0, 0], render: true }, // Frente
+      { position: [0, 0, -0.5], rotation: [0, Math.PI, 0], render: true }, // Trás
     ],
-    // Outros modelos podem ser adicionados aqui
   };
   useEffect(() => {
     if (!token) {
@@ -169,7 +171,9 @@ const SandboxMenu: React.FC = () => {
     }
   }, [userData, apiUrl, token]);
 
-  const handleCreateUniverse = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateUniverse = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     const updatedUniverseData = {
       ...newUniverseData,
@@ -212,7 +216,10 @@ const SandboxMenu: React.FC = () => {
             <div className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg relative">
               <div className="overflow-y-auto max-h-96 overflow-x-hidden">
                 {universes.map((universe, index) => (
-                  <div key={index} className="world-card border p-2 pr-4 mb-2 flex justify-content-between">
+                  <div
+                    key={index}
+                    className="world-card border p-2 pr-4 mb-2 flex justify-content-between"
+                  >
                     <div>
                       <h2>{universe.name}</h2>
                       <p>Description: {universe.description}</p>
@@ -237,10 +244,16 @@ const SandboxMenu: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <Button onClick={() => setIsModalOpen(true)} className="button-primary mt-4">
+              <Button
+                onClick={() => setIsModalOpen(true)}
+                className="button-primary mt-4"
+              >
                 Create New World
               </Button>
-              <Button onClick={() => setCurrentMenu("main")} className="button-secondary mt-4">
+              <Button
+                onClick={() => setCurrentMenu("main")}
+                className="button-secondary mt-4"
+              >
                 Back
               </Button>
             </div>
@@ -252,8 +265,17 @@ const SandboxMenu: React.FC = () => {
         return (
           <div className="flex bg-white justify-center items-center fixed inset-0">
             <div className="w-2/3 bg-white text-gray-900 p-4 rounded-lg shadow-lg">
-              <h1>{currentMenu === "enter-universe" ? "Enter Universe" : currentMenu === "settings" ? "Settings" : "Items"}</h1>
-              <Button onClick={() => setCurrentMenu("main")} className="button-secondary mt-4">
+              <h1>
+                {currentMenu === "enter-universe"
+                  ? "Enter Universe"
+                  : currentMenu === "settings"
+                  ? "Settings"
+                  : "Items"}
+              </h1>
+              <Button
+                onClick={() => setCurrentMenu("main")}
+                className="button-secondary mt-4"
+              >
                 Back
               </Button>
             </div>
@@ -264,17 +286,32 @@ const SandboxMenu: React.FC = () => {
         return (
           <div className="flex w-1/3 bg-white justify-center items-center fixed inset-0">
             <div className="w-2/3 bg-white text-gray-900 justify-center items-center p-4 rounded-lg shadow-lg">
-              <h1>Welcome {userData && userData.username ? userData.username : "User"}</h1>
-              <Button onClick={() => setCurrentMenu("mine-universe")} className="button-primary mt-4">
+              <h1>
+                Welcome{" "}
+                {userData && userData.username ? userData.username : "User"}
+              </h1>
+              <Button
+                onClick={() => setCurrentMenu("mine-universe")}
+                className="button-primary mt-4"
+              >
                 My Universes
               </Button>
-              <Button onClick={() => setCurrentMenu("enter-universe")} className="button-primary mt-4">
+              <Button
+                onClick={() => setCurrentMenu("enter-universe")}
+                className="button-primary mt-4"
+              >
                 Enter Universe
               </Button>
-              <Button onClick={() => setCurrentMenu("settings")} className="button-primary mt-4">
+              <Button
+                onClick={() => setCurrentMenu("settings")}
+                className="button-primary mt-4"
+              >
                 Settings
               </Button>
-              <Button onClick={() => setCurrentMenu("items")} className="button-primary mt-4">
+              <Button
+                onClick={() => setCurrentMenu("items")}
+                className="button-primary mt-4"
+              >
                 Items
               </Button>
             </div>
@@ -288,60 +325,54 @@ const SandboxMenu: React.FC = () => {
       <Helmet>
         <title>Sandbox Menu</title>
       </Helmet>
-      <div className={`flex bg-white justify-center items-center fixed inset-0 interface ${interfaceOpen ? "open" : "closed"}`}>
+      <div
+        className={`flex bg-white justify-center items-center fixed inset-0 interface ${
+          interfaceOpen ? "open" : "closed"
+        }`}
+      >
         {renderMenuContent()}
       </div>
-      <Modal style={{ zIndex: 100 }} isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} className="Modal" overlayClassName="Overlay">
-
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        className="Modal"
+        overlayClassName="Overlay"
+      >
         <div className="flex justify-center items-center fixed inset-0">
           <div className="flex flex-row bg-gray-200 p-4 rounded-lg">
             <form onSubmit={handleCreateUniverse} className="space-y-4">
               <div>
                 <label className="block mb-2">
                   Name:
-                  <Input
-                    type="text"
-                    name="name"
-                    required
-                    className="w-full"
-                  />
+                  <Input type="text" name="name" required className="w-full" />
                 </label>
               </div>
               <div>
                 <label className="block mb-2">
                   Description:
-                  <Input
-                    type="text"
-                    name="description"
-                    className="w-full"
-                  />
+                  <Input type="text" name="description" className="w-full" />
                 </label>
               </div>
               <div>
                 <label className="block mb-2">
                   Data:
-                  <Input
-                    type="text"
-                    name="data"
-                    className="w-full"
-                  />
+                  <Input type="text" name="data" className="w-full" />
                 </label>
               </div>
               <div>
                 <label className="block mb-2">
                   Code:
-                  <Input
-                    type="text"
-                    name="code"
-                    className="w-full"
-                  />
+                  <Input type="text" name="code" className="w-full" />
                 </label>
               </div>
               <div className="flex justify-between mt-4">
                 <Button type="submit" className="button-primary">
                   Save
                 </Button>
-                <Button onClick={() => setIsModalOpen(false)} className="button-secondary">
+                <Button
+                  onClick={() => setIsModalOpen(false)}
+                  className="button-secondary"
+                >
                   Close
                 </Button>
               </div>
@@ -351,7 +382,6 @@ const SandboxMenu: React.FC = () => {
       </Modal>
       <Game
         customModels={customModels}
-
         blockState={blockState}
         textures={textures}
         chunks={chunks}

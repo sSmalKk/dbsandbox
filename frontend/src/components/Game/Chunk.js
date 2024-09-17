@@ -5,10 +5,7 @@ const Chunk = ({ customModels, blockState, position, cubesArray, textures, clust
   return (
     <group position={position}>
       {cubesArray.map(([x, y, z, id]) => {
-        // Verificar se o bloco é do tipo "default" (modelType 'box')
         const isDefaultBlock = blockState[id]?.model === 'box';
-
-        // Calcular oclusões somente para blocos do tipo "default"
         const hasCubeLeft = isDefaultBlock && cubesArray.some(([cx, cy, cz, cid]) => cx === x - 1 && cy === y && cz === z && blockState[cid]?.model === 'box');
         const hasCubeRight = isDefaultBlock && cubesArray.some(([cx, cy, cz, cid]) => cx === x + 1 && cy === y && cz === z && blockState[cid]?.model === 'box');
         const hasCubeTop = isDefaultBlock && cubesArray.some(([cx, cy, cz, cid]) => cx === x && cy === y + 1 && cz === z && blockState[cid]?.model === 'box');
@@ -19,7 +16,7 @@ const Chunk = ({ customModels, blockState, position, cubesArray, textures, clust
         return (
           <VoxelCube
             blockState={blockState}
-            key={`${x}-${y}-${z}-${id}`} // Garante que a chave seja única combinando posição e id
+            key={`${x}-${y}-${z}-${id}`} 
             position={[x, y, z]}
             textures={textures}
             hasCubeLeft={hasCubeLeft}

@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
-import { RigidBody } from '@react-three/rapier';
-import * as THREE from 'three';
+import React, { useMemo } from "react";
+import { RigidBody } from "@react-three/rapier";
+import * as THREE from "three";
 
 const VoxelCube = ({
   position,
@@ -17,16 +17,16 @@ const VoxelCube = ({
   hover = true,
   customModels = [],
 }) => {
-  const modelType = blockState[id]?.model || 'box';
+  const modelType = blockState[id]?.model || "box";
   const textureName = blockState[id]?.texture;
   const rigidBodyType = blockState[id]?.RigidBody || "fixed";
 
-  // Definir o tipo de colisor corretamente, mapeando para as funções disponíveis
-  const rigidBodyShape = blockState[id]?.RigidBodyType === 'cuboid' 
-    ? 'cuboid' 
-    : blockState[id]?.RigidBodyType === 'sphere' 
-    ? 'ball' 
-    : 'cuboid'; // Default para 'cuboid'
+  const rigidBodyShape =
+    blockState[id]?.RigidBodyType === "cuboid"
+      ? "cuboid"
+      : blockState[id]?.RigidBodyType === "sphere"
+      ? "ball"
+      : "cuboid";
 
   const material = useMemo(() => {
     const texturePath = textures[textureName];
@@ -38,30 +38,74 @@ const VoxelCube = ({
   const geometry = useMemo(() => {
     let geomArray = [];
 
-    if (modelType === 'box') {
+    if (modelType === "box") {
       geomArray = [
-        { geometry: new THREE.PlaneGeometry(1, 1), position: [0, 0, 0.5], rotation: [0, 0, 0], render: !hasCubeFront },
-        { geometry: new THREE.PlaneGeometry(1, 1), position: [0, 0, -0.5], rotation: [0, Math.PI, 0], render: !hasCubeBack },
-        { geometry: new THREE.PlaneGeometry(1, 1), position: [0, 0.5, 0], rotation: [-Math.PI / 2, 0, 0], render: !hasCubeTop },
-        { geometry: new THREE.PlaneGeometry(1, 1), position: [0, -0.5, 0], rotation: [Math.PI / 2, 0, 0], render: !hasCubeBottom },
-        { geometry: new THREE.PlaneGeometry(1, 1), position: [0.5, 0, 0], rotation: [0, Math.PI / 2, 0], render: !hasCubeRight },
-        { geometry: new THREE.PlaneGeometry(1, 1), position: [-0.5, 0, 0], rotation: [0, -Math.PI / 2, 0], render: !hasCubeLeft }
+        {
+          geometry: new THREE.PlaneGeometry(1, 1),
+          position: [0, 0, 0.5],
+          rotation: [0, 0, 0],
+          render: !hasCubeFront,
+        },
+        {
+          geometry: new THREE.PlaneGeometry(1, 1),
+          position: [0, 0, -0.5],
+          rotation: [0, Math.PI, 0],
+          render: !hasCubeBack,
+        },
+        {
+          geometry: new THREE.PlaneGeometry(1, 1),
+          position: [0, 0.5, 0],
+          rotation: [-Math.PI / 2, 0, 0],
+          render: !hasCubeTop,
+        },
+        {
+          geometry: new THREE.PlaneGeometry(1, 1),
+          position: [0, -0.5, 0],
+          rotation: [Math.PI / 2, 0, 0],
+          render: !hasCubeBottom,
+        },
+        {
+          geometry: new THREE.PlaneGeometry(1, 1),
+          position: [0.5, 0, 0],
+          rotation: [0, Math.PI / 2, 0],
+          render: !hasCubeRight,
+        },
+        {
+          geometry: new THREE.PlaneGeometry(1, 1),
+          position: [-0.5, 0, 0],
+          rotation: [0, -Math.PI / 2, 0],
+          render: !hasCubeLeft,
+        },
       ];
-    } else if (modelType === 'globe') {
+    } else if (modelType === "globe") {
       geomArray = [
-        { geometry: new THREE.SphereGeometry(0.5, 32, 32), position: [0, 0, 0], rotation: [0, 0, 0], render: true },
+        {
+          geometry: new THREE.SphereGeometry(0.5, 32, 32),
+          position: [0, 0, 0],
+          rotation: [0, 0, 0],
+          render: true,
+        },
       ];
     } else if (customModels[modelType]) {
       geomArray = customModels[modelType].map((config) => ({
         geometry: new THREE.PlaneGeometry(1, 1),
         position: config.position,
         rotation: config.rotation,
-        render: config.render
+        render: config.render,
       }));
     }
 
     return geomArray;
-  }, [modelType, hasCubeFront, hasCubeBack, hasCubeTop, hasCubeBottom, hasCubeRight, hasCubeLeft, customModels]);
+  }, [
+    modelType,
+    hasCubeFront,
+    hasCubeBack,
+    hasCubeTop,
+    hasCubeBottom,
+    hasCubeRight,
+    hasCubeLeft,
+    customModels,
+  ]);
 
   const adjustedPosition = position;
 
@@ -69,7 +113,10 @@ const VoxelCube = ({
     const edgeGeom = new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1, 1));
     return (
       <lineSegments geometry={edgeGeom}>
-        <lineBasicMaterial attach="material" color={hover ? 'yellow' : 'white'} />
+        <lineBasicMaterial
+          attach="material"
+          color={hover ? "yellow" : "white"}
+        />
       </lineSegments>
     );
   }, [hover]);
@@ -88,7 +135,7 @@ const VoxelCube = ({
             />
           ) : null
         )}
-        {hover && staticEdges} {/* Mostrar o contorno apenas se hover for verdadeiro */}
+        {hover && staticEdges}
       </RigidBody>
     </group>
   );

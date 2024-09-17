@@ -3,10 +3,10 @@
  * @description :: exports deleteDependent service for project.
  */
 
-let Item = require('../model/item');
-let Texturemap = require('../model/texturemap');
-let Model = require('../model/model');
-let Universe = require('../model/Universe');
+let Modelos_item = require('../model/Modelos_item');
+let Modelos_texturemap = require('../model/Modelos_texturemap');
+let Modelos_model = require('../model/Modelos_model');
+let Universe_Settings = require('../model/Universe_Settings');
 let Chat_group = require('../model/Chat_group');
 let Chat_message = require('../model/Chat_message');
 let User = require('../model/user');
@@ -18,29 +18,29 @@ let RouteRole = require('../model/routeRole');
 let UserRole = require('../model/userRole');
 let dbService = require('.//dbService');
 
-const deleteItem = async (filter) =>{
+const deleteModelos_item = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Item,filter);
+    let response  = await dbService.deleteMany(Modelos_item,filter);
     return response;
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const deleteTexturemap = async (filter) =>{
+const deleteModelos_texturemap = async (filter) =>{
   try {
-    let texturemap = await dbService.findMany(Texturemap,filter);
-    if (texturemap && texturemap.length){
-      texturemap = texturemap.map((obj) => obj.id);
+    let modelos_texturemap = await dbService.findMany(Modelos_texturemap,filter);
+    if (modelos_texturemap && modelos_texturemap.length){
+      modelos_texturemap = modelos_texturemap.map((obj) => obj.id);
 
-      const itemFilter = { $or: [{ texture : { $in : texturemap } }] };
-      const itemCnt = await dbService.deleteMany(Item,itemFilter);
+      const Modelos_itemFilter = { $or: [{ texture : { $in : modelos_texturemap } }] };
+      const Modelos_itemCnt = await dbService.deleteMany(Modelos_item,Modelos_itemFilter);
 
-      let deleted  = await dbService.deleteMany(Texturemap,filter);
-      let response = { item :itemCnt, };
+      let deleted  = await dbService.deleteMany(Modelos_texturemap,filter);
+      let response = { Modelos_item :Modelos_itemCnt, };
       return response; 
     } else {
-      return {  texturemap : 0 };
+      return {  modelos_texturemap : 0 };
     }
 
   } catch (error){
@@ -48,20 +48,20 @@ const deleteTexturemap = async (filter) =>{
   }
 };
 
-const deleteModel = async (filter) =>{
+const deleteModelos_model = async (filter) =>{
   try {
-    let model = await dbService.findMany(Model,filter);
-    if (model && model.length){
-      model = model.map((obj) => obj.id);
+    let modelos_model = await dbService.findMany(Modelos_model,filter);
+    if (modelos_model && modelos_model.length){
+      modelos_model = modelos_model.map((obj) => obj.id);
 
-      const itemFilter = { $or: [{ model : { $in : model } }] };
-      const itemCnt = await dbService.deleteMany(Item,itemFilter);
+      const Modelos_itemFilter = { $or: [{ model : { $in : modelos_model } }] };
+      const Modelos_itemCnt = await dbService.deleteMany(Modelos_item,Modelos_itemFilter);
 
-      let deleted  = await dbService.deleteMany(Model,filter);
-      let response = { item :itemCnt, };
+      let deleted  = await dbService.deleteMany(Modelos_model,filter);
+      let response = { Modelos_item :Modelos_itemCnt, };
       return response; 
     } else {
-      return {  model : 0 };
+      return {  modelos_model : 0 };
     }
 
   } catch (error){
@@ -69,9 +69,9 @@ const deleteModel = async (filter) =>{
   }
 };
 
-const deleteUniverse = async (filter) =>{
+const deleteUniverse_Settings = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Universe,filter);
+    let response  = await dbService.deleteMany(Universe_Settings,filter);
     return response;
   } catch (error){
     throw new Error(error.message);
@@ -114,17 +114,17 @@ const deleteUser = async (filter) =>{
     if (user && user.length){
       user = user.map((obj) => obj.id);
 
-      const itemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const itemCnt = await dbService.deleteMany(Item,itemFilter);
+      const Modelos_itemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_itemCnt = await dbService.deleteMany(Modelos_item,Modelos_itemFilter);
 
-      const texturemapFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const texturemapCnt = await dbService.deleteMany(Texturemap,texturemapFilter);
+      const Modelos_texturemapFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_texturemapCnt = await dbService.deleteMany(Modelos_texturemap,Modelos_texturemapFilter);
 
-      const modelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const modelCnt = await dbService.deleteMany(Model,modelFilter);
+      const Modelos_modelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_modelCnt = await dbService.deleteMany(Modelos_model,Modelos_modelFilter);
 
-      const UniverseFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const UniverseCnt = await dbService.deleteMany(Universe,UniverseFilter);
+      const Universe_SettingsFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Universe_SettingsCnt = await dbService.deleteMany(Universe_Settings,Universe_SettingsFilter);
 
       const Chat_groupFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
       const Chat_groupCnt = await dbService.deleteMany(Chat_group,Chat_groupFilter);
@@ -152,10 +152,10 @@ const deleteUser = async (filter) =>{
 
       let deleted  = await dbService.deleteMany(User,filter);
       let response = {
-        item :itemCnt,
-        texturemap :texturemapCnt,
-        model :modelCnt,
-        Universe :UniverseCnt,
+        Modelos_item :Modelos_itemCnt,
+        Modelos_texturemap :Modelos_texturemapCnt,
+        Modelos_model :Modelos_modelCnt,
+        Universe_Settings :Universe_SettingsCnt,
         Chat_group :Chat_groupCnt,
         Chat_message :Chat_messageCnt,
         user :userCnt + deleted,
@@ -259,57 +259,57 @@ const deleteUserRole = async (filter) =>{
   }
 };
 
-const countItem = async (filter) =>{
+const countModelos_item = async (filter) =>{
   try {
-    const itemCnt =  await dbService.count(Item,filter);
-    return { item : itemCnt };
+    const Modelos_itemCnt =  await dbService.count(Modelos_item,filter);
+    return { Modelos_item : Modelos_itemCnt };
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const countTexturemap = async (filter) =>{
+const countModelos_texturemap = async (filter) =>{
   try {
-    let texturemap = await dbService.findMany(Texturemap,filter);
-    if (texturemap && texturemap.length){
-      texturemap = texturemap.map((obj) => obj.id);
+    let modelos_texturemap = await dbService.findMany(Modelos_texturemap,filter);
+    if (modelos_texturemap && modelos_texturemap.length){
+      modelos_texturemap = modelos_texturemap.map((obj) => obj.id);
 
-      const itemFilter = { $or: [{ texture : { $in : texturemap } }] };
-      const itemCnt =  await dbService.count(Item,itemFilter);
+      const Modelos_itemFilter = { $or: [{ texture : { $in : modelos_texturemap } }] };
+      const Modelos_itemCnt =  await dbService.count(Modelos_item,Modelos_itemFilter);
 
-      let response = { item : itemCnt, };
+      let response = { Modelos_item : Modelos_itemCnt, };
       return response; 
     } else {
-      return {  texturemap : 0 };
+      return {  modelos_texturemap : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const countModel = async (filter) =>{
+const countModelos_model = async (filter) =>{
   try {
-    let model = await dbService.findMany(Model,filter);
-    if (model && model.length){
-      model = model.map((obj) => obj.id);
+    let modelos_model = await dbService.findMany(Modelos_model,filter);
+    if (modelos_model && modelos_model.length){
+      modelos_model = modelos_model.map((obj) => obj.id);
 
-      const itemFilter = { $or: [{ model : { $in : model } }] };
-      const itemCnt =  await dbService.count(Item,itemFilter);
+      const Modelos_itemFilter = { $or: [{ model : { $in : modelos_model } }] };
+      const Modelos_itemCnt =  await dbService.count(Modelos_item,Modelos_itemFilter);
 
-      let response = { item : itemCnt, };
+      let response = { Modelos_item : Modelos_itemCnt, };
       return response; 
     } else {
-      return {  model : 0 };
+      return {  modelos_model : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const countUniverse = async (filter) =>{
+const countUniverse_Settings = async (filter) =>{
   try {
-    const UniverseCnt =  await dbService.count(Universe,filter);
-    return { Universe : UniverseCnt };
+    const Universe_SettingsCnt =  await dbService.count(Universe_Settings,filter);
+    return { Universe_Settings : Universe_SettingsCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -349,17 +349,17 @@ const countUser = async (filter) =>{
     if (user && user.length){
       user = user.map((obj) => obj.id);
 
-      const itemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const itemCnt =  await dbService.count(Item,itemFilter);
+      const Modelos_itemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_itemCnt =  await dbService.count(Modelos_item,Modelos_itemFilter);
 
-      const texturemapFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const texturemapCnt =  await dbService.count(Texturemap,texturemapFilter);
+      const Modelos_texturemapFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_texturemapCnt =  await dbService.count(Modelos_texturemap,Modelos_texturemapFilter);
 
-      const modelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const modelCnt =  await dbService.count(Model,modelFilter);
+      const Modelos_modelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_modelCnt =  await dbService.count(Modelos_model,Modelos_modelFilter);
 
-      const UniverseFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const UniverseCnt =  await dbService.count(Universe,UniverseFilter);
+      const Universe_SettingsFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Universe_SettingsCnt =  await dbService.count(Universe_Settings,Universe_SettingsFilter);
 
       const Chat_groupFilter = { $or: [{ updatedBy : { $in : user } },{ addedBy : { $in : user } }] };
       const Chat_groupCnt =  await dbService.count(Chat_group,Chat_groupFilter);
@@ -386,10 +386,10 @@ const countUser = async (filter) =>{
       const userRoleCnt =  await dbService.count(UserRole,userRoleFilter);
 
       let response = {
-        item : itemCnt,
-        texturemap : texturemapCnt,
-        model : modelCnt,
-        Universe : UniverseCnt,
+        Modelos_item : Modelos_itemCnt,
+        Modelos_texturemap : Modelos_texturemapCnt,
+        Modelos_model : Modelos_modelCnt,
+        Universe_Settings : Universe_SettingsCnt,
         Chat_group : Chat_groupCnt,
         Chat_message : Chat_messageCnt,
         user : userCnt,
@@ -488,59 +488,59 @@ const countUserRole = async (filter) =>{
   }
 };
 
-const softDeleteItem = async (filter,updateBody) =>{  
+const softDeleteModelos_item = async (filter,updateBody) =>{  
   try {
-    const itemCnt =  await dbService.updateMany(Item,filter);
-    return { item : itemCnt };
+    const Modelos_itemCnt =  await dbService.updateMany(Modelos_item,filter);
+    return { Modelos_item : Modelos_itemCnt };
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const softDeleteTexturemap = async (filter,updateBody) =>{  
+const softDeleteModelos_texturemap = async (filter,updateBody) =>{  
   try {
-    let texturemap = await dbService.findMany(Texturemap,filter, { id:1 });
-    if (texturemap.length){
-      texturemap = texturemap.map((obj) => obj.id);
+    let modelos_texturemap = await dbService.findMany(Modelos_texturemap,filter, { id:1 });
+    if (modelos_texturemap.length){
+      modelos_texturemap = modelos_texturemap.map((obj) => obj.id);
 
-      const itemFilter = { '$or': [{ texture : { '$in' : texturemap } }] };
-      const itemCnt = await dbService.updateMany(Item,itemFilter,updateBody);
-      let updated = await dbService.updateMany(Texturemap,filter,updateBody);
+      const Modelos_itemFilter = { '$or': [{ texture : { '$in' : modelos_texturemap } }] };
+      const Modelos_itemCnt = await dbService.updateMany(Modelos_item,Modelos_itemFilter,updateBody);
+      let updated = await dbService.updateMany(Modelos_texturemap,filter,updateBody);
 
-      let response = { item :itemCnt, };
+      let response = { Modelos_item :Modelos_itemCnt, };
       return response;
     } else {
-      return {  texturemap : 0 };
+      return {  modelos_texturemap : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const softDeleteModel = async (filter,updateBody) =>{  
+const softDeleteModelos_model = async (filter,updateBody) =>{  
   try {
-    let model = await dbService.findMany(Model,filter, { id:1 });
-    if (model.length){
-      model = model.map((obj) => obj.id);
+    let modelos_model = await dbService.findMany(Modelos_model,filter, { id:1 });
+    if (modelos_model.length){
+      modelos_model = modelos_model.map((obj) => obj.id);
 
-      const itemFilter = { '$or': [{ model : { '$in' : model } }] };
-      const itemCnt = await dbService.updateMany(Item,itemFilter,updateBody);
-      let updated = await dbService.updateMany(Model,filter,updateBody);
+      const Modelos_itemFilter = { '$or': [{ model : { '$in' : modelos_model } }] };
+      const Modelos_itemCnt = await dbService.updateMany(Modelos_item,Modelos_itemFilter,updateBody);
+      let updated = await dbService.updateMany(Modelos_model,filter,updateBody);
 
-      let response = { item :itemCnt, };
+      let response = { Modelos_item :Modelos_itemCnt, };
       return response;
     } else {
-      return {  model : 0 };
+      return {  modelos_model : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const softDeleteUniverse = async (filter,updateBody) =>{  
+const softDeleteUniverse_Settings = async (filter,updateBody) =>{  
   try {
-    const UniverseCnt =  await dbService.updateMany(Universe,filter);
-    return { Universe : UniverseCnt };
+    const Universe_SettingsCnt =  await dbService.updateMany(Universe_Settings,filter);
+    return { Universe_Settings : Universe_SettingsCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -581,17 +581,17 @@ const softDeleteUser = async (filter,updateBody) =>{
     if (user.length){
       user = user.map((obj) => obj.id);
 
-      const itemFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const itemCnt = await dbService.updateMany(Item,itemFilter,updateBody);
+      const Modelos_itemFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Modelos_itemCnt = await dbService.updateMany(Modelos_item,Modelos_itemFilter,updateBody);
 
-      const texturemapFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const texturemapCnt = await dbService.updateMany(Texturemap,texturemapFilter,updateBody);
+      const Modelos_texturemapFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Modelos_texturemapCnt = await dbService.updateMany(Modelos_texturemap,Modelos_texturemapFilter,updateBody);
 
-      const modelFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const modelCnt = await dbService.updateMany(Model,modelFilter,updateBody);
+      const Modelos_modelFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Modelos_modelCnt = await dbService.updateMany(Modelos_model,Modelos_modelFilter,updateBody);
 
-      const UniverseFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const UniverseCnt = await dbService.updateMany(Universe,UniverseFilter,updateBody);
+      const Universe_SettingsFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Universe_SettingsCnt = await dbService.updateMany(Universe_Settings,Universe_SettingsFilter,updateBody);
 
       const Chat_groupFilter = { '$or': [{ updatedBy : { '$in' : user } },{ addedBy : { '$in' : user } }] };
       const Chat_groupCnt = await dbService.updateMany(Chat_group,Chat_groupFilter,updateBody);
@@ -619,10 +619,10 @@ const softDeleteUser = async (filter,updateBody) =>{
       let updated = await dbService.updateMany(User,filter,updateBody);
 
       let response = {
-        item :itemCnt,
-        texturemap :texturemapCnt,
-        model :modelCnt,
-        Universe :UniverseCnt,
+        Modelos_item :Modelos_itemCnt,
+        Modelos_texturemap :Modelos_texturemapCnt,
+        Modelos_model :Modelos_modelCnt,
+        Universe_Settings :Universe_SettingsCnt,
         Chat_group :Chat_groupCnt,
         Chat_message :Chat_messageCnt,
         user :userCnt + updated,
@@ -724,10 +724,10 @@ const softDeleteUserRole = async (filter,updateBody) =>{
 };
 
 module.exports = {
-  deleteItem,
-  deleteTexturemap,
-  deleteModel,
-  deleteUniverse,
+  deleteModelos_item,
+  deleteModelos_texturemap,
+  deleteModelos_model,
+  deleteUniverse_Settings,
   deleteChat_group,
   deleteChat_message,
   deleteUser,
@@ -737,10 +737,10 @@ module.exports = {
   deleteProjectRoute,
   deleteRouteRole,
   deleteUserRole,
-  countItem,
-  countTexturemap,
-  countModel,
-  countUniverse,
+  countModelos_item,
+  countModelos_texturemap,
+  countModelos_model,
+  countUniverse_Settings,
   countChat_group,
   countChat_message,
   countUser,
@@ -750,10 +750,10 @@ module.exports = {
   countProjectRoute,
   countRouteRole,
   countUserRole,
-  softDeleteItem,
-  softDeleteTexturemap,
-  softDeleteModel,
-  softDeleteUniverse,
+  softDeleteModelos_item,
+  softDeleteModelos_texturemap,
+  softDeleteModelos_model,
+  softDeleteUniverse_Settings,
   softDeleteChat_group,
   softDeleteChat_message,
   softDeleteUser,

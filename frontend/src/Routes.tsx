@@ -8,12 +8,13 @@ import Register from "pages/Register";
 import Configuration from "pages/Configuration";
 import SandboxMenu from "pages/SandboxMenu";
 import Loading from "pages/Loading";
- import Post from "pages/Post";
+import Post from "pages/Post";
 import SandboxSurvival from "pages/SandboxSurvival";
 import Dashboard from "pages/Dashboard";
-import Item from "pages/Item";
-import Texture from "pages/Texture";
-import Model from "pages/Model";
+import Item from "pages/Model/Item";
+import Texture from "pages/Model/Texture";
+import ModelList from "pages/Model/ModelList";
+import EditModel from "pages/Model/EditModel";
 
 const ProjectRoutes = () => {
   let element = useRoutes([
@@ -38,8 +39,12 @@ const ProjectRoutes = () => {
       element: <Dashboard />,
     },
     {
-      path: "/ItemCreator/model", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
-      element: <Model />,
+      path: "/ItemCreator/EditModel", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
+      element: <EditModel />,
+    },
+    {
+      path: "/ItemCreator/ModelList", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
+      element: <ModelList />,
     },
     {
       path: "/ItemCreator/texture", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI

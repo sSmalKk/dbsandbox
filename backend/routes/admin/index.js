@@ -6,10 +6,10 @@
 const express =  require('express');
 const router =  express.Router();
 router.use('/admin/auth',require('./auth'));
-router.use(require('./itemRoutes'));
-router.use(require('./texturemapRoutes'));
-router.use(require('./modelRoutes'));
-router.use(require('./UniverseRoutes'));
+router.use(require('./Modelos_itemRoutes'));
+router.use(require('./Modelos_texturemapRoutes'));
+router.use(require('./Modelos_modelRoutes'));
+router.use(require('./Universe_SettingsRoutes'));
 router.use(require('./Chat_groupRoutes'));
 router.use(require('./Chat_messageRoutes'));
 router.use(require('./userRoutes'));

@@ -3,7 +3,7 @@
 @tailwind utilities;
 .cardblack {
   width: 190px;
-  height: 254px;
+  min-height: 32px; /* Mínimo, mas pode crescer conforme o conteúdo */
   margin: 0 auto;
   background-color: #555;
   border-radius: 8px;
@@ -12,13 +12,18 @@
 
 .cardwhite {
   width: 190px;
-  height: 254px;
+  min-height: 32px; /* Mínimo, mas pode crescer conforme o conteúdo */
   margin: 0 auto;
-  background-color: #F8FBFE;
+  background-color: #f8fbfe;
   border-radius: 8px;
   z-index: 1;
- }
- 
+}
+.card__content {
+  padding-top: 0px; /* Adicionando padding para dar espaçamento interno */
+  padding-right: 20px; /* Adicionando padding para dar espaçamento interno */
+  padding-left: 20px; /* Adicionando padding para dar espaçamento interno */
+  padding-bottom: 20px; /* Adicionando padding para dar espaçamento interno */
+}
 .tools {
   display: flex;
   align-items: center;
@@ -33,24 +38,23 @@
   padding: 1px;
   border-radius: 50%;
 }
- 
- .circle {
+
+.circle {
   padding: 0 4px;
- }
- 
- 
- .red {
+}
+
+.red {
   background-color: #ff605c;
- }
- 
- .yellow {
+}
+
+.yellow {
   background-color: #ffbd44;
- }
- 
- .green {
+}
+
+.green {
   background-color: #00ca4e;
- }
- 
+}
+
 [type="text"],
 input:where(:not([type])),
 [type="email"],
