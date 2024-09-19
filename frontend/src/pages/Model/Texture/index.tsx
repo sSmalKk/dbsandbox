@@ -6,7 +6,7 @@ import { useGameStore } from "../../../store/gameStore";
 import "./EditTexture.css";
 
 const token = localStorage.getItem("token") || process.env.JWT || "";
-const EditTexture = () => {
+const Texture = () => {
   const {
     chunks,
     customModels,
@@ -78,7 +78,7 @@ const EditTexture = () => {
   const createTextureRecord = async (name, description, path) => {
     try {
       const response = await fetch(
-        "http://localhost:5000/admin/modelos_texturemap/create",
+        "http://localhost:5000/admin/modelos_texture/create",
         {
           method: "POST",
           headers: {
@@ -171,4 +171,4 @@ const EditTexture = () => {
   );
 };
 
-export default EditTexture;
+export default Texture;

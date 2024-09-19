@@ -11,11 +11,14 @@ import Loading from "pages/Loading";
 import Post from "pages/Post";
 import SandboxSurvival from "pages/SandboxSurvival";
 import Dashboard from "pages/Dashboard";
-import Item from "pages/Model/Item";
-import Texture from "pages/Model/Texture";
 import ModelList from "pages/Model/ModelList";
 import TextureList from "pages/Model/TextureList";
-import EditModel from "pages/Model/EditModel";
+import ItemList from "pages/Model/ItemList";
+import Texture from "pages/Model/Texture";
+import TextureMap from "pages/Model/TextureMap";
+import Model from "pages/Model/Model";
+import Item from "pages/Model/Item";
+import TextureMapList from "pages/Model/TextureMapList";
 
 const ProjectRoutes = () => {
   let element = useRoutes([
@@ -40,23 +43,36 @@ const ProjectRoutes = () => {
       element: <Dashboard />,
     },
     {
-      path: "/ItemCreator/EditModel",
-      element: <EditModel />,
-    },
-    {
       path: "/ItemCreator/ModelList",
       element: <ModelList />,
+    },
+    {
+      path: "/ItemCreator/Model",
+      element: <Model />,
     },
     {
       path: "/ItemCreator/TextureList",
       element: <TextureList />,
     },
     {
-      path: "/ItemCreator/texture",
+      path: "/ItemCreator/Texture",
       element: <Texture />,
     },
     {
-      path: "/ItemCreator/item",
+      path: "/ItemCreator/TextureMapList",
+      element: <TextureMapList />,
+    },
+    {
+      path: "/ItemCreator/TextureMap",
+      element: <TextureMap />,
+    },
+    {
+      path: "/ItemCreator/ItemList",
+      element: <ItemList />,
+    },
+    ,
+    {
+      path: "/ItemCreator/Item",
       element: <Item />,
     },
     {

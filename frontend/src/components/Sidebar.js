@@ -64,12 +64,14 @@ const pages = [
   {
     name: "ItemCreator",
     subPages: [
-      { name: "Item", route: "/ItemCreator/Item" },
+      { name: "Item ", route: "/ItemCreator/Item" },
       { name: "ItemList", route: "/ItemCreator/ItemList" },
-      { name: "Model", route: "/ItemCreator/EditModel" },
+      { name: "Model", route: "/ItemCreator/Model" },
       { name: "ModelList", route: "/ItemCreator/ModelList" },
       { name: "Texture", route: "/ItemCreator/texture" },
       { name: "TextureList", route: "/ItemCreator/TextureList" },
+      { name: "TextureMap", route: "/ItemCreator/TextureMap" },
+      { name: "TextureMapList", route: "/ItemCreator/TextureMapList" },
     ],
   },
   {

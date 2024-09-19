@@ -4,6 +4,7 @@ import Game from "components/Game/Game";
 import { Helmet } from "react-helmet";
 import { useGameStore } from "../../../store/gameStore"; // Zustand store
 import Navegador from "components/Navegador";
+import "./TextureList.css";
 
 const TextureList = () => {
   const [customTextures, setCustomTextures] = useState([]);
@@ -14,7 +15,7 @@ const TextureList = () => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
     try {
       const response = await fetch(
-        `http://localhost:5000/admin/modelos_texturemap/list`,
+        `http://localhost:5000/admin/modelos_texture/list`,
         {
           method: "POST",
           headers: {
@@ -38,6 +39,7 @@ const TextureList = () => {
   };
 
   useEffect(() => {
+
     fetchRecentModels();
   }, []);
 
@@ -80,46 +82,48 @@ const TextureList = () => {
       }
     }
   };
-
   return (
     <>
       <Helmet>
         <title>Lista de Texturas</title>
       </Helmet>
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          height: "100%",
-          zIndex: "999",
-          backgroundColor: "#f0f0f030",
-        }}
-      >
+      <div className="texture-list-container">
         <Sidebar />
-        <div
-          style={{ padding: "20px", width: "100%", backgroundColor: "#f0f0f0" }}
-        >
+        <div className="texture-list-content">
           <h2>Lista de Texturas</h2>
-          <ul>
+          <ul className="texture-list">
             {customTextures.length > 0 ? (
               customTextures.map((texture) => (
-                <li key={texture._id || texture.id}>
-                  <strong>Nome:</strong> {texture.name} <br />
-                  <strong>Descrição:</strong> {texture.description} <br />
-                  <strong>Path:</strong> {texture.path} <br />
-                  <strong>Tipo:</strong> {texture.type} <br />
-                  <button onClick={() => handleEdit(texture._id || texture.id)}>
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleDelete(texture._id || texture.id)}
-                  >
-                    Excluir
-                  </button>
+                <li key={texture._id || texture.id} className="texture-item">
+                  <div className="texture-preview-wrapper">
+                    <img
+                      src={"http://localhost:5000"+texture.main}
+                      alt={texture.name}
+                      className="texture-preview"
+                    />
+                  </div>
+                  <div className="texture-info">
+                    <strong>Nome:</strong> {texture.name} <br />
+                    <strong>Descrição:</strong> {texture.description} <br />
+                    <strong>Tipo:</strong> {texture.type} <br />
+                  </div>
+
+                  <div className="texture-actions">
+                    <button
+                      onClick={() => handleEdit(texture._id || texture.id)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleDelete(texture._id || texture.id)}
+                    >
+                      Excluir
+                    </button>
+                  </div>
                 </li>
               ))
             ) : (
-              <li>Nenhuma textura encontrada</li>
+              <li className="no-textures">Nenhuma textura encontrada</li>
             )}
           </ul>
         </div>

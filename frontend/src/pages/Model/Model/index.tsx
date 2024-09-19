@@ -9,7 +9,7 @@ import "./EditModel.css"; // Import CSS for styling
 const token = localStorage.getItem("token") || process.env.JWT || "";
 const savedModelId = localStorage.getItem("modelId");
 
-const EditModel = () => {
+const Model = () => {
   const {
     blockState,
     customModels,
@@ -358,4 +358,4 @@ const EditModel = () => {
   );
 };
 
-export default EditModel;
+export default Model;

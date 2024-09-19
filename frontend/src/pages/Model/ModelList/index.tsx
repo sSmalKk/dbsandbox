@@ -4,6 +4,7 @@ import Game from "components/Game/Game";
 import { Helmet } from "react-helmet";
 import { useGameStore } from "../../../store/gameStore"; // Zustand store
 import Navegador from "components/Navegador";
+import "./ModelList.css"; // Arquivo CSS para customizar o estilo da lista
 
 const ModelList = () => {
   const [modelos, setModelos] = useState([]);
@@ -51,7 +52,7 @@ const ModelList = () => {
   const handleDelete = async (modeloId) => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this model?"
+      "Tem certeza que deseja deletar esse modelo?"
     );
 
     if (confirmDelete) {
@@ -69,14 +70,14 @@ const ModelList = () => {
 
         const result = await response.json();
         if (result.status === "SUCCESS") {
-          alert("Model deleted successfully!");
+          alert("Modelo deletado com sucesso!");
           // Re-fetch models to force refresh after deletion
           fetchRecentModels();
         } else {
-          console.error("Error deleting model:", result);
+          console.error("Erro ao deletar modelo:", result);
         }
       } catch (error) {
-        console.error("Error deleting model:", error);
+        console.error("Erro ao deletar modelo:", error);
       }
     }
   };
@@ -86,35 +87,34 @@ const ModelList = () => {
       <Helmet>
         <title>Lista de Modelos</title>
       </Helmet>
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          height: "100%",
-          zIndex: "999",
-          backgroundColor: "#f0f0f030",
-        }}
-      >
+      <div className="model-list-container">
         <Sidebar />
-        <div
-          style={{ padding: "20px", width: "100%", backgroundColor: "#f0f0f0" }}
-        >
+        <div className="model-list-content">
           <h2>Lista de Modelos</h2>
-          <ul>
-            {Array.isArray(modelos) && modelos.length > 0 ? (
+          <ul className="model-list">
+            {modelos.length > 0 ? (
               modelos.map((modelo) => (
-                <li key={modelo._id || modelo.id}>
-                  {modelo.name} (Tipo: {modelo.type}){" "}
-                  <button onClick={() => handleEdit(modelo._id || modelo.id)}>
-                    Editar
-                  </button>
-                  <button onClick={() => handleDelete(modelo._id || modelo.id)}>
-                    Excluir
-                  </button>
+                <li key={modelo._id || modelo.id} className="model-item">
+                  <div className="model-info">
+                    <strong>Nome:</strong> {modelo.name} <br />
+                    <strong>Tipo:</strong> {modelo.type} <br />
+                  </div>
+                  <div className="model-actions">
+                    <button
+                      onClick={() => handleEdit(modelo._id || modelo.id)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleDelete(modelo._id || modelo.id)}
+                    >
+                      Excluir
+                    </button>
+                  </div>
                 </li>
               ))
             ) : (
-              <li>Nenhum modelo encontrado</li>
+              <li className="no-models">Nenhum modelo encontrado</li>
             )}
           </ul>
         </div>
