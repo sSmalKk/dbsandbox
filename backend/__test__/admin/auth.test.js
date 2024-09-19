@@ -30,36 +30,36 @@ beforeAll(async function (){
 
     const user = dbInstance.collection('users');
     insertedUser = await user.insertOne({
-      username: 'Jasper83',
-      password: 'glOFIGp_D7AYe6A',
-      email: 'Kendrick.Keeling@gmail.com',
-      name: 'Jean Gislason',
+      username: 'Cristina_Bode',
+      password: 'CnobtKwL4A_l4Gv',
+      email: 'Lon_Bosco37@gmail.com',
+      name: 'Lucille Kuhic',
       shippingAddress: [
         {
           _id: false,
-          pincode: 'scalable',
-          address1: 'calculating',
-          address2: 'Clothing',
-          landmark: 'Gloves',
-          city: 'bottom-line',
-          isDefault: true,
-          state: 'Security',
-          addressType: 'Lesotho',
-          fullName: 'Towels',
-          mobile: 538,
-          addressNo: 815
+          pincode: 'exploit',
+          address1: 'Pants',
+          address2: 'matrix',
+          landmark: 'Administrator',
+          city: 'PCI',
+          isDefault: false,
+          state: 'solutions',
+          addressType: 'Branch',
+          fullName: 'frictionless',
+          mobile: 744,
+          addressNo: 321
         }
       ],
       wishlist: [ {
         _id: false,
-        productId: 'port' 
+        productId: 'Keyboard' 
       } ],
-      userType: 573,
-      mobileNo: '(147) 318-8296',
+      userType: 238,
+      mobileNo: '(622) 952-2803',
       resetPasswordLink: {},
-      loginRetryLimit: 61,
-      loginReactiveTime: '2024-11-06T16:26:50.537Z',
-      id: '66eba33552c5eb01c33af572'
+      loginRetryLimit: 129,
+      loginReactiveTime: '2025-02-10T20:04:09.289Z',
+      id: '66ec5855a951d002a33f4a37'
     });
   }
   catch (error) {
@@ -77,30 +77,30 @@ describe('POST /register -> if email and username is given', () => {
     let registeredUser = await request(app)
       .post('/admin/auth/register')
       .send({
-        'username':'Cory_Hettinger',
-        'password':'aMRffJTVkbDC8Qf',
-        'email':'Korey82@yahoo.com',
-        'name':'Rogelio Dibbert Sr.',
+        'username':'Viviane.Kilback2',
+        'password':'Np8eBzVmIZTP5zO',
+        'email':'Allie_Hintz@yahoo.com',
+        'name':'Marguerite Schulist',
         'shippingAddress':[{
           '_id':false,
-          'pincode':'Handmade',
-          'address1':'Ohio',
-          'address2':'cross-platform',
-          'landmark':'Territories',
-          'city':'Ohio',
+          'pincode':'Arkansas',
+          'address1':'Representative',
+          'address2':'payment',
+          'landmark':'adapter',
+          'city':'hack',
           'isDefault':false,
-          'state':'Island',
-          'addressType':'Borders',
-          'fullName':'Avon',
-          'mobile':268,
-          'addressNo':683
+          'state':'sexy',
+          'addressType':'compelling',
+          'fullName':'generating',
+          'mobile':158,
+          'addressNo':81
         }],
         'wishlist':[{
           '_id':false,
-          'productId':'redundant'
+          'productId':'schemas'
         }],
         'userType':authConstant.USER_TYPES.Admin,
-        'mobileNo':'(727) 476-6143',
+        'mobileNo':'(939) 264-2880',
         'addedBy':insertedUser.insertedId,
         'updatedBy':insertedUser.insertedId
       });
@@ -116,8 +116,8 @@ describe('POST /login -> if username and password is correct', () => {
       .post('/admin/auth/login')
       .send(
         {
-          username: 'Cory_Hettinger',
-          password: 'aMRffJTVkbDC8Qf'
+          username: 'Viviane.Kilback2',
+          password: 'Np8eBzVmIZTP5zO'
         }
       );
     expect(user.statusCode).toBe(200);
@@ -136,7 +136,7 @@ describe('POST /login -> if username is incorrect', () => {
       .send(
         {
           username: 'wrong.username',
-          password: 'aMRffJTVkbDC8Qf'
+          password: 'Np8eBzVmIZTP5zO'
         }
       );
 
@@ -151,7 +151,7 @@ describe('POST /login -> if password is incorrect', () => {
       .post('/admin/auth/login')
       .send(
         {
-          username: 'Cory_Hettinger',
+          username: 'Viviane.Kilback2',
           password: 'wrong@password'
         }
       );
@@ -198,7 +198,7 @@ describe('POST /forgot-password -> if email passed from request body is valid an
   test('should return success message', async () => {
     let user = await request(app)
       .post('/admin/auth/forgot-password')
-      .send({ 'email':'Korey82@yahoo.com', });
+      .send({ 'email':'Allie_Hintz@yahoo.com', });
 
     expect(user.statusCode).toBe(200);
     expect(user.body.status).toBe('SUCCESS');
@@ -211,8 +211,8 @@ describe('POST /validate-otp -> OTP is sent in request body and OTP is correct',
       .post('/admin/auth/login')
       .send(
         {
-          username: 'Cory_Hettinger',
-          password: 'aMRffJTVkbDC8Qf'
+          username: 'Viviane.Kilback2',
+          password: 'Np8eBzVmIZTP5zO'
         }).then(login => () => {
         return request(app)
           .get(`/admin/user/${login.body.data.id}`)
@@ -260,8 +260,8 @@ describe('PUT /reset-password -> code is sent in request body and code is correc
       .post('/admin/auth/login')
       .send(
         {
-          username: 'Cory_Hettinger',
-          password: 'aMRffJTVkbDC8Qf'
+          username: 'Viviane.Kilback2',
+          password: 'Np8eBzVmIZTP5zO'
         }).then(login => () => {
         return request(app)
           .get(`/admin/user/${login.body.data.id}`)

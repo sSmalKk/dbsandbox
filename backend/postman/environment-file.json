@@ -1,5 +1,5 @@
 {
-  "id": "9016e057-0ccf-4012-9aba-5fc1d4dacb59",
+  "id": "5c2806b6-ce55-44f0-b5fd-35e17f61c1b3",
   "name": "sandboxpediadatabase_environment",
   "values": [
     {
@@ -14,6 +14,6 @@
     }
   ],
   "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2024-09-19T04:06:13.118Z",
+  "_postman_exported_at": "2024-09-19T16:59:01.409Z",
   "_postman_exported_using": "Postman"
 }

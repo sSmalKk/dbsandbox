@@ -8,7 +8,14 @@ import "./ModelList.css";
 
 const ModelList = () => {
   const [customTextures, setCustomTextures] = useState([]);
-  const { blockState, customModels, chunks, textures } = useGameStore();
+  const {
+    blockState,
+    customModels,
+    setCustomModels,
+    setBlockState,
+    chunks,
+    textures,
+  } = useGameStore();
   const { navegar } = Navegador(); // Usar o Navegador
 
   const fetchRecentModels = async () => {
@@ -42,23 +49,46 @@ const ModelList = () => {
     fetchRecentModels();
   }, []);
 
+  // Function to handle hover (mouse enter) on a model
+  const handleMouseEnter = (model) => {
+    // Set the model in customModels
+    const modelName = model.name;
+    const modelMapArray = Array.isArray(model.modelmap) ? model.modelmap : [];
+
+    // Update customModels and blockState
+    setCustomModels(modelName, modelMapArray);
+    setBlockState(0, {
+      ...blockState[0],
+      model: modelName,
+    });
+  };
+
+  // Function to clear the block state on mouse leave
+  const handleMouseLeave = () => {
+    setBlockState(0, {
+      ...blockState[0],
+      model: null,
+      name: null,
+    });
+  };
+
   const handleEdit = (textureId) => {
-    // Salvar apenas o ID do texture no localStorage
+    // Salvar apenas o ID do modelo no localStorage
     localStorage.setItem("selectedModelId", textureId);
     // Redirecionar para a página de edição
-    navegar(`/ItemCreator/EditModel/`);
-  };
+    navegar(`/ItemCreator/Model/`);
+  };    console.log(localStorage.getItem("token"));
 
   const handleDelete = async (textureId) => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
     const confirmDelete = window.confirm(
-      "Tem certeza que deseja deletar essa textura?"
+      "Tem certeza que deseja deletar esse modelo?"
     );
-
+    
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://localhost:5000/admin/modelos_texturemap/delete/${textureId}`,
+          `http://localhost:5000/admin/modelos_model/delete/${textureId}`,
           {
             method: "DELETE",
             headers: {
@@ -70,17 +100,17 @@ const ModelList = () => {
 
         const result = await response.json();
         if (result.status === "SUCCESS") {
-          alert("Textura deletada com sucesso!");
+          alert("Modelo deletado com sucesso!");
           // Re-fetch models to force refresh after deletion
           fetchRecentModels();
         } else {
-          console.error("Erro ao deletar textura:", result);
+          console.error("Erro ao deletar modelo:", result);
         }
       } catch (error) {
-        console.error("Erro ao deletar textura:", error);
+        console.error("Erro ao deletar modelo:", error);
       }
     }
-  };console.log(customTextures)
+  };
   return (
     <>
       <Helmet>
@@ -93,7 +123,12 @@ const ModelList = () => {
           <ul className="texture-list">
             {customTextures.length > 0 ? (
               customTextures.map((texture) => (
-                <li key={texture._id || texture.id} className="texture-item">
+                <li
+                  key={texture._id || texture.id}
+                  className="texture-item"
+                  onMouseEnter={() => handleMouseEnter(texture)} // Handle hover
+                  onMouseLeave={handleMouseLeave} // Reset on mouse leave
+                >
                   <div className="texture-preview-wrapper">
                     <img
                       src={"http://localhost:5000/" + texture.link}
@@ -122,7 +157,7 @@ const ModelList = () => {
                 </li>
               ))
             ) : (
-              <li className="no-textures">Nenhuma textura encontrada</li>
+              <li className="no-textures">Nenhum modelo encontrado</li>
             )}
           </ul>
         </div>

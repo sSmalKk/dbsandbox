@@ -104,6 +104,33 @@ export default function Game({
   };
   return (
     <>
+      <div
+        style={{
+          position: "fixed",
+          botton: "20%",
+          right: "20%",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          padding: "20px",
+          borderRadius: "10px",
+          color: "#fff",
+          zIndex: 100,
+        }}
+      >
+        <h3>Game Data</h3>
+        <pre style={{ whiteSpace: "pre-wrap" }}>
+          <strong>Custom Models:</strong>{" "}
+          {JSON.stringify(customModels, null, 2)}
+          <br />
+          <strong>Block State:</strong> {JSON.stringify(blockState, null, 2)}
+          <br />
+          <strong>Chunks:</strong> {JSON.stringify(chunks, null, 2)}
+          <br />
+          <strong>Textures:</strong> {JSON.stringify(textures, null, 2)}
+          <br />
+          <strong>Player Position:</strong>{" "}
+          {JSON.stringify(chunkPosition, null, 2)}
+        </pre>
+      </div>
       <KeyboardControls map={keyboardMap}>
         <Canvas
           shadows
@@ -143,19 +170,21 @@ export default function Game({
       </KeyboardControls>
 
       {interfaceOpen && (
-        <div
-          style={{
-            backgroundColor: "#1d1f21",
-            color: "#fff",
-            position: "fixed",
-            top: "90%",
-            left: "15%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 100,
-          }}
-        >
-          <button onClick={handleMouseLockToggle}>Travar Mouse</button>
-        </div>
+        <>
+          <div
+            style={{
+              backgroundColor: "#1d1f21",
+              color: "#fff",
+              position: "fixed",
+              top: "90%",
+              left: "15%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 100,
+            }}
+          >
+            <button onClick={handleMouseLockToggle}>Travar Mouse</button>
+          </div>
+        </>
       )}
     </>
   );

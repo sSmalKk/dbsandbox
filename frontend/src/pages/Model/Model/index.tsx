@@ -107,6 +107,17 @@ const Model = () => {
   // Função para salvar atualizações do modelo
   const handleSaveModel = async () => {
     try {
+      // Formatting modelmap as a single object containing arrays
+      const updatedModelMap = {
+        positions: customModels[modelData.name].map(plane => plane.position || [0, 0, 0]),  // Array of positions
+        rotations: customModels[modelData.name].map(plane => plane.rotation || [0, 0, 0]),  // Array of rotations
+        renders: customModels[modelData.name].map(plane => typeof plane.render === 'boolean' 
+          ? plane.render 
+          : true),  // Array of render values
+      };
+  
+      console.log("Updated Model Map: ", updatedModelMap);
+  
       const response = await fetch(
         `http://localhost:5000/admin/modelos_model/partial-update/${modelId}`,
         {
@@ -117,24 +128,24 @@ const Model = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            data: {
-              modelmap: customModels[modelData.name],
-              isActive: true,
-              isDeleted: false,
-            },
+            modelmap: updatedModelMap,  // Nested object with arrays
+            isActive: true,
+            isDeleted: false,
           }),
         }
       );
+  
       const result = await response.json();
       if (result.status === "SUCCESS") {
         console.log("Model updated successfully:", result);
+      } else {
+        console.error("Error in response:", result);
       }
     } catch (error) {
       console.error("Error updating model:", error);
     }
   };
-
-  // Handle dropdown change for model type
+      // Handle dropdown change for model type
   const handleDropdownChange = (e) => {
     const selectedType = parseInt(e.target.value, 10);
     setTipoSelecionado(selectedType);
