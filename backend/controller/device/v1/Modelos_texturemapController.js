@@ -1,10 +1,10 @@
 /**
- * Modelos_texturemapController.js
- * @description : exports action methods for Modelos_texturemap.
+ * Modelos_TextureMapController.js
+ * @description : exports action methods for Modelos_TextureMap.
  */
 
-const Modelos_texturemap = require('../../../model/Modelos_texturemap');
-const Modelos_texturemapSchemaKey = require('../../../utils/validation/Modelos_texturemapValidation');
+const Modelos_TextureMap = require('../../../model/Modelos_TextureMap');
+const Modelos_TextureMapSchemaKey = require('../../../utils/validation/Modelos_TextureMapValidation');
 const validation = require('../../../utils/validateRequest');
 const dbService = require('../../../utils/dbService');
 const ObjectId = require('mongodb').ObjectId;
@@ -12,36 +12,36 @@ const deleteDependentService = require('../../../utils/deleteDependent');
 const utils = require('../../../utils/common');
    
 /**
- * @description : create document of Modelos_texturemap in mongodb collection.
+ * @description : create document of Modelos_TextureMap in mongodb collection.
  * @param {Object} req : request including body for creating document.
  * @param {Object} res : response of created document
- * @return {Object} : created Modelos_texturemap. {status, message, data}
+ * @return {Object} : created Modelos_TextureMap. {status, message, data}
  */ 
-const addModelos_texturemap = async (req, res) => {
+const addModelos_TextureMap = async (req, res) => {
   try {
     let dataToCreate = { ...req.body || {} };
     let validateRequest = validation.validateParamsWithJoi(
       dataToCreate,
-      Modelos_texturemapSchemaKey.schemaKeys);
+      Modelos_TextureMapSchemaKey.schemaKeys);
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
     dataToCreate.addedBy = req.user.id;
-    dataToCreate = new Modelos_texturemap(dataToCreate);
-    let createdModelos_texturemap = await dbService.create(Modelos_texturemap,dataToCreate);
-    return res.success({ data : createdModelos_texturemap });
+    dataToCreate = new Modelos_TextureMap(dataToCreate);
+    let createdModelos_TextureMap = await dbService.create(Modelos_TextureMap,dataToCreate);
+    return res.success({ data : createdModelos_TextureMap });
   } catch (error) {
     return res.internalServerError({ message:error.message }); 
   }
 };
     
 /**
- * @description : create multiple documents of Modelos_texturemap in mongodb collection.
+ * @description : create multiple documents of Modelos_TextureMap in mongodb collection.
  * @param {Object} req : request including body for creating documents.
  * @param {Object} res : response of created documents.
- * @return {Object} : created Modelos_texturemaps. {status, message, data}
+ * @return {Object} : created Modelos_TextureMaps. {status, message, data}
  */
-const bulkInsertModelos_texturemap = async (req,res)=>{
+const bulkInsertModelos_TextureMap = async (req,res)=>{
   try {
     if (req.body && (!Array.isArray(req.body.data) || req.body.data.length < 1)) {
       return res.badRequest();
@@ -53,28 +53,28 @@ const bulkInsertModelos_texturemap = async (req,res)=>{
         addedBy: req.user.id
       };
     }
-    let createdModelos_texturemaps = await dbService.create(Modelos_texturemap,dataToCreate);
-    createdModelos_texturemaps = { count: createdModelos_texturemaps ? createdModelos_texturemaps.length : 0 };
-    return res.success({ data:{ count:createdModelos_texturemaps.count || 0 } });
+    let createdModelos_TextureMaps = await dbService.create(Modelos_TextureMap,dataToCreate);
+    createdModelos_TextureMaps = { count: createdModelos_TextureMaps ? createdModelos_TextureMaps.length : 0 };
+    return res.success({ data:{ count:createdModelos_TextureMaps.count || 0 } });
   } catch (error){
     return res.internalServerError({ message:error.message });
   }
 };
     
 /**
- * @description : find all documents of Modelos_texturemap from collection based on query and options.
+ * @description : find all documents of Modelos_TextureMap from collection based on query and options.
  * @param {Object} req : request including option and query. {query, options : {page, limit, pagination, populate}, isCountOnly}
  * @param {Object} res : response contains data found from collection.
- * @return {Object} : found Modelos_texturemap(s). {status, message, data}
+ * @return {Object} : found Modelos_TextureMap(s). {status, message, data}
  */
-const findAllModelos_texturemap = async (req,res) => {
+const findAllModelos_TextureMap = async (req,res) => {
   try {
     let options = {};
     let query = {};
     let validateRequest = validation.validateFilterWithJoi(
       req.body,
-      Modelos_texturemapSchemaKey.findFilterKeys,
-      Modelos_texturemap.schema.obj
+      Modelos_TextureMapSchemaKey.findFilterKeys,
+      Modelos_TextureMap.schema.obj
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message: `${validateRequest.message}` });
@@ -83,29 +83,29 @@ const findAllModelos_texturemap = async (req,res) => {
       query = { ...req.body.query };
     }
     if (req.body.isCountOnly){
-      let totalRecords = await dbService.count(Modelos_texturemap, query);
+      let totalRecords = await dbService.count(Modelos_TextureMap, query);
       return res.success({ data: { totalRecords } });
     }
     if (req.body && typeof req.body.options === 'object' && req.body.options !== null) {
       options = { ...req.body.options };
     }
-    let foundModelos_texturemaps = await dbService.paginate( Modelos_texturemap,query,options);
-    if (!foundModelos_texturemaps || !foundModelos_texturemaps.data || !foundModelos_texturemaps.data.length){
+    let foundModelos_TextureMaps = await dbService.paginate( Modelos_TextureMap,query,options);
+    if (!foundModelos_TextureMaps || !foundModelos_TextureMaps.data || !foundModelos_TextureMaps.data.length){
       return res.recordNotFound(); 
     }
-    return res.success({ data :foundModelos_texturemaps });
+    return res.success({ data :foundModelos_TextureMaps });
   } catch (error){
     return res.internalServerError({ message:error.message });
   }
 };
         
 /**
- * @description : find document of Modelos_texturemap from table by id;
+ * @description : find document of Modelos_TextureMap from table by id;
  * @param {Object} req : request including id in request params.
  * @param {Object} res : response contains document retrieved from table.
- * @return {Object} : found Modelos_texturemap. {status, message, data}
+ * @return {Object} : found Modelos_TextureMap. {status, message, data}
  */
-const getModelos_texturemap = async (req,res) => {
+const getModelos_TextureMap = async (req,res) => {
   try {
     let query = {};
     if (!ObjectId.isValid(req.params.id)) {
@@ -113,11 +113,11 @@ const getModelos_texturemap = async (req,res) => {
     }
     query._id = req.params.id;
     let options = {};
-    let foundModelos_texturemap = await dbService.findOne(Modelos_texturemap,query, options);
-    if (!foundModelos_texturemap){
+    let foundModelos_TextureMap = await dbService.findOne(Modelos_TextureMap,query, options);
+    if (!foundModelos_TextureMap){
       return res.recordNotFound();
     }
-    return res.success({ data :foundModelos_texturemap });
+    return res.success({ data :foundModelos_TextureMap });
   }
   catch (error){
     return res.internalServerError({ message:error.message });
@@ -125,17 +125,17 @@ const getModelos_texturemap = async (req,res) => {
 };
     
 /**
- * @description : returns total number of documents of Modelos_texturemap.
+ * @description : returns total number of documents of Modelos_TextureMap.
  * @param {Object} req : request including where object to apply filters in req body 
  * @param {Object} res : response that returns total number of documents.
  * @return {Object} : number of documents. {status, message, data}
  */
-const getModelos_texturemapCount = async (req,res) => {
+const getModelos_TextureMapCount = async (req,res) => {
   try {
     let where = {};
     let validateRequest = validation.validateFilterWithJoi(
       req.body,
-      Modelos_texturemapSchemaKey.findFilterKeys,
+      Modelos_TextureMapSchemaKey.findFilterKeys,
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message: `${validateRequest.message}` });
@@ -143,20 +143,20 @@ const getModelos_texturemapCount = async (req,res) => {
     if (typeof req.body.where === 'object' && req.body.where !== null) {
       where = { ...req.body.where };
     }
-    let countedModelos_texturemap = await dbService.count(Modelos_texturemap,where);
-    return res.success({ data : { count: countedModelos_texturemap } });
+    let countedModelos_TextureMap = await dbService.count(Modelos_TextureMap,where);
+    return res.success({ data : { count: countedModelos_TextureMap } });
   } catch (error){
     return res.internalServerError({ message:error.message });
   }
 };
     
 /**
- * @description : update document of Modelos_texturemap with data by id.
+ * @description : update document of Modelos_TextureMap with data by id.
  * @param {Object} req : request including id in request params and data in request body.
- * @param {Object} res : response of updated Modelos_texturemap.
- * @return {Object} : updated Modelos_texturemap. {status, message, data}
+ * @param {Object} res : response of updated Modelos_TextureMap.
+ * @return {Object} : updated Modelos_TextureMap. {status, message, data}
  */
-const updateModelos_texturemap = async (req,res) => {
+const updateModelos_TextureMap = async (req,res) => {
   try {
     let dataToUpdate = {
       ...req.body,
@@ -164,29 +164,29 @@ const updateModelos_texturemap = async (req,res) => {
     };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
-      Modelos_texturemapSchemaKey.updateSchemaKeys
+      Modelos_TextureMapSchemaKey.updateSchemaKeys
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
     const query = { _id:req.params.id };
-    let updatedModelos_texturemap = await dbService.updateOne(Modelos_texturemap,query,dataToUpdate);
-    if (!updatedModelos_texturemap){
+    let updatedModelos_TextureMap = await dbService.updateOne(Modelos_TextureMap,query,dataToUpdate);
+    if (!updatedModelos_TextureMap){
       return res.recordNotFound();
     }
-    return res.success({ data :updatedModelos_texturemap });
+    return res.success({ data :updatedModelos_TextureMap });
   } catch (error){
     return res.internalServerError({ message:error.message });
   }
 };
 
 /**
- * @description : update multiple records of Modelos_texturemap with data by filter.
+ * @description : update multiple records of Modelos_TextureMap with data by filter.
  * @param {Object} req : request including filter and data in request body.
- * @param {Object} res : response of updated Modelos_texturemaps.
- * @return {Object} : updated Modelos_texturemaps. {status, message, data}
+ * @param {Object} res : response of updated Modelos_TextureMaps.
+ * @return {Object} : updated Modelos_TextureMaps. {status, message, data}
  */
-const bulkUpdateModelos_texturemap = async (req,res)=>{
+const bulkUpdateModelos_TextureMap = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
@@ -197,23 +197,23 @@ const bulkUpdateModelos_texturemap = async (req,res)=>{
         updatedBy : req.user.id
       };
     }
-    let updatedModelos_texturemap = await dbService.updateMany(Modelos_texturemap,filter,dataToUpdate);
-    if (!updatedModelos_texturemap){
+    let updatedModelos_TextureMap = await dbService.updateMany(Modelos_TextureMap,filter,dataToUpdate);
+    if (!updatedModelos_TextureMap){
       return res.recordNotFound();
     }
-    return res.success({ data :{ count : updatedModelos_texturemap } });
+    return res.success({ data :{ count : updatedModelos_TextureMap } });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }
 };
     
 /**
- * @description : partially update document of Modelos_texturemap with data by id;
+ * @description : partially update document of Modelos_TextureMap with data by id;
  * @param {obj} req : request including id in request params and data in request body.
- * @param {obj} res : response of updated Modelos_texturemap.
- * @return {obj} : updated Modelos_texturemap. {status, message, data}
+ * @param {obj} res : response of updated Modelos_TextureMap.
+ * @return {obj} : updated Modelos_TextureMap. {status, message, data}
  */
-const partialUpdateModelos_texturemap = async (req,res) => {
+const partialUpdateModelos_TextureMap = async (req,res) => {
   try {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
@@ -225,29 +225,29 @@ const partialUpdateModelos_texturemap = async (req,res) => {
     };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
-      Modelos_texturemapSchemaKey.updateSchemaKeys
+      Modelos_TextureMapSchemaKey.updateSchemaKeys
     );
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
     const query = { _id:req.params.id };
-    let updatedModelos_texturemap = await dbService.updateOne(Modelos_texturemap, query, dataToUpdate);
-    if (!updatedModelos_texturemap) {
+    let updatedModelos_TextureMap = await dbService.updateOne(Modelos_TextureMap, query, dataToUpdate);
+    if (!updatedModelos_TextureMap) {
       return res.recordNotFound();
     }
-    return res.success({ data:updatedModelos_texturemap });
+    return res.success({ data:updatedModelos_TextureMap });
   } catch (error){
     return res.internalServerError({ message:error.message });
   }
 };
     
 /**
- * @description : deactivate document of Modelos_texturemap from table by id;
+ * @description : deactivate document of Modelos_TextureMap from table by id;
  * @param {Object} req : request including id in request params.
- * @param {Object} res : response contains updated document of Modelos_texturemap.
- * @return {Object} : deactivated Modelos_texturemap. {status, message, data}
+ * @param {Object} res : response contains updated document of Modelos_TextureMap.
+ * @return {Object} : deactivated Modelos_TextureMap. {status, message, data}
  */
-const softDeleteModelos_texturemap = async (req,res) => {
+const softDeleteModelos_TextureMap = async (req,res) => {
   try {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
@@ -257,38 +257,38 @@ const softDeleteModelos_texturemap = async (req,res) => {
       isDeleted: true,
       updatedBy: req.user.id,
     };
-    let updatedModelos_texturemap = await deleteDependentService.softDeleteModelos_texturemap(query, updateBody);
-    if (!updatedModelos_texturemap){
+    let updatedModelos_TextureMap = await deleteDependentService.softDeleteModelos_TextureMap(query, updateBody);
+    if (!updatedModelos_TextureMap){
       return res.recordNotFound();
     }
-    return res.success({ data:updatedModelos_texturemap });
+    return res.success({ data:updatedModelos_TextureMap });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }
 };
     
 /**
- * @description : delete document of Modelos_texturemap from table.
+ * @description : delete document of Modelos_TextureMap from table.
  * @param {Object} req : request including id as req param.
  * @param {Object} res : response contains deleted document.
- * @return {Object} : deleted Modelos_texturemap. {status, message, data}
+ * @return {Object} : deleted Modelos_TextureMap. {status, message, data}
  */
-const deleteModelos_texturemap = async (req,res) => {
+const deleteModelos_TextureMap = async (req,res) => {
   try {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    let deletedModelos_texturemap;
+    let deletedModelos_TextureMap;
     if (req.body.isWarning) { 
-      deletedModelos_texturemap = await deleteDependentService.countModelos_texturemap(query);
+      deletedModelos_TextureMap = await deleteDependentService.countModelos_TextureMap(query);
     } else {
-      deletedModelos_texturemap = await deleteDependentService.deleteModelos_texturemap(query);
+      deletedModelos_TextureMap = await deleteDependentService.deleteModelos_TextureMap(query);
     }
-    if (!deletedModelos_texturemap){
+    if (!deletedModelos_TextureMap){
       return res.recordNotFound();
     }
-    return res.success({ data :deletedModelos_texturemap });
+    return res.success({ data :deletedModelos_TextureMap });
   }
   catch (error){
     return res.internalServerError({ message:error.message }); 
@@ -296,41 +296,41 @@ const deleteModelos_texturemap = async (req,res) => {
 };
     
 /**
- * @description : delete documents of Modelos_texturemap in table by using ids.
+ * @description : delete documents of Modelos_TextureMap in table by using ids.
  * @param {Object} req : request including array of ids in request body.
  * @param {Object} res : response contains no of documents deleted.
  * @return {Object} : no of documents deleted. {status, message, data}
  */
-const deleteManyModelos_texturemap = async (req, res) => {
+const deleteManyModelos_TextureMap = async (req, res) => {
   try {
     let ids = req.body.ids;
     if (!ids || !Array.isArray(ids) || ids.length < 1) {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    let deletedModelos_texturemap;
+    let deletedModelos_TextureMap;
     if (req.body.isWarning) {
-      deletedModelos_texturemap = await deleteDependentService.countModelos_texturemap(query);
+      deletedModelos_TextureMap = await deleteDependentService.countModelos_TextureMap(query);
     }
     else {
-      deletedModelos_texturemap = await deleteDependentService.deleteModelos_texturemap(query);
+      deletedModelos_TextureMap = await deleteDependentService.deleteModelos_TextureMap(query);
     }
-    if (!deletedModelos_texturemap){
+    if (!deletedModelos_TextureMap){
       return res.recordNotFound();
     }
-    return res.success({ data :deletedModelos_texturemap });
+    return res.success({ data :deletedModelos_TextureMap });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }
 };
     
 /**
- * @description : deactivate multiple documents of Modelos_texturemap from table by ids;
+ * @description : deactivate multiple documents of Modelos_TextureMap from table by ids;
  * @param {Object} req : request including array of ids in request body.
- * @param {Object} res : response contains updated documents of Modelos_texturemap.
- * @return {Object} : number of deactivated documents of Modelos_texturemap. {status, message, data}
+ * @param {Object} res : response contains updated documents of Modelos_TextureMap.
+ * @return {Object} : number of deactivated documents of Modelos_TextureMap. {status, message, data}
  */
-const softDeleteManyModelos_texturemap = async (req,res) => {
+const softDeleteManyModelos_TextureMap = async (req,res) => {
   try {
     let ids = req.body.ids;
     if (!ids || !Array.isArray(ids) || ids.length < 1) {
@@ -341,27 +341,27 @@ const softDeleteManyModelos_texturemap = async (req,res) => {
       isDeleted: true,
       updatedBy: req.user.id,
     };
-    let updatedModelos_texturemap = await deleteDependentService.softDeleteModelos_texturemap(query, updateBody);
-    if (!updatedModelos_texturemap) {
+    let updatedModelos_TextureMap = await deleteDependentService.softDeleteModelos_TextureMap(query, updateBody);
+    if (!updatedModelos_TextureMap) {
       return res.recordNotFound();
     }
-    return res.success({ data:updatedModelos_texturemap });
+    return res.success({ data:updatedModelos_TextureMap });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }
 };
 
 module.exports = {
-  addModelos_texturemap,
-  bulkInsertModelos_texturemap,
-  findAllModelos_texturemap,
-  getModelos_texturemap,
-  getModelos_texturemapCount,
-  updateModelos_texturemap,
-  bulkUpdateModelos_texturemap,
-  partialUpdateModelos_texturemap,
-  softDeleteModelos_texturemap,
-  deleteModelos_texturemap,
-  deleteManyModelos_texturemap,
-  softDeleteManyModelos_texturemap    
+  addModelos_TextureMap,
+  bulkInsertModelos_TextureMap,
+  findAllModelos_TextureMap,
+  getModelos_TextureMap,
+  getModelos_TextureMapCount,
+  updateModelos_TextureMap,
+  bulkUpdateModelos_TextureMap,
+  partialUpdateModelos_TextureMap,
+  softDeleteModelos_TextureMap,
+  deleteModelos_TextureMap,
+  deleteManyModelos_TextureMap,
+  softDeleteManyModelos_TextureMap    
 };

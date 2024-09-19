@@ -1,6 +1,6 @@
 /**
- * Modelos_item.js
- * @description :: model of a database collection Modelos_item
+ * Modelos_Texture.js
+ * @description :: model of a database collection Modelos_Texture
  */
 
 const mongoose = require('mongoose');
@@ -40,19 +40,11 @@ const schema = new Schema(
       ref:'user'
     },
 
+    link:{ type:String },
+
     name:{ type:String },
 
-    description:{ type:String },
-
-    model:{
-      ref:'Modelos_model',
-      type:Schema.Types.ObjectId
-    },
-
-    texture:{
-      ref:'Modelos_TextureMap',
-      type:Schema.Types.ObjectId
-    }
+    description:{ type:String }
   }
   ,{ 
     timestamps: { 
@@ -88,5 +80,5 @@ schema.method('toJSON', function () {
 });
 schema.plugin(mongoosePaginate);
 schema.plugin(idValidator);
-const Modelos_item = mongoose.model('Modelos_item',schema);
-module.exports = Modelos_item;
+const Modelos_Texture = mongoose.model('Modelos_Texture',schema);
+module.exports = Modelos_Texture;

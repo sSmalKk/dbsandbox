@@ -6,8 +6,9 @@
 const express =  require('express');
 const router =  express.Router();
 router.use('/admin/auth',require('./auth'));
+router.use(require('./Modelos_TextureMapRoutes'));
 router.use(require('./Modelos_itemRoutes'));
-router.use(require('./Modelos_texturemapRoutes'));
+router.use(require('./Modelos_TextureRoutes'));
 router.use(require('./Modelos_modelRoutes'));
 router.use(require('./Universe_SettingsRoutes'));
 router.use(require('./Chat_groupRoutes'));
