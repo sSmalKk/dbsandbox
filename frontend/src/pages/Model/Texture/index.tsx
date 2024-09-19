@@ -38,16 +38,13 @@ const Texture = () => {
     formData.append("files", uploadedFile);
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/device/api/v1/upload",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch("http://localhost:5000/admin/upload", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
 
       const data = await response.json();
 
@@ -88,7 +85,7 @@ const Texture = () => {
           body: JSON.stringify({
             name,
             description,
-            main: path, // caminho do arquivo
+            link: path, // caminho do arquivo
           }),
         }
       );
