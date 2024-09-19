@@ -2,21 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 .cardblack {
-  width: 190px;
-  min-height: 32px; /* Mínimo, mas pode crescer conforme o conteúdo */
-  margin: 0 auto;
-  background-color: #555;
-  border-radius: 8px;
-  z-index: 1;
+  background-color: rgba(29, 31, 33, 0.74);
 }
 
 .cardwhite {
-  width: 190px;
-  min-height: 32px; /* Mínimo, mas pode crescer conforme o conteúdo */
-  margin: 0 auto;
-  background-color: #f8fbfe;
-  border-radius: 8px;
-  z-index: 1;
+  background-color: #f8fbfea2;
 }
 .card__content {
   padding-top: 0px; /* Adicionando padding para dar espaçamento interno */

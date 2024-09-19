@@ -22,9 +22,7 @@ const ModelList = () => {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-
-          }),
+          body: JSON.stringify({}),
         }
       );
 
@@ -52,8 +50,10 @@ const ModelList = () => {
 
   const handleDelete = async (modeloId) => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
-    const confirmDelete = window.confirm("Are you sure you want to delete this model?");
-    
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this model?"
+    );
+
     if (confirmDelete) {
       try {
         const response = await fetch(
@@ -105,8 +105,12 @@ const ModelList = () => {
               modelos.map((modelo) => (
                 <li key={modelo._id || modelo.id}>
                   {modelo.name} (Tipo: {modelo.type}){" "}
-                  <button onClick={() => handleEdit(modelo._id || modelo.id)}>Editar</button>
-                  <button onClick={() => handleDelete(modelo._id || modelo.id)}>Excluir</button>
+                  <button onClick={() => handleEdit(modelo._id || modelo.id)}>
+                    Editar
+                  </button>
+                  <button onClick={() => handleDelete(modelo._id || modelo.id)}>
+                    Excluir
+                  </button>
                 </li>
               ))
             ) : (

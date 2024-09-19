@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sidebar } from "../../../components";
 import Game from "components/Game/Game";
 import { Helmet } from "react-helmet";
 import { useGameStore } from "../../../store/gameStore";
+import Draggable from "react-draggable"; // For the draggable input windows
 import "./EditModel.css"; // Import CSS for styling
 
 const token = localStorage.getItem("token") || process.env.JWT || "";
+const savedModelId = localStorage.getItem("modelId");
 
 const EditModel = () => {
   const {
@@ -17,65 +19,64 @@ const EditModel = () => {
     setBlockState,
   } = useGameStore();
 
+  const [newModel, setNewModel] = useState(!savedModelId); // Se não houver um ID salvo, força a criação de um novo modelo
+  const [modelId, setModelId] = useState(savedModelId || null);
+  const [tipoSelecionado, setTipoSelecionado] = useState(1);
+  const [selectedPlane, setSelectedPlane] = useState(null);
+  const [modelName, setModelName] = useState("");
   const [modelData, setModelData] = useState({
     name: "",
-    type: 1,
-    texture: "",
-    isDeleted: false,
     isActive: true,
-    modelmap: [
-      {
-        position: [0, 0, 0],
-        rotation: [0, 0, 0],
-        texture: "string",
-        render: true,
-      }, // Plane 1
-      {
-        position: [1, 1, 1],
-        rotation: [0, 0, 0],
-        texture: "string",
-        render: true,
-      }, // Plane 2
-    ],
+    isDeleted: false,
+    modelmap: [],
   });
+  // Carregar modelo do banco se houver um ID salvo
+  useEffect(() => {
+    if (modelId) {
+      const fetchModel = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/admin/modelos_model/${modelId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch the model");
+          }
 
-  const [newModel, setNewModel] = useState(false);
-  const [tipoSelecionado, setTipoSelecionado] = useState(1);
-
-  // Handle changes to individual planes' position and rotation
-  const handleMapInputChange = (planeIndex, field, axis, value) => {
-    setModelData((prev) => {
-      const updatedMap = [...prev.modelmap];
-      updatedMap[planeIndex] = {
-        ...updatedMap[planeIndex],
-        [field]:
-          axis !== null
-            ? updatedMap[planeIndex][field].map((v, i) =>
-                i === axis ? parseFloat(value) : v
-              )
-            : value,
+          const data = await response.json();
+          if (data.status === "SUCCESS") {
+            // Certifique-se de que modelmap seja sempre um array
+            const modelMapArray = Array.isArray(data.data.modelmap)
+              ? data.data.modelmap
+              : [];
+            setModelData(data.data);
+            setCustomModels(data.data.name, modelMapArray);
+            setBlockState(0, {
+              ...blockState[0],
+              model: data.data.name,
+              name: data.data.name,
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching the model:", error);
+        }
       };
-      return { ...prev, modelmap: updatedMap };
-    });
-  };
+      fetchModel(); // Chama a função fetchModel
+    }
+  }, [modelId, token, setCustomModels, setBlockState]);
+  console.log("teste",blockState)
 
-  // Handle input change for model name
-  const handleNameChange = (e) => {
-    setModelData((prev) => ({ ...prev, name: e.target.value }));
-  };
-
-  // Handle dropdown change for model type
-  const handleDropdownChange = (e) => {
-    const selectedType = parseInt(e.target.value, 10);
-    setTipoSelecionado(selectedType);
-    setModelData((prev) => ({ ...prev, type: selectedType }));
-  };
-
-  // Handle creating a new model
   const handleCreateModel = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/admin/modelos_item/create",
+        "http://localhost:5000/admin/modelos_model/create",
         {
           method: "POST",
           headers: {
@@ -83,42 +84,113 @@ const EditModel = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({data:modelData}),
+          body: JSON.stringify({
+            name: modelName,
+            isActive: true,
+            isDeleted: false,
+          }),
         }
       );
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
-      }
-
       const result = await response.json();
-      console.log("Model created successfully:", result);
+      if (result.status === "SUCCESS") {
+        setModelId(result.data.id);
+        localStorage.setItem("modelId", result.data.id);
+        console.log("done", result.data.id);
 
-      // Update Zustand store with new model
-      setCustomModels(modelData.name, modelData.modelmap);
+        setNewModel(false);
+      }
     } catch (error) {
       console.error("Error creating model:", error);
     }
   };
 
-  // Handle saving the model to the Zustand store
-  const handleSaveModel = () => {
-    console.log("Saving model to Zustand store:", modelData);
-  
-    // Set the block state with the name "stairs" and its properties
-    setBlockState(0, {
-      name: "stairs", // Force the name to be "stairs"
-      texture: modelData.modelmap[0].texture, // Assign only the first texture
-      model: "stairs", // Set the model name to "stairs"
-      textures: modelData.modelmap.map((plane) => plane.texture), // Keep multiple textures in the textures array
-      RigidBody: blockState[0].RigidBody,
-      RigidBodyType: blockState[0].RigidBodyType,
-    });
-  
-    // Update Zustand store with the custom model named "stairs"
-    setCustomModels("stairs", modelData.modelmap);
+  // Função para salvar atualizações do modelo
+  const handleSaveModel = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/admin/modelos_model/partial-update/${modelId}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            modelmap: customModels[modelData.name],
+            isActive: true,
+            isDeleted: false,
+          }),
+        }
+      );
+      const result = await response.json();
+      if (result.status === "SUCCESS") {
+        console.log("Model updated successfully:", result);
+      }
+    } catch (error) {
+      console.error("Error updating model:", error);
+    }
   };
-  
+
+  // Handle dropdown change for model type
+  const handleDropdownChange = (e) => {
+    const selectedType = parseInt(e.target.value, 10);
+    setTipoSelecionado(selectedType);
+    setBlockState(0, { ...blockState[0], type: selectedType });
+  };
+
+  // Handle changes in position, rotation, or render state of a plane
+  const handleMapInputChange = (planeIndex, field, axis, value) => {
+    const updatedPlanes = [...customModels[modelData.name]];
+    updatedPlanes[planeIndex] = {
+      ...updatedPlanes[planeIndex],
+      [field]:
+        axis !== null
+          ? updatedPlanes[planeIndex][field].map((v, i) =>
+              i === axis ? parseFloat(value) : v
+            )
+          : value,
+    };
+    setCustomModels(modelData.name, updatedPlanes);
+  };
+
+  // Add a new plane to the customModels
+// Função para adicionar um novo plano ao customModels
+const handleAddPlane = () => {
+  const newPlane = {
+    position: [0, 0, 0],
+    rotation: [0, 0, 0],
+    texture: "string",
+    render: true,
+  };
+
+  const updatedPlanes = Array.isArray(customModels[modelData.name])
+    ? [...customModels[modelData.name]]
+    : []; // Inicializa como array vazio, se não for um array
+
+  setCustomModels(modelData.name, [...updatedPlanes, newPlane]);
+};
+
+  // Remove a plane from the customModels
+  const handleRemovePlane = (index) => {
+    const updatedPlanes = customModels[modelData.name].filter(
+      (_, i) => i !== index
+    );
+    setCustomModels(modelData.name, updatedPlanes);
+    if (selectedPlane === index) {
+      setSelectedPlane(null);
+    } else if (selectedPlane > index) {
+      setSelectedPlane(selectedPlane - 1);
+    }
+  };
+
+  // Limpar o ID salvo do localStorage
+  const handleClearLocalStorage = () => {
+    localStorage.removeItem("modelId");
+    setModelId(null);
+    setNewModel(true);
+  };
+  console.log(modelData.name);
   return (
     <>
       <Helmet>
@@ -127,38 +199,39 @@ const EditModel = () => {
         </title>
       </Helmet>
 
+      {/* Modal para definir o nome do modelo */}
+      {newModel && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Definir Nome do Modelo</h3>
+            <input
+              type="text"
+              value={modelName}
+              onChange={(e) => setModelName(e.target.value)}
+              placeholder="Digite o nome do modelo"
+            />
+            <button onClick={handleCreateModel}>Criar Modelo</button>
+          </div>
+        </div>
+      )}
+
       <div className="edit-model-container">
         <Sidebar />
         <div className="edit-model-content">
-          <h2>
-            {newModel ? "Criar Novo Modelo" : `Editando: ${modelData.name}`}
-          </h2>
-
-          <div className="edit-model-sidebar">
-            <h3>Lista de Planos</h3>
-            <ul>
-              {modelData.modelmap.map((plane, index) => (
-                <li key={index}>
-                  <strong>Plano {index + 1}</strong> - Posição:{" "}
-                  {plane.position.join(", ")}
-                </li>
-              ))}
-            </ul>
+          <div className="header">
+            <h2>
+              {newModel ? "Criar Novo Modelo" : `Editando: ${modelData.name}`}
+            </h2>
+            <button className="close-button" onClick={handleClearLocalStorage}>
+              Clear
+            </button>
           </div>
 
-          <div className="edit-model-form">
-            <label>
-              Nome do Modelo:
-              <input
-                type="text"
-                value={modelData.name}
-                onChange={handleNameChange}
-                className="input-field"
-              />
-            </label>
-
-            <label>
-              Tipo do Modelo:
+          {/* Informações Básicas */}
+          <div className="w-48 min-h-8 cardblack rounded-lg z-10 p-5">
+            <h3>Informações Básicas</h3>
+            <div className="basic-info">
+              <label>Tipo do Modelo:</label>
               <select
                 value={tipoSelecionado}
                 onChange={handleDropdownChange}
@@ -168,126 +241,106 @@ const EditModel = () => {
                 <option value={2}>Esfera</option>
                 <option value={3}>Plano</option>
               </select>
-            </label>
-
-            <div className="plane-edit-section">
-              {modelData.modelmap.map((plane, index) => (
-                <div key={index} className="plane-edit">
-                  <h4>Plano {index + 1} - Editar</h4>
-                  <label>
-                    Posição:
-                    <input
-                      type="number"
-                      value={plane.position[0]}
-                      onChange={(e) =>
-                        handleMapInputChange(
-                          index,
-                          "position",
-                          0,
-                          e.target.value
-                        )
-                      }
-                      className="input-small"
-                    />
-                    <input
-                      type="number"
-                      value={plane.position[1]}
-                      onChange={(e) =>
-                        handleMapInputChange(
-                          index,
-                          "position",
-                          1,
-                          e.target.value
-                        )
-                      }
-                      className="input-small"
-                    />
-                    <input
-                      type="number"
-                      value={plane.position[2]}
-                      onChange={(e) =>
-                        handleMapInputChange(
-                          index,
-                          "position",
-                          2,
-                          e.target.value
-                        )
-                      }
-                      className="input-small"
-                    />
-                  </label>
-
-                  <label>
-                    Rotação:
-                    <input
-                      type="number"
-                      value={plane.rotation[0]}
-                      onChange={(e) =>
-                        handleMapInputChange(
-                          index,
-                          "rotation",
-                          0,
-                          e.target.value
-                        )
-                      }
-                      className="input-small"
-                    />
-                    <input
-                      type="number"
-                      value={plane.rotation[1]}
-                      onChange={(e) =>
-                        handleMapInputChange(
-                          index,
-                          "rotation",
-                          1,
-                          e.target.value
-                        )
-                      }
-                      className="input-small"
-                    />
-                    <input
-                      type="number"
-                      value={plane.rotation[2]}
-                      onChange={(e) =>
-                        handleMapInputChange(
-                          index,
-                          "rotation",
-                          2,
-                          e.target.value
-                        )
-                      }
-                      className="input-small"
-                    />
-                  </label>
-
-                  <label>
-                    Renderizar:
-                    <input
-                      type="checkbox"
-                      checked={plane.render}
-                      onChange={(e) =>
-                        handleMapInputChange(
-                          index,
-                          "render",
-                          null,
-                          e.target.checked
-                        )
-                      }
-                    />
-                  </label>
-                </div>
-              ))}
-            </div>
-
-            <div className="button-container">
-              <button onClick={handleSaveModel} className="btn-save">
-                Salvar
-              </button>
-              <button onClick={handleCreateModel} className="btn-create-new">
-                Criar Novo
-              </button>
             </div>
           </div>
+
+          {/* Section to display and edit planes */}
+          <div className="w-48 min-h-8 cardblack rounded-lg z-10 p-5">
+            <h3>Lista de Planos</h3>
+                        <ul>
+              {Array.isArray(customModels[modelData.name]) &&
+                customModels[modelData.name].map((plane, index) => (
+                  <li key={index} onClick={() => setSelectedPlane(index)}>
+                    <strong>Plano {index + 1}</strong> - Posição:{" "}
+                    {plane.position.join(", ")}
+                    <button onClick={() => handleRemovePlane(index)}>
+                      Remover
+                    </button>
+                  </li>
+                ))}
+            </ul>
+            <button className="add-plane-btn" onClick={handleAddPlane}>
+              Adicionar Novo Plano
+            </button>
+          </div>
+
+          {/* Editor de Planos */}
+          {selectedPlane !== null &&
+            customModels[modelData.name] &&
+            customModels[modelData.name][selectedPlane] && (
+              <Draggable>
+                <div className="w-48 min-h-8 cardblack rounded-lg z-10 p-5">
+                  <h4>Editar Plano {selectedPlane + 1}</h4>
+                  <label>Posição:</label>
+                  {["X", "Y", "Z"].map((axis, i) => (
+                    <input
+                      key={axis}
+                      type="number"
+                      step="0.1"
+                      value={
+                        customModels[modelData.name][selectedPlane].position[
+                          i
+                        ] || 0
+                      }
+                      onChange={(e) =>
+                        handleMapInputChange(
+                          selectedPlane,
+                          "position",
+                          i,
+                          e.target.value
+                        )
+                      }
+                      className="input-small"
+                    />
+                  ))}
+
+                  <label>Rotação:</label>
+                  {["X", "Y", "Z"].map((axis, i) => (
+                    <input
+                      key={axis}
+                      type="number"
+                      step="0.1"
+                      value={
+                        customModels[modelData.name][selectedPlane].rotation[
+                          i
+                        ] || 0
+                      }
+                      onChange={(e) =>
+                        handleMapInputChange(
+                          selectedPlane,
+                          "rotation",
+                          i,
+                          e.target.value
+                        )
+                      }
+                      className="input-small"
+                    />
+                  ))}
+
+                  <label>Renderizar:</label>
+                  <input
+                    type="checkbox"
+                    checked={
+                      customModels[modelData.name][selectedPlane].render ||
+                      false
+                    }
+                    onChange={(e) =>
+                      handleMapInputChange(
+                        selectedPlane,
+                        "render",
+                        null,
+                        e.target.checked
+                      )
+                    }
+                  />
+                </div>
+              </Draggable>
+            )}
+
+          {/* Botão de Salvar */}
+          <button className="save-button" onClick={handleSaveModel}>
+            Salvar Modelo
+          </button>
         </div>
       </div>
 

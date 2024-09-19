@@ -1,20 +1,21 @@
 import create from "zustand";
-
 export const useGameStore = create<GameStore>((set) => ({
   blockState: {
     0: {
-      name: "Block1",
+      name: "custombox",
       texture: "stone",
-      model: "stairs",
+      model: "custombox",
       textures: ["stone", "brick"],
       RigidBody: "fixed",
       RigidBodyType: "cuboid",
+      type: 0,
     },
   },
   setBlockState: (index, newState) =>
     set((state) => ({
       blockState: { ...state.blockState, [index]: newState },
     })),
+
   customModels: {
     stairs: [
       {
@@ -33,6 +34,7 @@ export const useGameStore = create<GameStore>((set) => ({
     set((state) => ({
       customModels: { ...state.customModels, [modelName]: newConfig },
     })),
+
   chunks: [
     {
       position: [0, 10, -10],
@@ -49,6 +51,7 @@ export const useGameStore = create<GameStore>((set) => ({
         },
       ],
     })),
+
   textures: {
     stone: "/assets/textures/cubes/stone.png",
   },
@@ -67,6 +70,7 @@ type BlockState = {
     textures: string[];
     RigidBody: string;
     RigidBodyType: string;
+    type: number; // Adicionando a propriedade type
   };
 };
 
