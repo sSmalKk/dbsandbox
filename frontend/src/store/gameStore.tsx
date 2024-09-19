@@ -17,15 +17,35 @@ export const useGameStore = create<GameStore>((set) => ({
     })),
 
   customModels: {
-    stairs: [
+    custombox: [
       {
         position: [0, 0, 0.5],
         rotation: [0, 0, 0],
         render: true,
       },
       {
-        position: [0, 0, 0],
+        position: [0, 0, -0.5],
+        rotation: [0, Math.PI, 0],
+        render: true,
+      },
+      {
+        position: [0, 0.5, 0],
         rotation: [-Math.PI / 2, 0, 0],
+        render: true,
+      },
+      {
+        position: [0, -0.5, 0],
+        rotation: [Math.PI / 2, 0, 0],
+        render: true,
+      },
+      {
+        position: [0.5, 0, 0],
+        rotation: [0, Math.PI / 2, 0],
+        render: true,
+      },
+      {
+        position: [-0.5, 0, 0],
+        rotation: [0, -Math.PI / 2, 0],
         render: true,
       },
     ],

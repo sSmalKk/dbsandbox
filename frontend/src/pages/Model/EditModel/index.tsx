@@ -71,7 +71,7 @@ const EditModel = () => {
       fetchModel(); // Chama a função fetchModel
     }
   }, [modelId, token, setCustomModels, setBlockState]);
-  console.log("teste",blockState)
+  console.log("teste", blockState);
 
   const handleCreateModel = async () => {
     try {
@@ -117,9 +117,11 @@ const EditModel = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            modelmap: customModels[modelData.name],
-            isActive: true,
-            isDeleted: false,
+            data: {
+              modelmap: customModels[modelData.name],
+              isActive: true,
+              isDeleted: false,
+            },
           }),
         }
       );
@@ -155,21 +157,21 @@ const EditModel = () => {
   };
 
   // Add a new plane to the customModels
-// Função para adicionar um novo plano ao customModels
-const handleAddPlane = () => {
-  const newPlane = {
-    position: [0, 0, 0],
-    rotation: [0, 0, 0],
-    texture: "string",
-    render: true,
+  // Função para adicionar um novo plano ao customModels
+  const handleAddPlane = () => {
+    const newPlane = {
+      position: [0, 0, 0],
+      rotation: [0, 0, 0],
+      texture: "string",
+      render: true,
+    };
+
+    const updatedPlanes = Array.isArray(customModels[modelData.name])
+      ? [...customModels[modelData.name]]
+      : []; // Inicializa como array vazio, se não for um array
+
+    setCustomModels(modelData.name, [...updatedPlanes, newPlane]);
   };
-
-  const updatedPlanes = Array.isArray(customModels[modelData.name])
-    ? [...customModels[modelData.name]]
-    : []; // Inicializa como array vazio, se não for um array
-
-  setCustomModels(modelData.name, [...updatedPlanes, newPlane]);
-};
 
   // Remove a plane from the customModels
   const handleRemovePlane = (index) => {
@@ -247,7 +249,7 @@ const handleAddPlane = () => {
           {/* Section to display and edit planes */}
           <div className="w-48 min-h-8 cardblack rounded-lg z-10 p-5">
             <h3>Lista de Planos</h3>
-                        <ul>
+            <ul>
               {Array.isArray(customModels[modelData.name]) &&
                 customModels[modelData.name].map((plane, index) => (
                   <li key={index} onClick={() => setSelectedPlane(index)}>

@@ -1,251 +1,174 @@
 import React, { useState } from "react";
+import { Sidebar } from "../../../components";
 import Game from "components/Game/Game";
 import { Helmet } from "react-helmet";
-import { Sidebar } from "../../../components";
-import create from "zustand";
-import Draggable from "react-draggable"; // Importando react-draggable
+import { useGameStore } from "../../../store/gameStore";
+import "./EditTexture.css";
 
-// Tipagem correta para o Zustand store
-type BlockState = {
-  [key: number]: {
-    name: string;
-    texture: string;
-    model: string;
-    textures: string[];
-    RigidBody: string;
-    RigidBodyType: string;
-  };
-};
-
-type CustomModel = {
-  position: number[];
-  rotation: number[];
-  render: boolean;
-};
-
-type Chunk = {
-  position: number[];
-  cubesArray: number[][];
-};
-
-type GameStore = {
-  blockState: BlockState;
-  setBlockState: (index: number, newState: BlockState[number]) => void;
-  customModels: { [key: string]: CustomModel[] };
-  setCustomModels: (modelName: string, newConfig: CustomModel[]) => void;
-  chunks: Chunk[];
-  setChunks: (x: number, y: number, z: number, cubes: number[][]) => void;
-  textures: { [key: string]: string };
-  setTextures: (textureName: string, url: string) => void;
-};
-
-// Zustand store para gerenciar o estado do jogo
-const useGameStore = create<GameStore>((set) => ({
-  blockState: {
-    0: {
-      name: "Block1",
-      texture: "stone",
-      model: "box",
-      textures: ["stone", "brick"],
-      RigidBody: "fixed",
-      RigidBodyType: "cuboid",
-    },
-  },
-  setBlockState: (index, newState) =>
-    set((state) => ({
-      blockState: { ...state.blockState, [index]: newState },
-    })),
-  customModels: {
-    stairs: [
-      {
-        position: [0, 0, 0.5],
-        rotation: [0, 0, 0],
-        render: true,
-      },
-      {
-        position: [0, 0, 0],
-        rotation: [-Math.PI / 2, 0, 0],
-        render: true,
-      },
-    ],
-  },
-  setCustomModels: (modelName, newConfig) =>
-    set((state) => ({
-      customModels: { ...state.customModels, [modelName]: newConfig },
-    })),
-  chunks: [
-    {
-      position: [0, 10, -10],
-      cubesArray: [[1, 3, 4, 0]],
-    },
-  ],
-  setChunks: (x, y, z, cubes) =>
-    set((state) => ({
-      chunks: [
-        ...state.chunks,
-        {
-          position: [x, y, z],
-          cubesArray: cubes,
-        },
-      ],
-    })),
-  textures: {
-    stone: "/assets/textures/cubes/stone.png",
-  },
-  setTextures: (textureName, url) =>
-    set((state) => ({
-      textures: { ...state.textures, [textureName]: url },
-    })),
-}));
-
-// Componente principal
-const Texture = () => {
-  const [activePanel, setActivePanel] = useState<string | null>(null);
+const token = localStorage.getItem("token") || process.env.JWT || "";
+const EditTexture = () => {
   const {
+    chunks,
+    customModels,
     blockState,
     textures,
     setTextures,
-    customModels,
-    setCustomModels,
-    chunks,
-    setChunks,
+    setBlockState,
   } = useGameStore();
 
-  const [inputs, setInputs] = useState<{ id: number; value: string }[]>([
-    { id: 1, value: "" },
-  ]);
+  const [selectedTexture, setSelectedTexture] = useState("");
+  const [newTextureName, setNewTextureName] = useState("");
+  const [textureDescription, setTextureDescription] = useState(""); // Novo estado para descrição
+  const [uploadedFile, setUploadedFile] = useState(null);
 
-  // Função para remover um input específico
-  const removeInput = (id: number) => {
-    setInputs((prev) => prev.filter((input) => input.id !== id));
+  // Função para lidar com o upload de arquivo
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    setUploadedFile(file);
   };
 
-  // Função para adicionar um novo input
-  const addInput = () => {
-    const newId = inputs.length > 0 ? inputs[inputs.length - 1].id + 1 : 1;
-    setInputs((prev) => [...prev, { id: newId, value: "" }]);
+  // Função para enviar o arquivo de textura ao servidor
+  const handleUpload = async () => {
+    if (!uploadedFile) {
+      alert("Selecione um arquivo primeiro!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("files", uploadedFile);
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/device/api/v1/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.status === "SUCCESS") {
+        const uploadPath = data.data.uploadSuccess[0].path;
+
+        // Atualiza as texturas no Zustand
+        const textureName = newTextureName || uploadedFile.name;
+        setTextures(textureName, "http://localhost:5000" + uploadPath);
+
+        // Atualiza o blockState
+        setBlockState(0, {
+          ...blockState[0],
+          texture: textureName,
+        });
+
+        // Criação do registro no servidor
+        await createTextureRecord(textureName, textureDescription, uploadPath);
+
+        alert("Textura enviada com sucesso!");
+      }
+    } catch (error) {
+      console.error("Erro ao enviar a textura:", error);
+    }
   };
 
-  // Função para manipular a mudança no input
-  const handleInputChange = (id: number, value: string) => {
-    setInputs((prev) =>
-      prev.map((input) => (input.id === id ? { ...input, value } : input))
-    );
-  };
+  // Função para criar um registro de textura no backend
+  const createTextureRecord = async (name, description, path) => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/admin/modelos_texturemap/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name,
+            description,
+            main: path, // caminho do arquivo
+          }),
+        }
+      );
+      const result = await response.json();
 
-  // Calcular posição central da janela
-  const calculateCenterPosition = () => {
-    const centerX = window.innerWidth / 2 - 150; // Considerando largura do card como 300px
-    const centerY = window.innerHeight / 2 - 75; // Considerando altura do card como 150px
-    return { left: centerX + "px", top: centerY + "px" };
+      if (result.status === "SUCCESS") {
+        console.log("Textura salva no servidor:", result.data);
+      } else {
+        console.error("Erro ao salvar a textura no servidor:", result);
+      }
+    } catch (error) {
+      console.error("Erro ao criar o registro da textura:", error);
+    }
   };
 
   return (
     <>
       <Helmet>
-        <title>Sandbox Creator</title>
+        <title>Editar Textura</title>
       </Helmet>
 
-      {/* Game in the background */}
-      <div
-        style={{
-          position: "fixed",
-          display: "flex", // Flexbox para alinhar sidebar e conteúdo
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 5,
-        }}
-      >
+      <div className="edit-texture-container">
         <Sidebar />
 
-        
-      </div>
-
-      {/* Contêiner móvel: Inputs dinâmicos */}
-      {inputs.map((input) => (
-        <Draggable key={input.id}>
-          <div
-            className="cardwhite"
-            style={{
-              zIndex: 20,
-              position: "absolute",
-              ...calculateCenterPosition(), // Posição central para cada card
-            }}
-          >
-            <div className="tools">
-              <div className="circle">
-                <span
-                  className="red box"
-                  onClick={() => removeInput(input.id)} // Botão vermelho para remover
-                  style={{ cursor: "pointer" }}
-                ></span>
-              </div>
-            </div>
-            <div className="card__content">
-              <h4>{`Card ${input.id}`}</h4>{" "}
-              {/* Adicionando o título "Card %n" */}
-              <input
-                type="text"
-                placeholder="Digite algo aqui..."
-                value={input.value}
-                onChange={(e) => handleInputChange(input.id, e.target.value)}
-              />
-            </div>
+        <div className="edit-texture-content">
+          <div className="header">
+            <h2>Editar Textura</h2>
           </div>
-        </Draggable>
-      ))}
 
-      {/* Card preto que lista os painéis criados */}
-      <div
-        className="black-card"
-        style={{
-          zIndex: 50,
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          padding: "20px",
-          width: "300px",
-          backgroundColor: "black",
-          color: "white",
-          borderRadius: "8px",
-        }}
-      >
-        <h3>Painéis Criados</h3>
-        <ul>
-          {inputs.map((input) => (
-            <li key={input.id}>{`Card ${input.id}`}</li>
-          ))}
-        </ul>
+          {/* Seção de upload de arquivos */}
+          <div className="upload-section cardblack">
+            <h3>Upload de Textura</h3>
+            <input type="file" onChange={handleFileUpload} />
+            <input
+              type="text"
+              value={newTextureName}
+              onChange={(e) => setNewTextureName(e.target.value)}
+              placeholder="Nome da Textura (opcional)"
+              className="input-field"
+            />
+            <textarea
+              value={textureDescription}
+              onChange={(e) => setTextureDescription(e.target.value)}
+              placeholder="Descrição da Textura (opcional)"
+              className="input-field"
+            />
+            <button onClick={handleUpload} className="upload-button">
+              Upload e Salvar Textura
+            </button>
+          </div>
 
-        {/* Botão para adicionar novos inputs */}
-        <button
-          onClick={addInput}
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "white",
-            color: "black",
-            border: "none",
-            borderRadius: "5px",
-            marginTop: "10px",
-            cursor: "pointer",
-          }}
-        >
-          +
-        </button>
+          {/* Seção para visualização das texturas atuais */}
+          <div className="texture-list cardblack">
+            <h3>Texturas Atuais</h3>
+            <ul>
+              {Object.keys(textures).map((texture) => (
+                <li key={texture}>
+                  <strong>{texture}</strong> -{" "}
+                  <img
+                    src={textures[texture]}
+                    alt={texture}
+                    className="texture-preview"
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
 
       <Game
         blockState={blockState}
-        customModels={customModels}
         textures={textures}
-        chunks={chunks} // Agora o chunks é passado corretamente para o Game
         renderDistance={10}
-        canPlayerFly={true}
+        canPlayerFly={false}
+        customModels={customModels}
+        chunks={chunks}
       />
     </>
   );
 };
 
-export default Texture;
+export default EditTexture;

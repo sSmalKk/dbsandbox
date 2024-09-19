@@ -14,6 +14,7 @@ import Dashboard from "pages/Dashboard";
 import Item from "pages/Model/Item";
 import Texture from "pages/Model/Texture";
 import ModelList from "pages/Model/ModelList";
+import TextureList from "pages/Model/TextureList";
 import EditModel from "pages/Model/EditModel";
 
 const ProjectRoutes = () => {
@@ -27,31 +28,35 @@ const ProjectRoutes = () => {
       element: <Landingpage />,
     },
     {
-      path: "/sandboxmenu", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
+      path: "/sandboxmenu",
       element: <SandboxMenu />,
     },
     {
-      path: "/sandboxsurvival", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
+      path: "/sandboxsurvival",
       element: <SandboxSurvival />,
     },
     {
-      path: "/dashboard", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
+      path: "/dashboard",
       element: <Dashboard />,
     },
     {
-      path: "/ItemCreator/EditModel", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
+      path: "/ItemCreator/EditModel",
       element: <EditModel />,
     },
     {
-      path: "/ItemCreator/ModelList", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
+      path: "/ItemCreator/ModelList",
       element: <ModelList />,
     },
     {
-      path: "/ItemCreator/texture", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
+      path: "/ItemCreator/TextureList",
+      element: <TextureList />,
+    },
+    {
+      path: "/ItemCreator/texture",
       element: <Texture />,
     },
     {
-      path: "/ItemCreator/item", //jogo em sim, primeira tela dps de logar, verdadeira "home", PRECISA GAMEFICAR A PARTIR DAQUI
+      path: "/ItemCreator/item",
       element: <Item />,
     },
     {
