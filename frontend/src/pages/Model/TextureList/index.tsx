@@ -39,7 +39,6 @@ const TextureList = () => {
   };
 
   useEffect(() => {
-
     fetchRecentModels();
   }, []);
 
@@ -81,15 +80,15 @@ const TextureList = () => {
         console.error("Erro ao deletar textura:", error);
       }
     }
-  };
+  };console.log(customTextures)
   return (
     <>
       <Helmet>
         <title>Lista de Texturas</title>
       </Helmet>
-      <div className="texture-list-container">
+      <div className="model-list-container">
         <Sidebar />
-        <div className="texture-list-content">
+        <div className="texturemap-list-content cardblack">
           <h2>Lista de Texturas</h2>
           <ul className="texture-list">
             {customTextures.length > 0 ? (
@@ -97,7 +96,7 @@ const TextureList = () => {
                 <li key={texture._id || texture.id} className="texture-item">
                   <div className="texture-preview-wrapper">
                     <img
-                      src={"http://localhost:5000"+texture.main}
+                      src={"http://localhost:5000/" + texture.link}
                       alt={texture.name}
                       className="texture-preview"
                     />

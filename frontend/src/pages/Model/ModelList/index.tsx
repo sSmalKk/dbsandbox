@@ -4,10 +4,10 @@ import Game from "components/Game/Game";
 import { Helmet } from "react-helmet";
 import { useGameStore } from "../../../store/gameStore"; // Zustand store
 import Navegador from "components/Navegador";
-import "./ModelList.css"; // Arquivo CSS para customizar o estilo da lista
+import "./ModelList.css";
 
 const ModelList = () => {
-  const [modelos, setModelos] = useState([]);
+  const [customTextures, setCustomTextures] = useState([]);
   const { blockState, customModels, chunks, textures } = useGameStore();
   const { navegar } = Navegador(); // Usar o Navegador
 
@@ -29,12 +29,12 @@ const ModelList = () => {
 
       const data = await response.json();
       if (Array.isArray(data.data.data)) {
-        setModelos(data.data.data); // Use data.data assuming the API response contains a "data" array
+        setCustomTextures(data.data.data); // Use data.data assuming the API response contains a "data" array
       } else {
         console.error("Unexpected API response format", data);
       }
     } catch (error) {
-      console.error("Error fetching recent models:", error);
+      console.error("Error fetching recent textures:", error);
     }
   };
 
@@ -42,23 +42,23 @@ const ModelList = () => {
     fetchRecentModels();
   }, []);
 
-  const handleEdit = (modeloId) => {
-    // Salvar apenas o ID do modelo no localStorage
-    localStorage.setItem("selectedModelId", modeloId);
+  const handleEdit = (textureId) => {
+    // Salvar apenas o ID do texture no localStorage
+    localStorage.setItem("selectedModelId", textureId);
     // Redirecionar para a página de edição
     navegar(`/ItemCreator/EditModel/`);
   };
 
-  const handleDelete = async (modeloId) => {
+  const handleDelete = async (textureId) => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
     const confirmDelete = window.confirm(
-      "Tem certeza que deseja deletar esse modelo?"
+      "Tem certeza que deseja deletar essa textura?"
     );
 
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://localhost:5000/admin/modelos_model/delete/${modeloId}`,
+          `http://localhost:5000/admin/modelos_texturemap/delete/${textureId}`,
           {
             method: "DELETE",
             headers: {
@@ -70,18 +70,17 @@ const ModelList = () => {
 
         const result = await response.json();
         if (result.status === "SUCCESS") {
-          alert("Modelo deletado com sucesso!");
+          alert("Textura deletada com sucesso!");
           // Re-fetch models to force refresh after deletion
           fetchRecentModels();
         } else {
-          console.error("Erro ao deletar modelo:", result);
+          console.error("Erro ao deletar textura:", result);
         }
       } catch (error) {
-        console.error("Erro ao deletar modelo:", error);
+        console.error("Erro ao deletar textura:", error);
       }
     }
-  };
-
+  };console.log(customTextures)
   return (
     <>
       <Helmet>
@@ -89,24 +88,33 @@ const ModelList = () => {
       </Helmet>
       <div className="model-list-container">
         <Sidebar />
-        <div className="model-list-content">
+        <div className="texturemap-list-content cardblack">
           <h2>Lista de Modelos</h2>
-          <ul className="model-list">
-            {modelos.length > 0 ? (
-              modelos.map((modelo) => (
-                <li key={modelo._id || modelo.id} className="model-item">
-                  <div className="model-info">
-                    <strong>Nome:</strong> {modelo.name} <br />
-                    <strong>Tipo:</strong> {modelo.type} <br />
+          <ul className="texture-list">
+            {customTextures.length > 0 ? (
+              customTextures.map((texture) => (
+                <li key={texture._id || texture.id} className="texture-item">
+                  <div className="texture-preview-wrapper">
+                    <img
+                      src={"http://localhost:5000/" + texture.link}
+                      alt={texture.name}
+                      className="texture-preview"
+                    />
                   </div>
-                  <div className="model-actions">
+                  <div className="texture-info">
+                    <strong>Nome:</strong> {texture.name} <br />
+                    <strong>Descrição:</strong> {texture.description} <br />
+                    <strong>Tipo:</strong> {texture.type} <br />
+                  </div>
+
+                  <div className="texture-actions">
                     <button
-                      onClick={() => handleEdit(modelo._id || modelo.id)}
+                      onClick={() => handleEdit(texture._id || texture.id)}
                     >
                       Editar
                     </button>
                     <button
-                      onClick={() => handleDelete(modelo._id || modelo.id)}
+                      onClick={() => handleDelete(texture._id || texture.id)}
                     >
                       Excluir
                     </button>
@@ -114,7 +122,7 @@ const ModelList = () => {
                 </li>
               ))
             ) : (
-              <li className="no-models">Nenhum modelo encontrado</li>
+              <li className="no-textures">Nenhuma textura encontrada</li>
             )}
           </ul>
         </div>

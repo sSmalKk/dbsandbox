@@ -16,6 +16,7 @@ const Item = () => {
   const [modelList, setModelList] = useState([]);
   const [textureList, setTextureList] = useState([]);
   const { navegar } = Navegador();
+  const itemId = localStorage.getItem("selectedItemId");
 
   const fetchModelos = async () => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
@@ -68,12 +69,13 @@ const Item = () => {
   const saveItem = async () => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
     const itemId = localStorage.getItem("selectedItemId");
+    console.log(modelId, textureId);
 
     const bodyData = {
       name,
       description,
-      model: modelId,
-      texture: textureId,
+      model: modelId, // Using modelId
+      texture: textureId, // Using textureId
     };
 
     const url = itemId
@@ -115,7 +117,6 @@ const Item = () => {
       // Adicionar fetch para buscar o item por ID e setar os estados adequados
     }
   }, []);
-
   return (
     <>
       <Helmet>
@@ -141,8 +142,8 @@ const Item = () => {
           <select value={modelId} onChange={(e) => setModelId(e.target.value)}>
             <option value="">Selecione um Modelo</option>
             {modelList.map((model) => (
-              <option key={model._id} value={model._id}>
-                {model.name}
+              <option key={model.id} value={model.id}>
+                {model.name} {/* Display the name */}
               </option>
             ))}
           </select>
@@ -153,8 +154,8 @@ const Item = () => {
           >
             <option value="">Selecione uma Textura</option>
             {textureList.map((texture) => (
-              <option key={texture._id} value={texture._id}>
-                {texture.name}
+              <option key={texture.id} value={texture.id}>
+                {texture.name} {/* Display the name */}
               </option>
             ))}
           </select>

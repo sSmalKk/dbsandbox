@@ -1,72 +1,70 @@
-/* Estilos globais para containers escuros */
+/* Estilos globais para containers com fundo escuro */
 .cardblack {
-  background-color: #1e1e1e; /* Cor de fundo escura */
+  background-color: #1e1e1e; /* Cor padrão do fundo escuro */
   padding: 20px;
   border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Container principal do editor */
-.texturemap-editor-container {
+/* Container principal da página do editor de texturemap */
+.edit-texturemap-container {
   display: flex;
   width: 100%;
   height: 100%;
-  background-color: #121212; /* Fundo mais escuro */
+  background-color: #121212; /* Fundo principal mais escuro */
 }
 
-.texturemap-editor-content {
+.edit-texturemap-content {
   padding: 20px;
   width: 100%;
-  background-color: transparent;
+  background-color: transparent; /* Transparente para dar ênfase aos cartões */
 }
 
-/* Estilos para as listas de texturemap */
-.texturemap-list,
-.available-textures-list {
-  list-style: none;
+h2, h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+ul {
+  list-style-type: none;
   padding: 0;
 }
 
-.texturemap-item,
-.available-texture-item {
-  display: flex;
-  justify-content: space-between;
+li {
+  margin-bottom: 10px;
   padding: 10px;
   background-color: #333;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  border-radius: 5px;
+  color: #ffffff;
 }
 
-/* Botões */
-.add-button,
-.remove-button {
-  background-color: #007bff;
-  color: #fff;
+button {
+  background-color: #28a745;
+  color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.add-button:hover {
-  background-color: #0056b3;
+button:hover {
+  background-color: #218838;
 }
 
-.remove-button {
-  background-color: #dc3545;
+.add-texture-btn {
+  margin-top: 15px;
 }
 
-.remove-button:hover {
-  background-color: #c82333;
+.save-button {
+  margin-top: 20px;
 }
 
-h3 {
-  margin-bottom: 15px;
-  font-size: 20px;
+.close-button {
+  background-color: #ff4c4c;
 }
 
-p {
-  color: #ccc;
+.close-button:hover {
+  background-color: #e63939;
 }

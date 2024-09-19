@@ -1,22 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar } from "../../../components";
+import Game from "components/Game/Game";
 import { Helmet } from "react-helmet";
-import { useGameStore } from "../../../store/gameStore"; // Zustand store
-import Navegador from "components/Navegador";
-import "./TextureMap.css"; // Arquivo CSS para customizar o estilo
+import { useGameStore } from "../../../store/gameStore";
+import "./TextureMap.css"; // Import your CSS styles
+
+const token = localStorage.getItem("token") || process.env.JWT || "";
+const savedTextureMapId = localStorage.getItem("textureMapId");
 
 const TextureMap = () => {
-  const [availableTextures, setAvailableTextures] = useState([]); // Lista de texturas disponíveis
-  const [textureMap, setTextureMap] = useState([]); // Mapa de texturas
-  const { blockState, setBlockState } = useGameStore();
-  const { navegar } = Navegador(); // Usar o Navegador
+  const { blockState, textures, setBlockState, setTextures } = useGameStore();
 
-  // Carregar texturas disponíveis da API
-  const fetchTextures = async () => {
+  const [newTextureMap, setNewTextureMap] = useState(!savedTextureMapId); // Se não houver um ID salvo, cria um novo mapa
+  const [textureMapId, setTextureMapId] = useState(savedTextureMapId || null);
+  const [textureName, setTextureName] = useState("");
+  const [textureDescription, setTextureDescription] = useState("");
+  const [textureData, setTextureData] = useState({
+    name: "",
+    description: "",
+    isActive: true,
+    isDeleted: false,
+    texturemap: [],
+  });
+
+  const [availableTextures, setAvailableTextures] = useState([]); // Para armazenar as texturas possíveis
+  const [selectedTexture, setSelectedTexture] = useState(""); // Para a textura selecionada no dropdown
+
+  // Fetch recent textures to populate dropdown options
+  const fetchRecentTextures = async () => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
     try {
       const response = await fetch(
-        `http://localhost:5000/admin/texture/list`,
+        `http://localhost:5000/admin/modelos_texture/list`,
         {
           method: "POST",
           headers: {
@@ -30,110 +45,236 @@ const TextureMap = () => {
 
       const data = await response.json();
       if (Array.isArray(data.data.data)) {
-        setAvailableTextures(data.data.data);
+        setAvailableTextures(data.data.data); // Alimenta o dropdown com as texturas
       } else {
         console.error("Unexpected API response format", data);
       }
     } catch (error) {
-      console.error("Error fetching textures:", error);
+      console.error("Error fetching recent textures:", error);
     }
   };
 
-  // Carregar o texturemap existente do blockState
+  // Busca texturas recentes assim que o componente monta
   useEffect(() => {
-    if (blockState && blockState[0].textures) {
-      setTextureMap(blockState[0].textures || []);
+    fetchRecentTextures();
+
+    if (textureMapId) {
+      const fetchTextureMap = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/admin/modelos_texturemap/${textureMapId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (!response.ok) throw new Error("Failed to fetch the texture map");
+
+          const data = await response.json();
+          if (data.status === "SUCCESS") {
+            const textureMapArray = Array.isArray(data.data.texturemap)
+              ? data.data.texturemap
+              : [];
+            setTextureData({ ...data.data, texturemap: textureMapArray });
+            setBlockState(0, {
+              ...blockState[0],
+              textures: textureMapArray.map((texture) => texture.id), // Associa as texturas IDs
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching the texture map:", error);
+        }
+      };
+      fetchTextureMap();
     }
-    fetchTextures(); // Carrega as texturas disponíveis
-  }, [blockState]);
+  }, [textureMapId, token, setTextures, setBlockState]);
 
-  // Função para adicionar uma nova textura ao texturemap
-  const handleAddTexture = (textureId) => {
-    const selectedTexture = availableTextures.find(
-      (texture) => texture._id === textureId
-    );
+  const handleCreateTextureMap = async () => {
+    if (!textureName || !textureDescription) {
+      alert("Preencha todos os campos.");
+      return;
+    }
 
-    if (selectedTexture) {
-      const updatedTextureMap = [...textureMap, { _id: selectedTexture._id }];
-      setTextureMap(updatedTextureMap);
-
-      // Atualizar o blockState com o novo texturemap
-      setBlockState(0, {
-        ...blockState[0],
-        textures: updatedTextureMap,
-      });
+    try {
+      const response = await fetch(
+        "http://localhost:5000/admin/modelos_texturemap/create",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: textureName,
+            description: textureDescription,
+            isActive: true,
+            isDeleted: false,
+          }),
+        }
+      );
+      const result = await response.json();
+      if (result.status === "SUCCESS") {
+        setTextureMapId(result.data.id);
+        localStorage.setItem("textureMapId", result.data.id);
+        setNewTextureMap(false); // Fecha o modal após a criação
+      }
+    } catch (error) {
+      console.error("Error creating texture map:", error);
+    }
+  };
+  const handleSaveTextureMap = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/admin/modelos_texturemap/partial-update/${textureMapId}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            texturemap: textureData.texturemap.map((t) => t.id), // Envia apenas IDs das texturas
+            isActive: textureData.isActive,
+            isDeleted: textureData.isDeleted,
+          }),
+        }
+      );
+      const result = await response.json();
+      if (result.status === "SUCCESS") {
+        console.log("Texture map updated successfully:", result);
+      }
+    } catch (error) {
+      console.error("Error updating texture map:", error);
     }
   };
 
-  // Função para remover uma textura do texturemap
-  const handleRemoveTexture = (textureId) => {
-    const updatedTextureMap = textureMap.filter(
-      (texture) => texture._id !== textureId
+  const handleAddTexture = () => {
+    const selectedTextureData = availableTextures.find(
+      (texture) => texture.id === selectedTexture
     );
-    setTextureMap(updatedTextureMap);
 
-    // Atualizar o blockState com o texturemap atualizado
-    setBlockState(0, {
-      ...blockState[0],
-      textures: updatedTextureMap,
-    });
+    if (!selectedTextureData) {
+      alert("Selecione uma textura válida.");
+      return;
+    }
+
+    setTextureData((prevState) => ({
+      ...prevState,
+      texturemap: [...prevState.texturemap, selectedTextureData],
+    }));
+
+    setSelectedTexture(""); // Limpa a seleção
   };
 
+  const handleRemoveTexture = (index) => {
+    setTextureData((prevState) => ({
+      ...prevState,
+      texturemap: prevState.texturemap.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleClearLocalStorage = () => {
+    localStorage.removeItem("textureMapId");
+    setTextureMapId(null);
+    setNewTextureMap(true); // Mostra o modal para criação de novo mapa
+  };
+  console.log(availableTextures);
   return (
     <>
       <Helmet>
-        <title>Editor de Texturemap</title>
+        <title>
+          {newTextureMap
+            ? "Criar Novo TextureMap"
+            : `Editando: ${textureData.name}`}
+        </title>
       </Helmet>
-      <div className="texturemap-editor-container">
-        <Sidebar />
-        <div className="texturemap-editor-content cardblack">
-          <h2>Editor de Texturemap</h2>
 
-          {/* Exibição do texturemap atual */}
-          <div className="current-texturemap cardblack">
-            <h3>Texturemap Atual</h3>
-            {textureMap.length > 0 ? (
-              <ul className="texturemap-list">
-                {textureMap.map((texture) => (
-                  <li key={texture._id} className="texturemap-item">
-                    <strong>ID da Textura:</strong> {texture._id}
-                    <button
-                      onClick={() => handleRemoveTexture(texture._id)}
-                      className="remove-button"
-                    >
-                      Remover
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Nenhuma textura no mapa atual.</p>
-            )}
-          </div>
-
-          {/* Adicionar novas texturas ao texturemap */}
-          <div className="add-texture-section cardblack">
-            <h3>Adicionar Nova Textura</h3>
-            <ul className="available-textures-list">
-              {availableTextures.length > 0 ? (
-                availableTextures.map((texture) => (
-                  <li key={texture._id} className="available-texture-item">
-                    <strong>{texture.name}</strong> - {texture.description}
-                    <button
-                      onClick={() => handleAddTexture(texture._id)}
-                      className="add-button"
-                    >
-                      Adicionar
-                    </button>
-                  </li>
-                ))
-              ) : (
-                <p>Carregando texturas disponíveis...</p>
-              )}
-            </ul>
+      {newTextureMap && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Definir Nome e Descrição do TextureMap</h3>
+            <input
+              type="text"
+              value={textureName}
+              onChange={(e) => setTextureName(e.target.value)}
+              placeholder="Digite o nome do TextureMap"
+            />
+            <textarea
+              value={textureDescription}
+              onChange={(e) => setTextureDescription(e.target.value)}
+              placeholder="Digite a descrição"
+            />
+            <button onClick={handleCreateTextureMap}>Criar TextureMap</button>
           </div>
         </div>
+      )}
+
+      <div className="edit-texturemap-container">
+        <Sidebar />
+        <div className="edit-texturemap-content">
+          <div className="header">
+            <h2>
+              {newTextureMap
+                ? "Criar Novo TextureMap"
+                : `Editando: ${textureData.name}`}
+            </h2>
+            <button className="close-button" onClick={handleClearLocalStorage}>
+              Limpar
+            </button>
+          </div>
+
+          {/* Lista de texturas */}
+          <div className="cardblack rounded-lg p-5">
+            <h3>Lista de Texturas</h3>
+            <ul>
+              {textureData.texturemap.map((texture, index) => (
+                <li key={texture.id}>
+                  <strong>Textura {index + 1}</strong> - {texture.description}
+                  <button onClick={() => handleRemoveTexture(index)}>
+                    Remover
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            {/* Dropdown para selecionar nova textura */}
+            <select
+              value={selectedTexture}
+              onChange={(e) => setSelectedTexture(e.target.value)}
+            >
+              <option value="">Selecione uma textura</option>
+              {availableTextures.map((texture) => (
+                <option key={texture.id} value={texture.id}>
+                  {texture.name} - {texture.description}
+                </option>
+              ))}
+            </select>
+
+            <button className="add-texture-btn" onClick={handleAddTexture}>
+              Adicionar Nova Textura
+            </button>
+          </div>
+
+          <button className="save-button" onClick={handleSaveTextureMap}>
+            Salvar TextureMap
+          </button>
+        </div>
       </div>
+
+      <Game
+        blockState={blockState}
+        textures={textures}
+        renderDistance={10}
+        canPlayerFly={false}
+        customModels={{}} // Não usamos models aqui
+        chunks={[]}
+      />
     </>
   );
 };
