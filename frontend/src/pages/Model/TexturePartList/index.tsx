@@ -4,9 +4,9 @@ import Game from "components/Game/Game";
 import { Helmet } from "react-helmet";
 import { useGameStore } from "../../../store/gameStore"; // Zustand store
 import Navegador from "components/Navegador";
-import "./TextureMapList.css";
+import "./TextureList.css";
 
-const TextureMapList = () => {
+const TexturePartList = () => {
   const [customTextures, setCustomTextures] = useState([]);
   const { blockState, customModels, chunks, textures } = useGameStore();
   const { navegar } = Navegador(); // Usar o Navegador
@@ -15,7 +15,7 @@ const TextureMapList = () => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
     try {
       const response = await fetch(
-        `http://localhost:5000/admin/modelos_texturemap/list`,
+        `http://localhost:5000/admin/modelos_texture/list`,
         {
           method: "POST",
           headers: {
@@ -58,7 +58,7 @@ const TextureMapList = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://localhost:5000/admin/modelos_texturemap/delete/${textureId}`,
+          `http://localhost:5000/admin/modelos_TexturePart/delete/${textureId}`,
           {
             method: "DELETE",
             headers: {
@@ -129,14 +129,35 @@ const TextureMapList = () => {
       </div>
 
       <Game
-        blockState={blockState}
-        customModels={customModels}
-        textures={textures}
-        chunks={chunks}
-        renderDistance={10}
-        canPlayerFly={false} keyboardMap={undefined}      />
+  customModels={customModels}
+  blockState={blockState}
+  canPlayerFly={true}
+  textures={textures}
+  chunks={chunks}
+  renderDistance={15}
+  gravity={[0, -9.81, 0]}
+  pointLightPosition={[5, 10, 5]}
+  initialPlayerPosition={[2, 20, 2]}
+  isMouseLocked={true}
+  sunPosition={[150, 50, 150]}
+  ambientLightIntensity={1.5}
+  pointLightIntensity={0.5}
+  fov={60}
+  keyboardMap={[
+    { name: "forward", keys: ["w", "W"] },
+    { name: "backward", keys: ["s", "S"] },
+    { name: "left", keys: ["a", "A"] },
+    { name: "right", keys: ["d", "D"] },
+    { name: "shift", keys: ["Shift"] },
+    { name: "jump", keys: ["Space"] },
+    { name: "inventory", keys: ["e", "E"] },
+    { name: "layerp", keys: ["ArrowUp"] },
+    { name: "layerm", keys: ["ArrowDown"] },
+    { name: "escape", keys: ["ESC", "Escape"] },
+  ]}
+/>
     </>
   );
 };
 
-export default TextureMapList;
+export default TexturePartList;

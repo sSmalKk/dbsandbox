@@ -72,6 +72,9 @@ const pages = [
       { name: "TextureList", route: "/ItemCreator/TextureList" },
       { name: "TextureMap", route: "/ItemCreator/TextureMap" },
       { name: "TextureMapList", route: "/ItemCreator/TextureMapList" },
+      { name: "TexturePart", route: "/ItemCreator/TexturePart" },
+      { name: "TexturePartList", route: "/ItemCreator/TexturePartList" },
+
     ],
   },
   {

@@ -19,6 +19,8 @@ import TextureMap from "pages/Model/TextureMap";
 import Model from "pages/Model/Model";
 import Item from "pages/Model/Item";
 import TextureMapList from "pages/Model/TextureMapList";
+import TexturePartList from "pages/Model/TexturePartList";
+import TexturePart from "pages/Model/TexturePart";
 
 const ProjectRoutes = () => {
   let element = useRoutes([
@@ -57,6 +59,15 @@ const ProjectRoutes = () => {
     {
       path: "/ItemCreator/Texture",
       element: <Texture />,
+    },
+    ,
+    {
+      path: "/ItemCreator/TexturePartList",
+      element: <TexturePartList />,
+    },
+    {
+      path: "/ItemCreator/TexturePart",
+      element: <TexturePart />,
     },
     {
       path: "/ItemCreator/TextureMapList",

@@ -165,12 +165,32 @@ const Item = () => {
       </div>
 
       <Game
-        blockState={blockState}
         customModels={customModels}
+        blockState={blockState}
+        canPlayerFly={true}
         textures={textures}
         chunks={chunks}
-        renderDistance={10}
-        canPlayerFly={false}
+        renderDistance={15}
+        gravity={[0, -9.81, 0]}
+        pointLightPosition={[5, 10, 5]}
+        initialPlayerPosition={[2, 20, 2]}
+        isMouseLocked={true}
+        sunPosition={[150, 50, 150]}
+        ambientLightIntensity={1.5}
+        pointLightIntensity={0.5}
+        fov={60}
+        keyboardMap={[
+          { name: "forward", keys: ["w", "W"] },
+          { name: "backward", keys: ["s", "S"] },
+          { name: "left", keys: ["a", "A"] },
+          { name: "right", keys: ["d", "D"] },
+          { name: "shift", keys: ["Shift"] },
+          { name: "jump", keys: ["Space"] },
+          { name: "inventory", keys: ["e", "E"] },
+          { name: "layerp", keys: ["ArrowUp"] },
+          { name: "layerm", keys: ["ArrowDown"] },
+          { name: "escape", keys: ["ESC", "Escape"] },
+        ]}
       />
     </>
   );

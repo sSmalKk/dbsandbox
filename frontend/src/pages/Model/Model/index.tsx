@@ -109,15 +109,19 @@ const Model = () => {
     try {
       // Formatting modelmap as a single object containing arrays
       const updatedModelMap = {
-        positions: customModels[modelData.name].map(plane => plane.position || [0, 0, 0]),  // Array of positions
-        rotations: customModels[modelData.name].map(plane => plane.rotation || [0, 0, 0]),  // Array of rotations
-        renders: customModels[modelData.name].map(plane => typeof plane.render === 'boolean' 
-          ? plane.render 
-          : true),  // Array of render values
+        positions: customModels[modelData.name].map(
+          (plane) => plane.position || [0, 0, 0]
+        ), // Array of positions
+        rotations: customModels[modelData.name].map(
+          (plane) => plane.rotation || [0, 0, 0]
+        ), // Array of rotations
+        renders: customModels[modelData.name].map((plane) =>
+          typeof plane.render === "boolean" ? plane.render : true
+        ), // Array of render values
       };
-  
+
       console.log("Updated Model Map: ", updatedModelMap);
-  
+
       const response = await fetch(
         `http://localhost:5000/admin/modelos_model/partial-update/${modelId}`,
         {
@@ -128,16 +132,17 @@ const Model = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            modelmap: updatedModelMap,  // Nested object with arrays
+            modelmap: updatedModelMap, // Nested object with arrays
             isActive: true,
             isDeleted: false,
           }),
         }
       );
-  
+
       const result = await response.json();
       if (result.status === "SUCCESS") {
         console.log("Model updated successfully:", result);
+        alert("Textura salva no servidor");
       } else {
         console.error("Error in response:", result);
       }
@@ -145,7 +150,7 @@ const Model = () => {
       console.error("Error updating model:", error);
     }
   };
-      // Handle dropdown change for model type
+  // Handle dropdown change for model type
   const handleDropdownChange = (e) => {
     const selectedType = parseInt(e.target.value, 10);
     setTipoSelecionado(selectedType);
@@ -358,13 +363,33 @@ const Model = () => {
       </div>
 
       <Game
-        blockState={blockState}
-        customModels={customModels}
-        textures={textures}
-        chunks={chunks}
-        renderDistance={10}
-        canPlayerFly={false}
-      />
+  customModels={customModels}
+  blockState={blockState}
+  canPlayerFly={true}
+  textures={textures}
+  chunks={chunks}
+  renderDistance={15}
+  gravity={[0, -9.81, 0]}
+  pointLightPosition={[5, 10, 5]}
+  initialPlayerPosition={[2, 20, 2]}
+  isMouseLocked={true}
+  sunPosition={[150, 50, 150]}
+  ambientLightIntensity={1.5}
+  pointLightIntensity={0.5}
+  fov={60}
+  keyboardMap={[
+    { name: "forward", keys: ["w", "W"] },
+    { name: "backward", keys: ["s", "S"] },
+    { name: "left", keys: ["a", "A"] },
+    { name: "right", keys: ["d", "D"] },
+    { name: "shift", keys: ["Shift"] },
+    { name: "jump", keys: ["Space"] },
+    { name: "inventory", keys: ["e", "E"] },
+    { name: "layerp", keys: ["ArrowUp"] },
+    { name: "layerm", keys: ["ArrowDown"] },
+    { name: "escape", keys: ["ESC", "Escape"] },
+  ]}
+/>
     </>
   );
 };

@@ -22,14 +22,19 @@ const useStore = create((set) => ({
 export default function Game({
   customModels,
   blockState,
-  canPlayerFly,
+  canPlayerFly = true,
   textures,
   chunks,
   renderDistance = 10,
   gravity = [0, -9, 0],
-  pointLightPosition = [100, 100, 100],
+  pointLightPosition = [0, 0, 0],
   initialPlayerPosition = [1, 13, 0],
   isMouseLocked = undefined,
+  sunPosition = [100, 20, 100],
+  ambientLightIntensity = 3,
+  pointLightIntensity = 0.2,
+  fov = 45,
+  keyboardMap,
 }) {
   const [fps, setFps] = useState(0);
   const tickRef = useRef(0);
@@ -49,19 +54,6 @@ export default function Game({
   const [mouseLocked, setMouseLocked] = useState(
     isMouseLocked !== undefined ? isMouseLocked : true
   );
-
-  const keyboardMap = [
-    { name: "forward", keys: ["w", "W"] },
-    { name: "backward", keys: ["s", "S"] },
-    { name: "left", keys: ["a", "A"] },
-    { name: "right", keys: ["d", "D"] },
-    { name: "shift", keys: ["Shift"] },
-    { name: "jump", keys: ["Space"] },
-    { name: "inventory", keys: ["e", "E"] },
-    { name: "layerp", keys: ["ArrowUp"] },
-    { name: "layerm", keys: ["ArrowDown"] },
-    { name: "escape", keys: ["ESC", "Escape", "Esc"] },
-  ];
 
   useEffect(() => {
     if (isMouseLocked !== undefined) {
@@ -102,47 +94,21 @@ export default function Game({
       setInterfaceOpen(false);
     }
   };
+
   return (
     <>
-      <div
-        style={{
-          position: "fixed",
-          botton: "20%",
-          right: "20%",
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
-          padding: "20px",
-          borderRadius: "10px",
-          color: "#fff",
-          zIndex: 100,
-        }}
-      >
-        <h3>Game Data</h3>
-        <pre style={{ whiteSpace: "pre-wrap" }}>
-          <strong>Custom Models:</strong>{" "}
-          {JSON.stringify(customModels, null, 2)}
-          <br />
-          <strong>Block State:</strong> {JSON.stringify(blockState, null, 2)}
-          <br />
-          <strong>Chunks:</strong> {JSON.stringify(chunks, null, 2)}
-          <br />
-          <strong>Textures:</strong> {JSON.stringify(textures, null, 2)}
-          <br />
-          <strong>Player Position:</strong>{" "}
-          {JSON.stringify(chunkPosition, null, 2)}
-        </pre>
-      </div>
       <KeyboardControls map={keyboardMap}>
         <Canvas
           shadows
-          camera={{ fov: 45 }}
+          camera={{ fov: fov }}
           style={{ position: "fixed", zIndex: -1 }}
           className="top-0 bottom-0 w-full h-full"
         >
-          <Sky sunPosition={[100, 20, 100]} />
-          <ambientLight intensity={3} />
+          <Sky sunPosition={sunPosition} />
+          <ambientLight intensity={ambientLightIntensity} />
           <pointLight
             castShadow
-            intensity={0.2}
+            intensity={pointLightIntensity}
             position={pointLightPosition}
           />
           <Physics gravity={gravity}>
@@ -155,6 +121,7 @@ export default function Game({
               initialPosition={initialPlayerPosition}
               flying={flying}
             />
+            <PlayerModel />
             <VoxelTerrain
               customModels={customModels}
               blockState={blockState}
