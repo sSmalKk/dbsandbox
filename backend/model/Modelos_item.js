@@ -45,25 +45,29 @@ const schema = new Schema(
     description:{ type:String },
 
     model:{
-      ref:'Modelos_model',
+      ref:'AtomModelos_Model',
       type:Schema.Types.ObjectId
     },
 
     texture:{
-      ref:'Modelos_TextureMap',
+      type:Schema.Types.ObjectId,
+      ref:'Modelos_TextureMap'
+    },
+
+    tag:{ type:Array },
+
+    interface:{
+      ref:'Modelos_interface',
       type:Schema.Types.ObjectId
-    }
-  }
-  ,{ 
-    timestamps: { 
-      createdAt: 'createdAt', 
-      updatedAt: 'updatedAt' 
-    } 
+    },
+
+    data:{ type:Array },
+
+    blockstate:{ type:Array }
   }
 );
 schema.pre('save', async function (next) {
   this.isDeleted = false;
-  this.isActive = true;
   next();
 });
 
@@ -72,7 +76,6 @@ schema.pre('insertMany', async function (next, docs) {
     for (let index = 0; index < docs.length; index++) {
       const element = docs[index];
       element.isDeleted = false;
-      element.isActive = true;
     }
   }
   next();

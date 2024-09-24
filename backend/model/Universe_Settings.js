@@ -22,13 +22,29 @@ const Schema = mongoose.Schema;
 const schema = new Schema(
   {
 
-    Name:{ type:String },
+    name:{ type:String },
 
     description:{ type:String },
 
-    isDeleted:{ type:Boolean },
-
     isActive:{ type:Boolean },
+
+    rules:{
+      type:{ type:Array },
+      items:{ type:String }
+    },
+
+    items:{
+      type:{ type:Array },
+      items:{ type:String }
+    },
+
+    biomes:{ type:Array },
+
+    models:{ type:Array },
+
+    textures:{ type:Array },
+
+    entity:{ type:Array },
 
     createdAt:{ type:Date },
 
@@ -42,18 +58,22 @@ const schema = new Schema(
     updatedBy:{
       type:Schema.Types.ObjectId,
       ref:'user'
-    }
-  }
-  ,{ 
-    timestamps: { 
-      createdAt: 'createdAt', 
-      updatedAt: 'updatedAt' 
-    } 
+    },
+
+    ChatGlobal:{ type:String },
+
+    ClanChat:{ type:Array },
+
+    Blockstate:{
+      ref:'Universe_Blockstate',
+      type:Schema.Types.ObjectId
+    },
+
+    isDeleted:{ type:Boolean }
   }
 );
 schema.pre('save', async function (next) {
   this.isDeleted = false;
-  this.isActive = true;
   next();
 });
 
@@ -62,7 +82,6 @@ schema.pre('insertMany', async function (next, docs) {
     for (let index = 0; index < docs.length; index++) {
       const element = docs[index];
       element.isDeleted = false;
-      element.isActive = true;
     }
   }
   next();

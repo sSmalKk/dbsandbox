@@ -26,7 +26,6 @@ const addModelos_TextureMap = async (req, res) => {
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
-    dataToCreate.addedBy = req.user.id;
     dataToCreate = new Modelos_TextureMap(dataToCreate);
     let createdModelos_TextureMap = await dbService.create(Modelos_TextureMap,dataToCreate);
     return res.success({ data : createdModelos_TextureMap });
@@ -47,12 +46,6 @@ const bulkInsertModelos_TextureMap = async (req,res)=>{
       return res.badRequest();
     }
     let dataToCreate = [ ...req.body.data ];
-    for (let i = 0;i < dataToCreate.length;i++){
-      dataToCreate[i] = {
-        ...dataToCreate[i],
-        addedBy: req.user.id
-      };
-    }
     let createdModelos_TextureMaps = await dbService.create(Modelos_TextureMap,dataToCreate);
     createdModelos_TextureMaps = { count: createdModelos_TextureMaps ? createdModelos_TextureMaps.length : 0 };
     return res.success({ data:{ count:createdModelos_TextureMaps.count || 0 } });
@@ -158,10 +151,7 @@ const getModelos_TextureMapCount = async (req,res) => {
  */
 const updateModelos_TextureMap = async (req,res) => {
   try {
-    let dataToUpdate = {
-      ...req.body,
-      updatedBy:req.user.id,
-    };
+    let dataToUpdate = { ...req.body, };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Modelos_TextureMapSchemaKey.updateSchemaKeys
@@ -190,12 +180,8 @@ const bulkUpdateModelos_TextureMap = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
-    delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
-      dataToUpdate = { 
-        ...req.body.data,
-        updatedBy : req.user.id
-      };
+      dataToUpdate = { ...req.body.data, };
     }
     let updatedModelos_TextureMap = await dbService.updateMany(Modelos_TextureMap,filter,dataToUpdate);
     if (!updatedModelos_TextureMap){
@@ -218,11 +204,7 @@ const partialUpdateModelos_TextureMap = async (req,res) => {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    delete req.body['addedBy'];
-    let dataToUpdate = {
-      ...req.body,
-      updatedBy:req.user.id,
-    };
+    let dataToUpdate = { ...req.body, };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Modelos_TextureMapSchemaKey.updateSchemaKeys
@@ -253,10 +235,7 @@ const softDeleteModelos_TextureMap = async (req,res) => {
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const updateBody = {
-      isDeleted: true,
-      updatedBy: req.user.id,
-    };
+    const updateBody = { isDeleted: true, };
     let updatedModelos_TextureMap = await deleteDependentService.softDeleteModelos_TextureMap(query, updateBody);
     if (!updatedModelos_TextureMap){
       return res.recordNotFound();
@@ -337,10 +316,7 @@ const softDeleteManyModelos_TextureMap = async (req,res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const updateBody = {
-      isDeleted: true,
-      updatedBy: req.user.id,
-    };
+    const updateBody = { isDeleted: true, };
     let updatedModelos_TextureMap = await deleteDependentService.softDeleteModelos_TextureMap(query, updateBody);
     if (!updatedModelos_TextureMap) {
       return res.recordNotFound();

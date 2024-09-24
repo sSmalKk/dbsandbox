@@ -10,18 +10,40 @@ const {
 
 /** validation keys and properties of Universe_Settings */
 exports.schemaKeys = joi.object({
-  Name: joi.string().allow(null).allow(''),
+  name: joi.string().allow(null).allow(''),
   description: joi.string().allow(null).allow(''),
-  isDeleted: joi.boolean(),
-  isActive: joi.boolean()
+  isActive: joi.boolean(),
+  biomes: joi.array().items(),
+  models: joi.array().items(),
+  textures: joi.array().items(),
+  entity: joi.array().items(),
+  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
+  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
+  addedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
+  updatedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
+  ChatGlobal: joi.string().allow(null).allow(''),
+  ClanChat: joi.array().items(),
+  Blockstate: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
+  isDeleted: joi.boolean()
 }).unknown(true);
 
 /** validation keys and properties of Universe_Settings for updation */
 exports.updateSchemaKeys = joi.object({
-  Name: joi.string().allow(null).allow(''),
+  name: joi.string().allow(null).allow(''),
   description: joi.string().allow(null).allow(''),
-  isDeleted: joi.boolean(),
   isActive: joi.boolean(),
+  biomes: joi.array().items(),
+  models: joi.array().items(),
+  textures: joi.array().items(),
+  entity: joi.array().items(),
+  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
+  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
+  addedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
+  updatedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
+  ChatGlobal: joi.string().allow(null).allow(''),
+  ClanChat: joi.array().items(),
+  Blockstate: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
+  isDeleted: joi.boolean(),
   _id: joi.string().regex(/^[0-9a-fA-F]{24}$/)
 }).unknown(true);
 
@@ -31,10 +53,21 @@ exports.findFilterKeys = joi.object({
   options: options,
   ...Object.fromEntries(
     keys.map(key => [key, joi.object({
-      Name: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      name: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
       description: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
-      isDeleted: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
       isActive: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
+      biomes: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
+      models: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
+      textures: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
+      entity: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
+      createdAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      updatedAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
+      addedBy: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
+      updatedBy: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
+      ChatGlobal: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
+      ClanChat: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
+      Blockstate: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
+      isDeleted: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
       id: joi.any(),
       _id: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object())
     }).unknown(true),])

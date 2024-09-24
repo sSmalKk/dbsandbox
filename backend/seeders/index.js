@@ -22,7 +22,6 @@ async function seedUser () {
       'isDeleted':false,
       'username':'Caleb.Erdman69',
       'email':'Euna_Yundt@gmail.com',
-      'isActive':true,
       'userType':authConstant.USER_TYPES.User
     };
     userToBeInserted.password = await  bcrypt.hash(userToBeInserted.password, 8);
@@ -32,7 +31,6 @@ async function seedUser () {
       'isDeleted':false,
       'username':'Virgil.Jacobi19',
       'email':'Desiree_Strosin@yahoo.com',
-      'isActive':true,
       'userType':authConstant.USER_TYPES.Admin
     };
     userToBeInserted.password = await  bcrypt.hash(userToBeInserted.password, 8);
@@ -738,122 +736,122 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
-        route: '/admin/modelos_texture/create',
+        route: '/admin/atommodelos_file/create',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_texture/create',
+        route: '/admin/atommodelos_file/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_texture/addbulk',
+        route: '/admin/atommodelos_file/addbulk',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_texture/addbulk',
+        route: '/admin/atommodelos_file/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_texture/list',
+        route: '/admin/atommodelos_file/list',
         role: 'Admin',
-        method: 'POST' 
+        method: 'POST'
       },
       {
-        route: '/admin/modelos_texture/list',
+        route: '/admin/atommodelos_file/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_texture/:id',
+        route: '/admin/atommodelos_file/:id',
         role: 'Admin',
         method: 'GET' 
       },
       {
-        route: '/admin/modelos_texture/:id',
+        route: '/admin/atommodelos_file/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/admin/modelos_texture/count',
+        route: '/admin/atommodelos_file/count',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_texture/count',
+        route: '/admin/atommodelos_file/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_texture/update/:id',
+        route: '/admin/atommodelos_file/update/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/admin/modelos_texture/update/:id',
+        route: '/admin/atommodelos_file/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/modelos_texture/partial-update/:id',
+        route: '/admin/atommodelos_file/partial-update/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/admin/modelos_texture/partial-update/:id',
+        route: '/admin/atommodelos_file/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/modelos_texture/updatebulk',
+        route: '/admin/atommodelos_file/updatebulk',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/admin/modelos_texture/updatebulk',
+        route: '/admin/atommodelos_file/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/modelos_texture/softdelete/:id',
+        route: '/admin/atommodelos_file/softdelete/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/admin/modelos_texture/softdelete/:id',
+        route: '/admin/atommodelos_file/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/modelos_texture/softdeletemany',
+        route: '/admin/atommodelos_file/softdeletemany',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/admin/modelos_texture/softdeletemany',
+        route: '/admin/atommodelos_file/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/admin/modelos_texture/delete/:id',
+        route: '/admin/atommodelos_file/delete/:id',
         role: 'Admin',
         method: 'DELETE'
       },
       {
-        route: '/admin/modelos_texture/delete/:id',
+        route: '/admin/atommodelos_file/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/admin/modelos_texture/deletemany',
+        route: '/admin/atommodelos_file/deletemany',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_texture/deletemany',
+        route: '/admin/atommodelos_file/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -1098,122 +1096,122 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
-        route: '/admin/modelos_model/create',
-        role: 'Admin',
-        method: 'POST' 
-      },
-      {
-        route: '/admin/modelos_model/create',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/modelos_model/addbulk',
+        route: '/admin/atommodelos_model/create',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_model/addbulk',
+        route: '/admin/atommodelos_model/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_model/list',
+        route: '/admin/atommodelos_model/addbulk',
         role: 'Admin',
-        method: 'POST' 
+        method: 'POST'
       },
       {
-        route: '/admin/modelos_model/list',
+        route: '/admin/atommodelos_model/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_model/:id',
+        route: '/admin/atommodelos_model/list',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/atommodelos_model/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/atommodelos_model/:id',
         role: 'Admin',
         method: 'GET' 
       },
       {
-        route: '/admin/modelos_model/:id',
+        route: '/admin/atommodelos_model/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/admin/modelos_model/count',
-        role: 'Admin',
-        method: 'POST' 
-      },
-      {
-        route: '/admin/modelos_model/count',
-        role: 'System_User',
-        method: 'POST'
-      },
-      {
-        route: '/admin/modelos_model/update/:id',
-        role: 'Admin',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_model/update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_model/partial-update/:id',
-        role: 'Admin',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_model/partial-update/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_model/updatebulk',
-        role: 'Admin',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_model/updatebulk',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_model/softdelete/:id',
-        role: 'Admin',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_model/softdelete/:id',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_model/softdeletemany',
-        role: 'Admin',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_model/softdeletemany',
-        role: 'System_User',
-        method: 'PUT'
-      },
-      {
-        route: '/admin/modelos_model/delete/:id',
-        role: 'Admin',
-        method: 'DELETE'
-      },
-      {
-        route: '/admin/modelos_model/delete/:id',
-        role: 'System_User',
-        method: 'DELETE'
-      },
-      {
-        route: '/admin/modelos_model/deletemany',
+        route: '/admin/atommodelos_model/count',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/admin/modelos_model/deletemany',
+        route: '/admin/atommodelos_model/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/atommodelos_model/update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/atommodelos_model/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/atommodelos_model/partial-update/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/atommodelos_model/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/atommodelos_model/updatebulk',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/atommodelos_model/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/atommodelos_model/softdelete/:id',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/atommodelos_model/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/atommodelos_model/softdeletemany',
+        role: 'Admin',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/atommodelos_model/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/atommodelos_model/delete/:id',
+        role: 'Admin',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/atommodelos_model/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/atommodelos_model/deletemany',
+        role: 'Admin',
+        method: 'POST'
+      },
+      {
+        route: '/admin/atommodelos_model/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -1334,6 +1332,1086 @@ async function seedRouteRole () {
       },
       {
         route: '/admin/universe_settings/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_blockstate/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_blockstate/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_blockstate/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_blockstate/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/universe_blockstate/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_blockstate/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_blockstate/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_blockstate/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_blockstate/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_blockstate/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_blockstate/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_blockstate/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_receita/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_receita/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_receita/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_receita/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/modelos_receita/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_receita/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_receita/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_receita/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_receita/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_receita/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_receita/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_receita/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_action/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_action/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_action/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_action/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/modelos_action/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_action/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_action/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_action/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_action/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_action/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_action/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_action/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_item/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_item/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_item/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_item/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/universe_item/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_item/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_item/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_item/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_item/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_item/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_item/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_item/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_entity/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_entity/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_entity/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_entity/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/modelos_entity/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_entity/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_entity/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_entity/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_entity/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_entity/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_entity/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_entity/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_entity/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_entity/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_entity/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_entity/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/universe_entity/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_entity/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_entity/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_entity/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_entity/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_entity/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_entity/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_entity/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_interface/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_interface/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_interface/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_interface/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/universe_interface/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_interface/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_interface/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_interface/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_interface/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_interface/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_interface/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_interface/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_storage/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_storage/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_storage/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_storage/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/universe_storage/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_storage/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_storage/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_storage/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_storage/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_storage/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_storage/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_storage/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_slot/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_slot/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_slot/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_slot/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/universe_slot/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_slot/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_slot/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_slot/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_slot/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_slot/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_slot/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_slot/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_interface/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_interface/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_interface/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_interface/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/modelos_interface/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_interface/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_interface/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_interface/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_interface/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_interface/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_interface/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_interface/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_structure/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_structure/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_structure/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_structure/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/modelos_structure/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_structure/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_structure/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_structure/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_structure/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_structure/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_structure/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_structure/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_bigitem/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_bigitem/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_bigitem/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_bigitem/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/universe_bigitem/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_bigitem/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_bigitem/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_bigitem/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_bigitem/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_bigitem/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_bigitem/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_bigitem/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_chunk/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_chunk/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_chunk/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_chunk/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/universe_chunk/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_chunk/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_chunk/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_chunk/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_chunk/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_chunk/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_chunk/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_chunk/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_cube/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_cube/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_cube/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_cube/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/universe_cube/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/universe_cube/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_cube/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_cube/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_cube/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_cube/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/universe_cube/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/universe_cube/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_biomes/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_biomes/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_biomes/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_biomes/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/modelos_biomes/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_biomes/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_biomes/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_biomes/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_biomes/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_biomes/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_biomes/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_biomes/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_rule/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_rule/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_rule/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_rule/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/modelos_rule/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_rule/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_rule/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_rule/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_rule/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_rule/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_rule/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_rule/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_tag/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_tag/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_tag/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_tag/:id',
+        role: 'System_User',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/modelos_tag/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_tag/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_tag/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_tag/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_tag/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_tag/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_tag/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_tag/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturepart/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturepart/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturepart/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturepart/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/modelos_texturepart/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/modelos_texturepart/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturepart/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturepart/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturepart/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturepart/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/modelos_texturepart/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/modelos_texturepart/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -2328,122 +3406,122 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texture/create',
+        route: '/device/api/v1/atommodelos_file/create',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texture/create',
+        route: '/device/api/v1/atommodelos_file/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texture/addbulk',
+        route: '/device/api/v1/atommodelos_file/addbulk',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texture/addbulk',
+        route: '/device/api/v1/atommodelos_file/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texture/list',
+        route: '/device/api/v1/atommodelos_file/list',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texture/list',
+        route: '/device/api/v1/atommodelos_file/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texture/:id',
+        route: '/device/api/v1/atommodelos_file/:id',
         role: 'Admin',
         method: 'GET'
       },
       {
-        route: '/device/api/v1/modelos_texture/:id',
+        route: '/device/api/v1/atommodelos_file/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/device/api/v1/modelos_texture/count',
+        route: '/device/api/v1/atommodelos_file/count',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texture/count',
+        route: '/device/api/v1/atommodelos_file/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texture/update/:id',
+        route: '/device/api/v1/atommodelos_file/update/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_texture/update/:id',
+        route: '/device/api/v1/atommodelos_file/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_texture/partial-update/:id',
+        route: '/device/api/v1/atommodelos_file/partial-update/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_texture/partial-update/:id',
+        route: '/device/api/v1/atommodelos_file/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_texture/updatebulk',
+        route: '/device/api/v1/atommodelos_file/updatebulk',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_texture/updatebulk',
+        route: '/device/api/v1/atommodelos_file/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_texture/softdelete/:id',
+        route: '/device/api/v1/atommodelos_file/softdelete/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_texture/softdelete/:id',
+        route: '/device/api/v1/atommodelos_file/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_texture/softdeletemany',
+        route: '/device/api/v1/atommodelos_file/softdeletemany',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_texture/softdeletemany',
+        route: '/device/api/v1/atommodelos_file/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_texture/delete/:id',
+        route: '/device/api/v1/atommodelos_file/delete/:id',
         role: 'Admin',
         method: 'DELETE'
       },
       {
-        route: '/device/api/v1/modelos_texture/delete/:id',
+        route: '/device/api/v1/atommodelos_file/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/device/api/v1/modelos_texture/deletemany',
+        route: '/device/api/v1/atommodelos_file/deletemany',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_texture/deletemany',
+        route: '/device/api/v1/atommodelos_file/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -2688,122 +3766,122 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_model/create',
+        route: '/device/api/v1/atommodelos_model/create',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_model/create',
+        route: '/device/api/v1/atommodelos_model/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_model/addbulk',
+        route: '/device/api/v1/atommodelos_model/addbulk',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_model/addbulk',
+        route: '/device/api/v1/atommodelos_model/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_model/list',
+        route: '/device/api/v1/atommodelos_model/list',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_model/list',
+        route: '/device/api/v1/atommodelos_model/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_model/:id',
+        route: '/device/api/v1/atommodelos_model/:id',
         role: 'Admin',
         method: 'GET'
       },
       {
-        route: '/device/api/v1/modelos_model/:id',
+        route: '/device/api/v1/atommodelos_model/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/device/api/v1/modelos_model/count',
+        route: '/device/api/v1/atommodelos_model/count',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_model/count',
+        route: '/device/api/v1/atommodelos_model/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_model/update/:id',
+        route: '/device/api/v1/atommodelos_model/update/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_model/update/:id',
+        route: '/device/api/v1/atommodelos_model/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_model/partial-update/:id',
+        route: '/device/api/v1/atommodelos_model/partial-update/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_model/partial-update/:id',
+        route: '/device/api/v1/atommodelos_model/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_model/updatebulk',
+        route: '/device/api/v1/atommodelos_model/updatebulk',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_model/updatebulk',
+        route: '/device/api/v1/atommodelos_model/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_model/softdelete/:id',
+        route: '/device/api/v1/atommodelos_model/softdelete/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_model/softdelete/:id',
+        route: '/device/api/v1/atommodelos_model/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_model/softdeletemany',
+        route: '/device/api/v1/atommodelos_model/softdeletemany',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_model/softdeletemany',
+        route: '/device/api/v1/atommodelos_model/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/device/api/v1/modelos_model/delete/:id',
+        route: '/device/api/v1/atommodelos_model/delete/:id',
         role: 'Admin',
         method: 'DELETE'
       },
       {
-        route: '/device/api/v1/modelos_model/delete/:id',
+        route: '/device/api/v1/atommodelos_model/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/device/api/v1/modelos_model/deletemany',
+        route: '/device/api/v1/atommodelos_model/deletemany',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/device/api/v1/modelos_model/deletemany',
+        route: '/device/api/v1/atommodelos_model/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -2924,6 +4002,1086 @@ async function seedRouteRole () {
       },
       {
         route: '/device/api/v1/universe_settings/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_blockstate/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_receita/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_action/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_action/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_action/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_action/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_action/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_action/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_action/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_action/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_action/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_action/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_action/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_action/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_item/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_item/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_item/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_item/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_item/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_item/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_item/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_item/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_item/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_item/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_item/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_item/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_entity/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_entity/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_entity/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_entity/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_entity/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_entity/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_entity/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_entity/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_entity/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_entity/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_entity/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_entity/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_entity/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_interface/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_interface/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_interface/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_interface/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_interface/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_interface/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_interface/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_interface/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_interface/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_interface/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_interface/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_interface/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_storage/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_storage/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_storage/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_storage/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_storage/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_storage/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_storage/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_storage/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_storage/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_storage/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_storage/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_storage/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_slot/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_slot/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_slot/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_slot/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_slot/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_slot/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_slot/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_slot/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_slot/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_slot/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_slot/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_slot/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_interface/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_structure/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_bigitem/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_chunk/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_cube/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_cube/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_cube/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_cube/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/universe_cube/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/universe_cube/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_cube/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_cube/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_cube/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_cube/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/universe_cube/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/universe_cube/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_biomes/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_rule/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_tag/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/device/api/v1/modelos_texturepart/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -3918,122 +6076,122 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texture/create',
+        route: '/client/api/v1/atommodelos_file/create',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texture/create',
+        route: '/client/api/v1/atommodelos_file/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texture/addbulk',
+        route: '/client/api/v1/atommodelos_file/addbulk',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texture/addbulk',
+        route: '/client/api/v1/atommodelos_file/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texture/list',
+        route: '/client/api/v1/atommodelos_file/list',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texture/list',
+        route: '/client/api/v1/atommodelos_file/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texture/:id',
+        route: '/client/api/v1/atommodelos_file/:id',
         role: 'Admin',
         method: 'GET'
       },
       {
-        route: '/client/api/v1/modelos_texture/:id',
+        route: '/client/api/v1/atommodelos_file/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/client/api/v1/modelos_texture/count',
+        route: '/client/api/v1/atommodelos_file/count',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texture/count',
+        route: '/client/api/v1/atommodelos_file/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texture/update/:id',
+        route: '/client/api/v1/atommodelos_file/update/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_texture/update/:id',
+        route: '/client/api/v1/atommodelos_file/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_texture/partial-update/:id',
+        route: '/client/api/v1/atommodelos_file/partial-update/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_texture/partial-update/:id',
+        route: '/client/api/v1/atommodelos_file/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_texture/updatebulk',
+        route: '/client/api/v1/atommodelos_file/updatebulk',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_texture/updatebulk',
+        route: '/client/api/v1/atommodelos_file/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_texture/softdelete/:id',
+        route: '/client/api/v1/atommodelos_file/softdelete/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_texture/softdelete/:id',
+        route: '/client/api/v1/atommodelos_file/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_texture/softdeletemany',
+        route: '/client/api/v1/atommodelos_file/softdeletemany',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_texture/softdeletemany',
+        route: '/client/api/v1/atommodelos_file/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_texture/delete/:id',
+        route: '/client/api/v1/atommodelos_file/delete/:id',
         role: 'Admin',
         method: 'DELETE'
       },
       {
-        route: '/client/api/v1/modelos_texture/delete/:id',
+        route: '/client/api/v1/atommodelos_file/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/client/api/v1/modelos_texture/deletemany',
+        route: '/client/api/v1/atommodelos_file/deletemany',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_texture/deletemany',
+        route: '/client/api/v1/atommodelos_file/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -4278,122 +6436,122 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_model/create',
+        route: '/client/api/v1/atommodelos_model/create',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_model/create',
+        route: '/client/api/v1/atommodelos_model/create',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_model/addbulk',
+        route: '/client/api/v1/atommodelos_model/addbulk',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_model/addbulk',
+        route: '/client/api/v1/atommodelos_model/addbulk',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_model/list',
+        route: '/client/api/v1/atommodelos_model/list',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_model/list',
+        route: '/client/api/v1/atommodelos_model/list',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_model/:id',
+        route: '/client/api/v1/atommodelos_model/:id',
         role: 'Admin',
         method: 'GET'
       },
       {
-        route: '/client/api/v1/modelos_model/:id',
+        route: '/client/api/v1/atommodelos_model/:id',
         role: 'System_User',
         method: 'GET'
       },
       {
-        route: '/client/api/v1/modelos_model/count',
+        route: '/client/api/v1/atommodelos_model/count',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_model/count',
+        route: '/client/api/v1/atommodelos_model/count',
         role: 'System_User',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_model/update/:id',
+        route: '/client/api/v1/atommodelos_model/update/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_model/update/:id',
+        route: '/client/api/v1/atommodelos_model/update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_model/partial-update/:id',
+        route: '/client/api/v1/atommodelos_model/partial-update/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_model/partial-update/:id',
+        route: '/client/api/v1/atommodelos_model/partial-update/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_model/updatebulk',
+        route: '/client/api/v1/atommodelos_model/updatebulk',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_model/updatebulk',
+        route: '/client/api/v1/atommodelos_model/updatebulk',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_model/softdelete/:id',
+        route: '/client/api/v1/atommodelos_model/softdelete/:id',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_model/softdelete/:id',
+        route: '/client/api/v1/atommodelos_model/softdelete/:id',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_model/softdeletemany',
+        route: '/client/api/v1/atommodelos_model/softdeletemany',
         role: 'Admin',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_model/softdeletemany',
+        route: '/client/api/v1/atommodelos_model/softdeletemany',
         role: 'System_User',
         method: 'PUT'
       },
       {
-        route: '/client/api/v1/modelos_model/delete/:id',
+        route: '/client/api/v1/atommodelos_model/delete/:id',
         role: 'Admin',
         method: 'DELETE'
       },
       {
-        route: '/client/api/v1/modelos_model/delete/:id',
+        route: '/client/api/v1/atommodelos_model/delete/:id',
         role: 'System_User',
         method: 'DELETE'
       },
       {
-        route: '/client/api/v1/modelos_model/deletemany',
+        route: '/client/api/v1/atommodelos_model/deletemany',
         role: 'Admin',
         method: 'POST'
       },
       {
-        route: '/client/api/v1/modelos_model/deletemany',
+        route: '/client/api/v1/atommodelos_model/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -4514,6 +6672,1086 @@ async function seedRouteRole () {
       },
       {
         route: '/client/api/v1/universe_settings/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_blockstate/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_receita/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_action/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_action/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_action/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_action/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_action/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_action/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_action/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_action/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_action/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_action/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_action/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_action/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_item/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_item/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_item/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_item/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_item/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_item/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_item/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_item/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_item/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_item/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_item/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_item/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_entity/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_entity/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_entity/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_entity/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_entity/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_entity/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_entity/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_entity/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_entity/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_entity/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_entity/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_entity/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_entity/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_interface/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_interface/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_interface/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_interface/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_interface/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_interface/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_interface/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_interface/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_interface/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_interface/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_interface/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_interface/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_storage/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_storage/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_storage/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_storage/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_storage/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_storage/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_storage/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_storage/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_storage/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_storage/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_storage/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_storage/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_slot/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_slot/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_slot/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_slot/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_slot/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_slot/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_slot/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_slot/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_slot/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_slot/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_slot/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_slot/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_interface/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_structure/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_bigitem/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_chunk/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_cube/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_cube/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_cube/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_cube/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/universe_cube/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/universe_cube/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_cube/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_cube/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_cube/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_cube/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/universe_cube/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/universe_cube/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_biomes/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_rule/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_tag/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/client/api/v1/modelos_texturepart/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -4952,7 +8190,7 @@ async function seedUserRole (){
     let user = {};
     const userRolesArr = [];
     userRoles.map(userRole => {
-      user = insertedUsers.find(user => user.username === userRole.username && user.isPasswordMatch(userRole.password) && user.isActive && !user.isDeleted);
+      user = insertedUsers.find(user => user.username === userRole.username && user.isPasswordMatch(userRole.password) && !user.isDeleted);
       if (user) {
         if (user.userType === authConstant.USER_TYPES.Admin){
           userRolesArr.push({

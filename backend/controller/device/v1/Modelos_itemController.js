@@ -8,6 +8,7 @@ const Modelos_itemSchemaKey = require('../../../utils/validation/Modelos_itemVal
 const validation = require('../../../utils/validateRequest');
 const dbService = require('../../../utils/dbService');
 const ObjectId = require('mongodb').ObjectId;
+const deleteDependentService = require('../../../utils/deleteDependent');
 const utils = require('../../../utils/common');
    
 /**
@@ -25,7 +26,6 @@ const addModelos_item = async (req, res) => {
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
-    dataToCreate.addedBy = req.user.id;
     dataToCreate = new Modelos_item(dataToCreate);
     let createdModelos_item = await dbService.create(Modelos_item,dataToCreate);
     return res.success({ data : createdModelos_item });
@@ -46,12 +46,6 @@ const bulkInsertModelos_item = async (req,res)=>{
       return res.badRequest();
     }
     let dataToCreate = [ ...req.body.data ];
-    for (let i = 0;i < dataToCreate.length;i++){
-      dataToCreate[i] = {
-        ...dataToCreate[i],
-        addedBy: req.user.id
-      };
-    }
     let createdModelos_items = await dbService.create(Modelos_item,dataToCreate);
     createdModelos_items = { count: createdModelos_items ? createdModelos_items.length : 0 };
     return res.success({ data:{ count:createdModelos_items.count || 0 } });
@@ -157,10 +151,7 @@ const getModelos_itemCount = async (req,res) => {
  */
 const updateModelos_item = async (req,res) => {
   try {
-    let dataToUpdate = {
-      ...req.body,
-      updatedBy:req.user.id,
-    };
+    let dataToUpdate = { ...req.body, };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Modelos_itemSchemaKey.updateSchemaKeys
@@ -189,12 +180,8 @@ const bulkUpdateModelos_item = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
-    delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
-      dataToUpdate = { 
-        ...req.body.data,
-        updatedBy : req.user.id
-      };
+      dataToUpdate = { ...req.body.data, };
     }
     let updatedModelos_item = await dbService.updateMany(Modelos_item,filter,dataToUpdate);
     if (!updatedModelos_item){
@@ -217,11 +204,7 @@ const partialUpdateModelos_item = async (req,res) => {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    delete req.body['addedBy'];
-    let dataToUpdate = {
-      ...req.body,
-      updatedBy:req.user.id,
-    };
+    let dataToUpdate = { ...req.body, };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Modelos_itemSchemaKey.updateSchemaKeys
@@ -239,6 +222,7 @@ const partialUpdateModelos_item = async (req,res) => {
     return res.internalServerError({ message:error.message });
   }
 };
+    
 /**
  * @description : deactivate document of Modelos_item from table by id;
  * @param {Object} req : request including id in request params.
@@ -250,12 +234,9 @@ const softDeleteModelos_item = async (req,res) => {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let query = { _id:req.params.id };
-    const updateBody = {
-      isDeleted: true,
-      updatedBy: req.user.id,
-    };
-    let updatedModelos_item = await dbService.updateOne(Modelos_item, query, updateBody);
+    const query = { _id:req.params.id };
+    const updateBody = { isDeleted: true, };
+    let updatedModelos_item = await deleteDependentService.softDeleteModelos_item(query, updateBody);
     if (!updatedModelos_item){
       return res.recordNotFound();
     }
@@ -264,7 +245,7 @@ const softDeleteModelos_item = async (req,res) => {
     return res.internalServerError({ message:error.message }); 
   }
 };
-
+    
 /**
  * @description : delete document of Modelos_item from table.
  * @param {Object} req : request including id as req param.
@@ -272,20 +253,24 @@ const softDeleteModelos_item = async (req,res) => {
  * @return {Object} : deleted Modelos_item. {status, message, data}
  */
 const deleteModelos_item = async (req,res) => {
-  try { 
+  try {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const deletedModelos_item = await dbService.deleteOne(Modelos_item, query);
+    let deletedModelos_item;
+    if (req.body.isWarning) { 
+      deletedModelos_item = await deleteDependentService.countModelos_item(query);
+    } else {
+      deletedModelos_item = await deleteDependentService.deleteModelos_item(query);
+    }
     if (!deletedModelos_item){
       return res.recordNotFound();
     }
     return res.success({ data :deletedModelos_item });
-        
   }
   catch (error){
-    return res.internalServerError({ message:error.message });
+    return res.internalServerError({ message:error.message }); 
   }
 };
     
@@ -302,15 +287,22 @@ const deleteManyModelos_item = async (req, res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const deletedModelos_item = await dbService.deleteMany(Modelos_item,query);
+    let deletedModelos_item;
+    if (req.body.isWarning) {
+      deletedModelos_item = await deleteDependentService.countModelos_item(query);
+    }
+    else {
+      deletedModelos_item = await deleteDependentService.deleteModelos_item(query);
+    }
     if (!deletedModelos_item){
       return res.recordNotFound();
     }
-    return res.success({ data :{ count :deletedModelos_item } });
+    return res.success({ data :deletedModelos_item });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }
 };
+    
 /**
  * @description : deactivate multiple documents of Modelos_item from table by ids;
  * @param {Object} req : request including array of ids in request body.
@@ -324,16 +316,12 @@ const softDeleteManyModelos_item = async (req,res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const updateBody = {
-      isDeleted: true,
-      updatedBy: req.user.id,
-    };
-    let updatedModelos_item = await dbService.updateMany(Modelos_item,query, updateBody);
+    const updateBody = { isDeleted: true, };
+    let updatedModelos_item = await deleteDependentService.softDeleteModelos_item(query, updateBody);
     if (!updatedModelos_item) {
       return res.recordNotFound();
     }
-    return res.success({ data:{ count :updatedModelos_item } });
-        
+    return res.success({ data:updatedModelos_item });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }
