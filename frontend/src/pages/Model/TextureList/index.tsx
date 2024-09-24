@@ -15,7 +15,7 @@ const TextureList = () => {
     const token = localStorage.getItem("token") || process.env.JWT || "";
     try {
       const response = await fetch(
-        `http://localhost:5000/admin/modelos_texture/list`,
+        `http://localhost:5000/admin/modelos_AtomModelos_File/list`,
         {
           method: "POST",
           headers: {
@@ -58,7 +58,7 @@ const TextureList = () => {
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `http://localhost:5000/admin/modelos_texturemap/delete/${textureId}`,
+          `http://localhost:5000/admin/modelos_AtomModelos_File/delete/${textureId}`,
           {
             method: "DELETE",
             headers: {
