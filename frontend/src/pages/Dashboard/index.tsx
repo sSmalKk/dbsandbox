@@ -135,17 +135,7 @@ const Dashboard = () => {
       >
         <Sidebar />
 
-        <div
-          style={{
-            padding: "20px",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <h3>{`Página ativa: `}</h3>
-
-          <h3>{`Subpágina ativa:`}</h3>
-        </div>
+       
       </div>
       <Game
   customModels={customModels}

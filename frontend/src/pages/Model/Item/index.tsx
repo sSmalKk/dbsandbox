@@ -6,6 +6,22 @@ import { useGameStore } from "../../../store/gameStore";
 import Navegador from "components/Navegador";
 import "./Item.css"; // Arquivo CSS para customizar o estilo da página de edição
 
+const axios = require('axios');
+
+// Hypothetical function to fetch material data from OpenMat
+async function fetchMaterialData(materialName) {
+  try {
+    const response = await axios.get(`https://api.openmat.org/materials/${materialName}`);
+    console.log('Material Data:', response.data);
+  } catch (error) {
+    console.error('Error fetching material data:', error);
+  }
+}
+
+// Example usage for fetching data for "Iron"
+fetchMaterialData('iron');
+
+
 const Item = () => {
   const { blockState, customModels, setBlockState, textures, chunks } =
     useGameStore();
