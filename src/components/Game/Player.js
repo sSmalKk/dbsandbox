@@ -16,10 +16,8 @@ export function Player({
   speed,
   direction,
   frontVector,
-  interfaceOpen,
   setInterfaceOpen,
   sideVector,
-  rotation,
   lerp = THREE.MathUtils.lerp,
   flying,
 }) {
@@ -46,9 +44,6 @@ export function Player({
       jump,
       shift,
       inventory,
-      escape,
-      layerp,
-      layerm,
     } = get();
     if (!ref.current) return;
     if (inventory) {
