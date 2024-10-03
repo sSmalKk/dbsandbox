@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import { Sky, PointerLockControls, KeyboardControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import create from "zustand";
-import * as THREE from "three";
 import { Player } from "./Player";
 import PlayerModel from "./Entity";
 import VoxelTerrain from "./VoxelTerrain";
@@ -36,15 +35,13 @@ export default function Game({
   fov = 45,
   keyboardMap,
 }) {
-  const [fps, setFps] = useState(0);
-  const tickRef = useRef(0);
 
-  const [chunkPosition, setChunkPosition] = useStore((state) => [
+  const [ setChunkPosition] = useStore((state) => [
     state.chunkPosition,
     state.setChunkPosition,
   ]);
 
-  const [flying, setFlying] = useStore((state) => [state.flying, state.set]);
+  const [flying] = useStore((state) => [state.flying, state.set]);
 
   const [interfaceOpen, setInterfaceOpen] = useStore((state) => [
     state.interfaceOpen,
