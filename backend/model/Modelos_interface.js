@@ -46,11 +46,22 @@ const schema = new Schema(
 
     data:{ type:Array },
 
-    storage:{ type:Array }
+    storage:{ type:Array },
+
+    Rules:{ type:Array },
+
+    Tags:{ type:Array }
+  }
+  ,{ 
+    timestamps: { 
+      createdAt: 'createdAt', 
+      updatedAt: 'updatedAt' 
+    } 
   }
 );
 schema.pre('save', async function (next) {
   this.isDeleted = false;
+  this.isActive = true;
   next();
 });
 
@@ -59,6 +70,7 @@ schema.pre('insertMany', async function (next, docs) {
     for (let index = 0; index < docs.length; index++) {
       const element = docs[index];
       element.isDeleted = false;
+      element.isActive = true;
     }
   }
   next();

@@ -26,7 +26,7 @@ const schema = new Schema(
 
     Description:{ type:String },
 
-    data:{ type:String },
+    data:{ type:Schema.Types.Mixed },
 
     isDeleted:{ type:Boolean },
 
@@ -49,11 +49,34 @@ const schema = new Schema(
     model:{
       ref:'Modelos_item',
       type:Schema.Types.ObjectId
-    }
+    },
+
+    Rules:{ type:Array },
+
+    Tags:{ type:Array },
+
+    Size:{
+      ref:'Modelos_Size',
+      type:Schema.Types.ObjectId
+    },
+
+    Location:{
+      ref:'Universe_cube',
+      type:Schema.Types.ObjectId
+    },
+
+    chemsData:{ type:Schema.Types.Mixed }
+  }
+  ,{ 
+    timestamps: { 
+      createdAt: 'createdAt', 
+      updatedAt: 'updatedAt' 
+    } 
   }
 );
 schema.pre('save', async function (next) {
   this.isDeleted = false;
+  this.isActive = true;
   next();
 });
 
@@ -62,6 +85,7 @@ schema.pre('insertMany', async function (next, docs) {
     for (let index = 0; index < docs.length; index++) {
       const element = docs[index];
       element.isDeleted = false;
+      element.isActive = true;
     }
   }
   next();

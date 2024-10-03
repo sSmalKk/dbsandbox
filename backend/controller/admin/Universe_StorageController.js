@@ -8,6 +8,7 @@ const Universe_StorageSchemaKey = require('../../utils/validation/Universe_Stora
 const validation = require('../../utils/validateRequest');
 const dbService = require('../../utils/dbService');
 const ObjectId = require('mongodb').ObjectId;
+const deleteDependentService = require('../../utils/deleteDependent');
 const utils = require('../../utils/common');
    
 /**
@@ -25,6 +26,7 @@ const addUniverse_Storage = async (req, res) => {
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
+    dataToCreate.addedBy = req.user.id;
     dataToCreate = new Universe_Storage(dataToCreate);
     let createdUniverse_Storage = await dbService.create(Universe_Storage,dataToCreate);
     return res.success({ data : createdUniverse_Storage });
@@ -45,6 +47,12 @@ const bulkInsertUniverse_Storage = async (req,res)=>{
       return res.badRequest();
     }
     let dataToCreate = [ ...req.body.data ];
+    for (let i = 0;i < dataToCreate.length;i++){
+      dataToCreate[i] = {
+        ...dataToCreate[i],
+        addedBy: req.user.id
+      };
+    }
     let createdUniverse_Storages = await dbService.create(Universe_Storage,dataToCreate);
     createdUniverse_Storages = { count: createdUniverse_Storages ? createdUniverse_Storages.length : 0 };
     return res.success({ data:{ count:createdUniverse_Storages.count || 0 } });
@@ -150,7 +158,10 @@ const getUniverse_StorageCount = async (req,res) => {
  */
 const updateUniverse_Storage = async (req,res) => {
   try {
-    let dataToUpdate = { ...req.body, };
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Universe_StorageSchemaKey.updateSchemaKeys
@@ -179,8 +190,12 @@ const bulkUpdateUniverse_Storage = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
+    delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
-      dataToUpdate = { ...req.body.data, };
+      dataToUpdate = { 
+        ...req.body.data,
+        updatedBy : req.user.id
+      };
     }
     let updatedUniverse_Storage = await dbService.updateMany(Universe_Storage,filter,dataToUpdate);
     if (!updatedUniverse_Storage){
@@ -203,7 +218,11 @@ const partialUpdateUniverse_Storage = async (req,res) => {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let dataToUpdate = { ...req.body, };
+    delete req.body['addedBy'];
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Universe_StorageSchemaKey.updateSchemaKeys
@@ -221,6 +240,7 @@ const partialUpdateUniverse_Storage = async (req,res) => {
     return res.internalServerError({ message:error.message });
   }
 };
+    
 /**
  * @description : deactivate document of Universe_Storage from table by id;
  * @param {Object} req : request including id in request params.
@@ -232,9 +252,12 @@ const softDeleteUniverse_Storage = async (req,res) => {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let query = { _id:req.params.id };
-    const updateBody = { isDeleted: true, };
-    let updatedUniverse_Storage = await dbService.updateOne(Universe_Storage, query, updateBody);
+    const query = { _id:req.params.id };
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
+    let updatedUniverse_Storage = await deleteDependentService.softDeleteUniverse_Storage(query, updateBody);
     if (!updatedUniverse_Storage){
       return res.recordNotFound();
     }
@@ -243,7 +266,7 @@ const softDeleteUniverse_Storage = async (req,res) => {
     return res.internalServerError({ message:error.message }); 
   }
 };
-
+    
 /**
  * @description : delete document of Universe_Storage from table.
  * @param {Object} req : request including id as req param.
@@ -251,20 +274,24 @@ const softDeleteUniverse_Storage = async (req,res) => {
  * @return {Object} : deleted Universe_Storage. {status, message, data}
  */
 const deleteUniverse_Storage = async (req,res) => {
-  try { 
+  try {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const deletedUniverse_Storage = await dbService.deleteOne(Universe_Storage, query);
+    let deletedUniverse_Storage;
+    if (req.body.isWarning) { 
+      deletedUniverse_Storage = await deleteDependentService.countUniverse_Storage(query);
+    } else {
+      deletedUniverse_Storage = await deleteDependentService.deleteUniverse_Storage(query);
+    }
     if (!deletedUniverse_Storage){
       return res.recordNotFound();
     }
     return res.success({ data :deletedUniverse_Storage });
-        
   }
   catch (error){
-    return res.internalServerError({ message:error.message });
+    return res.internalServerError({ message:error.message }); 
   }
 };
     
@@ -281,15 +308,22 @@ const deleteManyUniverse_Storage = async (req, res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const deletedUniverse_Storage = await dbService.deleteMany(Universe_Storage,query);
+    let deletedUniverse_Storage;
+    if (req.body.isWarning) {
+      deletedUniverse_Storage = await deleteDependentService.countUniverse_Storage(query);
+    }
+    else {
+      deletedUniverse_Storage = await deleteDependentService.deleteUniverse_Storage(query);
+    }
     if (!deletedUniverse_Storage){
       return res.recordNotFound();
     }
-    return res.success({ data :{ count :deletedUniverse_Storage } });
+    return res.success({ data :deletedUniverse_Storage });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }
 };
+    
 /**
  * @description : deactivate multiple documents of Universe_Storage from table by ids;
  * @param {Object} req : request including array of ids in request body.
@@ -303,13 +337,15 @@ const softDeleteManyUniverse_Storage = async (req,res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const updateBody = { isDeleted: true, };
-    let updatedUniverse_Storage = await dbService.updateMany(Universe_Storage,query, updateBody);
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
+    let updatedUniverse_Storage = await deleteDependentService.softDeleteUniverse_Storage(query, updateBody);
     if (!updatedUniverse_Storage) {
       return res.recordNotFound();
     }
-    return res.success({ data:{ count :updatedUniverse_Storage } });
-        
+    return res.success({ data:updatedUniverse_Storage });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }

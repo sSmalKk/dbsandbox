@@ -26,6 +26,7 @@ const addUniverse_Interface = async (req, res) => {
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
+    dataToCreate.addedBy = req.user.id;
     dataToCreate = new Universe_Interface(dataToCreate);
     let createdUniverse_Interface = await dbService.create(Universe_Interface,dataToCreate);
     return res.success({ data : createdUniverse_Interface });
@@ -46,6 +47,12 @@ const bulkInsertUniverse_Interface = async (req,res)=>{
       return res.badRequest();
     }
     let dataToCreate = [ ...req.body.data ];
+    for (let i = 0;i < dataToCreate.length;i++){
+      dataToCreate[i] = {
+        ...dataToCreate[i],
+        addedBy: req.user.id
+      };
+    }
     let createdUniverse_Interfaces = await dbService.create(Universe_Interface,dataToCreate);
     createdUniverse_Interfaces = { count: createdUniverse_Interfaces ? createdUniverse_Interfaces.length : 0 };
     return res.success({ data:{ count:createdUniverse_Interfaces.count || 0 } });
@@ -151,7 +158,10 @@ const getUniverse_InterfaceCount = async (req,res) => {
  */
 const updateUniverse_Interface = async (req,res) => {
   try {
-    let dataToUpdate = { ...req.body, };
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Universe_InterfaceSchemaKey.updateSchemaKeys
@@ -180,8 +190,12 @@ const bulkUpdateUniverse_Interface = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
+    delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
-      dataToUpdate = { ...req.body.data, };
+      dataToUpdate = { 
+        ...req.body.data,
+        updatedBy : req.user.id
+      };
     }
     let updatedUniverse_Interface = await dbService.updateMany(Universe_Interface,filter,dataToUpdate);
     if (!updatedUniverse_Interface){
@@ -204,7 +218,11 @@ const partialUpdateUniverse_Interface = async (req,res) => {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let dataToUpdate = { ...req.body, };
+    delete req.body['addedBy'];
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Universe_InterfaceSchemaKey.updateSchemaKeys
@@ -235,7 +253,10 @@ const softDeleteUniverse_Interface = async (req,res) => {
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const updateBody = { isDeleted: true, };
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
     let updatedUniverse_Interface = await deleteDependentService.softDeleteUniverse_Interface(query, updateBody);
     if (!updatedUniverse_Interface){
       return res.recordNotFound();
@@ -316,7 +337,10 @@ const softDeleteManyUniverse_Interface = async (req,res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const updateBody = { isDeleted: true, };
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
     let updatedUniverse_Interface = await deleteDependentService.softDeleteUniverse_Interface(query, updateBody);
     if (!updatedUniverse_Interface) {
       return res.recordNotFound();

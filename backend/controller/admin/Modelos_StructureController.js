@@ -26,6 +26,7 @@ const addModelos_Structure = async (req, res) => {
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
+    dataToCreate.addedBy = req.user.id;
     dataToCreate = new Modelos_Structure(dataToCreate);
     let createdModelos_Structure = await dbService.create(Modelos_Structure,dataToCreate);
     return res.success({ data : createdModelos_Structure });
@@ -46,6 +47,12 @@ const bulkInsertModelos_Structure = async (req,res)=>{
       return res.badRequest();
     }
     let dataToCreate = [ ...req.body.data ];
+    for (let i = 0;i < dataToCreate.length;i++){
+      dataToCreate[i] = {
+        ...dataToCreate[i],
+        addedBy: req.user.id
+      };
+    }
     let createdModelos_Structures = await dbService.create(Modelos_Structure,dataToCreate);
     createdModelos_Structures = { count: createdModelos_Structures ? createdModelos_Structures.length : 0 };
     return res.success({ data:{ count:createdModelos_Structures.count || 0 } });
@@ -151,7 +158,10 @@ const getModelos_StructureCount = async (req,res) => {
  */
 const updateModelos_Structure = async (req,res) => {
   try {
-    let dataToUpdate = { ...req.body, };
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Modelos_StructureSchemaKey.updateSchemaKeys
@@ -180,8 +190,12 @@ const bulkUpdateModelos_Structure = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
+    delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
-      dataToUpdate = { ...req.body.data, };
+      dataToUpdate = { 
+        ...req.body.data,
+        updatedBy : req.user.id
+      };
     }
     let updatedModelos_Structure = await dbService.updateMany(Modelos_Structure,filter,dataToUpdate);
     if (!updatedModelos_Structure){
@@ -204,7 +218,11 @@ const partialUpdateModelos_Structure = async (req,res) => {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let dataToUpdate = { ...req.body, };
+    delete req.body['addedBy'];
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Modelos_StructureSchemaKey.updateSchemaKeys
@@ -235,7 +253,10 @@ const softDeleteModelos_Structure = async (req,res) => {
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const updateBody = { isDeleted: true, };
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
     let updatedModelos_Structure = await deleteDependentService.softDeleteModelos_Structure(query, updateBody);
     if (!updatedModelos_Structure){
       return res.recordNotFound();
@@ -316,7 +337,10 @@ const softDeleteManyModelos_Structure = async (req,res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const updateBody = { isDeleted: true, };
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
     let updatedModelos_Structure = await deleteDependentService.softDeleteModelos_Structure(query, updateBody);
     if (!updatedModelos_Structure) {
       return res.recordNotFound();

@@ -64,6 +64,7 @@ async function uniqueValidation (Model,data){
       { 'email':data['email'] },
     );
   }
+  filter.isActive = true;
   filter.isDeleted = false;
   let found = await dbService.findOne(Model,filter);
   if (found){
@@ -259,6 +260,7 @@ const checkUniqueFieldsInDatabase = async (model, fieldsToCheck, data, operation
         { 'username':data['username'] },
         { 'email':data['username'] },
       );
+      loginFieldFilter.isActive = true;
       loginFieldFilter.isDeleted = false;
       let found = await dbService.findOne(model,loginFieldFilter);
       if (found){
@@ -275,6 +277,7 @@ const checkUniqueFieldsInDatabase = async (model, fieldsToCheck, data, operation
         { 'username':data['email'] },
         { 'email':data['email'] },
       );
+      loginFieldFilter.isActive = true;
       loginFieldFilter.isDeleted = false;
       let found = await dbService.findOne(model,loginFieldFilter);
       if (found){

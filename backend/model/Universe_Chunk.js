@@ -48,7 +48,7 @@ const schema = new Schema(
 
     p:{ type:Number },
 
-    universe:{
+    settings:{
       ref:'Universe_Settings',
       type:Schema.Types.ObjectId
     },
@@ -67,11 +67,33 @@ const schema = new Schema(
 
     data:{ type:Array },
 
-    type:{ type:String }
+    size:{
+      ref:'Modelos_Size',
+      type:Schema.Types.ObjectId
+    },
+
+    biome:{
+      ref:'Modelos_Biomes',
+      type:Schema.Types.ObjectId
+    },
+
+    op:{
+      ref:'user',
+      type:Schema.Types.ObjectId
+    },
+
+    chemsData:{ type:Schema.Types.Mixed }
+  }
+  ,{ 
+    timestamps: { 
+      createdAt: 'createdAt', 
+      updatedAt: 'updatedAt' 
+    } 
   }
 );
 schema.pre('save', async function (next) {
   this.isDeleted = false;
+  this.isActive = true;
   next();
 });
 
@@ -80,6 +102,7 @@ schema.pre('insertMany', async function (next, docs) {
     for (let index = 0; index < docs.length; index++) {
       const element = docs[index];
       element.isDeleted = false;
+      element.isActive = true;
     }
   }
   next();

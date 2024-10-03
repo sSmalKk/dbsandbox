@@ -3,6 +3,16 @@
  * @description :: exports deleteDependent service for project.
  */
 
+let Universe_Age = require('../model/Universe_Age');
+let Modelos_Age = require('../model/Modelos_Age');
+let Base_Cube = require('../model/Base_Cube');
+let Base_Chunk = require('../model/Base_Chunk');
+let Modelos_chemistry_element = require('../model/Modelos_chemistry_element');
+let User_character = require('../model/user_character');
+let Modelos_chemistry_Substances = require('../model/Modelos_chemistry_Substances');
+let Modelos_chemistry_compounds = require('../model/Modelos_chemistry_compounds');
+let User_section = require('../model/user_section');
+let Modelos_Size = require('../model/Modelos_Size');
 let Universe_Blockstate = require('../model/Universe_Blockstate');
 let Modelos_Receita = require('../model/Modelos_Receita');
 let Modelos_Action = require('../model/Modelos_Action');
@@ -14,17 +24,17 @@ let Universe_Storage = require('../model/Universe_Storage');
 let Universe_Slot = require('../model/Universe_Slot');
 let Modelos_interface = require('../model/Modelos_interface');
 let Modelos_Structure = require('../model/Modelos_Structure');
-let Universe_Bigitem = require('../model/Universe_Bigitem');
+let Universe_Structure = require('../model/Universe_Structure');
 let Universe_Chunk = require('../model/Universe_Chunk');
 let Universe_cube = require('../model/Universe_cube');
 let Modelos_Biomes = require('../model/Modelos_Biomes');
 let Modelos_Rule = require('../model/Modelos_Rule');
 let Modelos_Tag = require('../model/Modelos_Tag');
-let Modelos_TexturePart = require('../model/Modelos_TexturePart');
+let Modelos_Part = require('../model/Modelos_Part');
 let Modelos_TextureMap = require('../model/Modelos_TextureMap');
 let Modelos_item = require('../model/Modelos_item');
-let AtomModelos_File = require('../model/AtomModelos_File');
-let AtomModelos_Model = require('../model/AtomModelos_Model');
+let Base_Modelos_File = require('../model/Base_Modelos_File');
+let Base_Modelos_Model = require('../model/Base_Modelos_Model');
 let Universe_Settings = require('../model/Universe_Settings');
 let Chat_group = require('../model/Chat_group');
 let Chat_message = require('../model/Chat_message');
@@ -37,17 +47,183 @@ let RouteRole = require('../model/routeRole');
 let UserRole = require('../model/userRole');
 let dbService = require('.//dbService');
 
+const deleteUniverse_Age = async (filter) =>{
+  try {
+    let response  = await dbService.deleteMany(Universe_Age,filter);
+    return response;
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteModelos_Age = async (filter) =>{
+  try {
+    let response  = await dbService.deleteMany(Modelos_Age,filter);
+    return response;
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteBase_Cube = async (filter) =>{
+  try {
+    let base_cube = await dbService.findMany(Base_Cube,filter);
+    if (base_cube && base_cube.length){
+      base_cube = base_cube.map((obj) => obj.id);
+
+      const Base_ChunkFilter = { $or: [{ chunk : { $in : base_cube } }] };
+      const Base_ChunkCnt = await dbService.deleteMany(Base_Chunk,Base_ChunkFilter);
+
+      let deleted  = await dbService.deleteMany(Base_Cube,filter);
+      let response = { Base_Chunk :Base_ChunkCnt, };
+      return response; 
+    } else {
+      return {  base_cube : 0 };
+    }
+
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteBase_Chunk = async (filter) =>{
+  try {
+    let base_chunk = await dbService.findMany(Base_Chunk,filter);
+    if (base_chunk && base_chunk.length){
+      base_chunk = base_chunk.map((obj) => obj.id);
+
+      const Base_CubeFilter = { $or: [{ chunk : { $in : base_chunk } }] };
+      const Base_CubeCnt = await dbService.deleteMany(Base_Cube,Base_CubeFilter);
+
+      let deleted  = await dbService.deleteMany(Base_Chunk,filter);
+      let response = { Base_Cube :Base_CubeCnt, };
+      return response; 
+    } else {
+      return {  base_chunk : 0 };
+    }
+
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteModelos_chemistry_element = async (filter) =>{
+  try {
+    let response  = await dbService.deleteMany(Modelos_chemistry_element,filter);
+    return response;
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteUser_character = async (filter) =>{
+  try {
+    let response  = await dbService.deleteMany(User_character,filter);
+    return response;
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteModelos_chemistry_Substances = async (filter) =>{
+  try {
+    let response  = await dbService.deleteMany(Modelos_chemistry_Substances,filter);
+    return response;
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteModelos_chemistry_compounds = async (filter) =>{
+  try {
+    let response  = await dbService.deleteMany(Modelos_chemistry_compounds,filter);
+    return response;
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteUser_section = async (filter) =>{
+  try {
+    let user_section = await dbService.findMany(User_section,filter);
+    if (user_section && user_section.length){
+      user_section = user_section.map((obj) => obj.id);
+
+      const userFilter = { $or: [{ lastsection : { $in : user_section } }] };
+      const userCnt = await dbService.deleteMany(User,userFilter);
+
+      let deleted  = await dbService.deleteMany(User_section,filter);
+      let response = { user :userCnt, };
+      return response; 
+    } else {
+      return {  user_section : 0 };
+    }
+
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const deleteModelos_Size = async (filter) =>{
+  try {
+    let modelos_size = await dbService.findMany(Modelos_Size,filter);
+    if (modelos_size && modelos_size.length){
+      modelos_size = modelos_size.map((obj) => obj.id);
+
+      const Base_ChunkFilter = { $or: [{ size : { $in : modelos_size } }] };
+      const Base_ChunkCnt = await dbService.deleteMany(Base_Chunk,Base_ChunkFilter);
+
+      const Modelos_EntityFilter = { $or: [{ Size : { $in : modelos_size } }] };
+      const Modelos_EntityCnt = await dbService.deleteMany(Modelos_Entity,Modelos_EntityFilter);
+
+      const Modelos_StructureFilter = { $or: [{ size : { $in : modelos_size } }] };
+      const Modelos_StructureCnt = await dbService.deleteMany(Modelos_Structure,Modelos_StructureFilter);
+
+      const Universe_StructureFilter = { $or: [{ size : { $in : modelos_size } }] };
+      const Universe_StructureCnt = await dbService.deleteMany(Universe_Structure,Universe_StructureFilter);
+
+      const Universe_ChunkFilter = { $or: [{ size : { $in : modelos_size } }] };
+      const Universe_ChunkCnt = await dbService.deleteMany(Universe_Chunk,Universe_ChunkFilter);
+
+      let deleted  = await dbService.deleteMany(Modelos_Size,filter);
+      let response = {
+        Base_Chunk :Base_ChunkCnt,
+        Modelos_Entity :Modelos_EntityCnt,
+        Modelos_Structure :Modelos_StructureCnt,
+        Universe_Structure :Universe_StructureCnt,
+        Universe_Chunk :Universe_ChunkCnt,
+      };
+      return response; 
+    } else {
+      return {  modelos_size : 0 };
+    }
+
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
 const deleteUniverse_Blockstate = async (filter) =>{
   try {
     let universe_blockstate = await dbService.findMany(Universe_Blockstate,filter);
     if (universe_blockstate && universe_blockstate.length){
       universe_blockstate = universe_blockstate.map((obj) => obj.id);
 
+      const Modelos_StructureFilter = { $or: [{ Blockstate : { $in : universe_blockstate } }] };
+      const Modelos_StructureCnt = await dbService.deleteMany(Modelos_Structure,Modelos_StructureFilter);
+
+      const Universe_StructureFilter = { $or: [{ Blockstate : { $in : universe_blockstate } }] };
+      const Universe_StructureCnt = await dbService.deleteMany(Universe_Structure,Universe_StructureFilter);
+
       const Universe_SettingsFilter = { $or: [{ Blockstate : { $in : universe_blockstate } }] };
       const Universe_SettingsCnt = await dbService.deleteMany(Universe_Settings,Universe_SettingsFilter);
 
       let deleted  = await dbService.deleteMany(Universe_Blockstate,filter);
-      let response = { Universe_Settings :Universe_SettingsCnt, };
+      let response = {
+        Modelos_Structure :Modelos_StructureCnt,
+        Universe_Structure :Universe_StructureCnt,
+        Universe_Settings :Universe_SettingsCnt,
+      };
       return response; 
     } else {
       return {  universe_blockstate : 0 };
@@ -133,11 +309,21 @@ const deleteUniverse_Interface = async (filter) =>{
     if (universe_interface && universe_interface.length){
       universe_interface = universe_interface.map((obj) => obj.id);
 
+      const Base_CubeFilter = { $or: [{ interface : { $in : universe_interface } }] };
+      const Base_CubeCnt = await dbService.deleteMany(Base_Cube,Base_CubeFilter);
+
       const Universe_StorageFilter = { $or: [{ Interface : { $in : universe_interface } }] };
       const Universe_StorageCnt = await dbService.deleteMany(Universe_Storage,Universe_StorageFilter);
 
+      const Universe_cubeFilter = { $or: [{ interface : { $in : universe_interface } }] };
+      const Universe_cubeCnt = await dbService.deleteMany(Universe_cube,Universe_cubeFilter);
+
       let deleted  = await dbService.deleteMany(Universe_Interface,filter);
-      let response = { Universe_Storage :Universe_StorageCnt, };
+      let response = {
+        Base_Cube :Base_CubeCnt,
+        Universe_Storage :Universe_StorageCnt,
+        Universe_cube :Universe_cubeCnt,
+      };
       return response; 
     } else {
       return {  universe_interface : 0 };
@@ -150,8 +336,26 @@ const deleteUniverse_Interface = async (filter) =>{
 
 const deleteUniverse_Storage = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Universe_Storage,filter);
-    return response;
+    let universe_storage = await dbService.findMany(Universe_Storage,filter);
+    if (universe_storage && universe_storage.length){
+      universe_storage = universe_storage.map((obj) => obj.id);
+
+      const Base_CubeFilter = { $or: [{ storage : { $in : universe_storage } }] };
+      const Base_CubeCnt = await dbService.deleteMany(Base_Cube,Base_CubeFilter);
+
+      const Universe_cubeFilter = { $or: [{ storage : { $in : universe_storage } }] };
+      const Universe_cubeCnt = await dbService.deleteMany(Universe_cube,Universe_cubeFilter);
+
+      let deleted  = await dbService.deleteMany(Universe_Storage,filter);
+      let response = {
+        Base_Cube :Base_CubeCnt,
+        Universe_cube :Universe_cubeCnt,
+      };
+      return response; 
+    } else {
+      return {  universe_storage : 0 };
+    }
+
   } catch (error){
     throw new Error(error.message);
   }
@@ -211,11 +415,17 @@ const deleteModelos_Structure = async (filter) =>{
     if (modelos_structure && modelos_structure.length){
       modelos_structure = modelos_structure.map((obj) => obj.id);
 
-      const Universe_BigitemFilter = { $or: [{ structure : { $in : modelos_structure } }] };
-      const Universe_BigitemCnt = await dbService.deleteMany(Universe_Bigitem,Universe_BigitemFilter);
+      const Universe_AgeFilter = { $or: [{ relativeto : { $in : modelos_structure } }] };
+      const Universe_AgeCnt = await dbService.deleteMany(Universe_Age,Universe_AgeFilter);
+
+      const Modelos_AgeFilter = { $or: [{ relativeto : { $in : modelos_structure } }] };
+      const Modelos_AgeCnt = await dbService.deleteMany(Modelos_Age,Modelos_AgeFilter);
 
       let deleted  = await dbService.deleteMany(Modelos_Structure,filter);
-      let response = { Universe_Bigitem :Universe_BigitemCnt, };
+      let response = {
+        Universe_Age :Universe_AgeCnt,
+        Modelos_Age :Modelos_AgeCnt,
+      };
       return response; 
     } else {
       return {  modelos_structure : 0 };
@@ -226,9 +436,9 @@ const deleteModelos_Structure = async (filter) =>{
   }
 };
 
-const deleteUniverse_Bigitem = async (filter) =>{
+const deleteUniverse_Structure = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Universe_Bigitem,filter);
+    let response  = await dbService.deleteMany(Universe_Structure,filter);
     return response;
   } catch (error){
     throw new Error(error.message);
@@ -247,10 +457,14 @@ const deleteUniverse_Chunk = async (filter) =>{
       const Universe_cubeFilter = { $or: [{ chunk : { $in : universe_chunk } }] };
       const Universe_cubeCnt = await dbService.deleteMany(Universe_cube,Universe_cubeFilter);
 
+      const Modelos_PartFilter = { $or: [{ chunk : { $in : universe_chunk } }] };
+      const Modelos_PartCnt = await dbService.deleteMany(Modelos_Part,Modelos_PartFilter);
+
       let deleted  = await dbService.deleteMany(Universe_Chunk,filter);
       let response = {
         Universe_Entity :Universe_EntityCnt,
         Universe_cube :Universe_cubeCnt,
+        Modelos_Part :Modelos_PartCnt,
       };
       return response; 
     } else {
@@ -271,6 +485,9 @@ const deleteUniverse_cube = async (filter) =>{
       const Universe_ItemFilter = { $or: [{ cube : { $in : universe_cube } }] };
       const Universe_ItemCnt = await dbService.deleteMany(Universe_Item,Universe_ItemFilter);
 
+      const Modelos_EntityFilter = { $or: [{ Location : { $in : universe_cube } }] };
+      const Modelos_EntityCnt = await dbService.deleteMany(Modelos_Entity,Modelos_EntityFilter);
+
       const Universe_InterfaceFilter = { $or: [{ Cube : { $in : universe_cube } }] };
       const Universe_InterfaceCnt = await dbService.deleteMany(Universe_Interface,Universe_InterfaceFilter);
 
@@ -280,6 +497,7 @@ const deleteUniverse_cube = async (filter) =>{
       let deleted  = await dbService.deleteMany(Universe_cube,filter);
       let response = {
         Universe_Item :Universe_ItemCnt,
+        Modelos_Entity :Modelos_EntityCnt,
         Universe_Interface :Universe_InterfaceCnt,
         Universe_Chunk :Universe_ChunkCnt,
       };
@@ -295,8 +513,26 @@ const deleteUniverse_cube = async (filter) =>{
 
 const deleteModelos_Biomes = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Modelos_Biomes,filter);
-    return response;
+    let modelos_biomes = await dbService.findMany(Modelos_Biomes,filter);
+    if (modelos_biomes && modelos_biomes.length){
+      modelos_biomes = modelos_biomes.map((obj) => obj.id);
+
+      const Base_ChunkFilter = { $or: [{ biome : { $in : modelos_biomes } }] };
+      const Base_ChunkCnt = await dbService.deleteMany(Base_Chunk,Base_ChunkFilter);
+
+      const Universe_ChunkFilter = { $or: [{ biome : { $in : modelos_biomes } }] };
+      const Universe_ChunkCnt = await dbService.deleteMany(Universe_Chunk,Universe_ChunkFilter);
+
+      let deleted  = await dbService.deleteMany(Modelos_Biomes,filter);
+      let response = {
+        Base_Chunk :Base_ChunkCnt,
+        Universe_Chunk :Universe_ChunkCnt,
+      };
+      return response; 
+    } else {
+      return {  modelos_biomes : 0 };
+    }
+
   } catch (error){
     throw new Error(error.message);
   }
@@ -320,9 +556,9 @@ const deleteModelos_Tag = async (filter) =>{
   }
 };
 
-const deleteModelos_TexturePart = async (filter) =>{
+const deleteModelos_Part = async (filter) =>{
   try {
-    let response  = await dbService.deleteMany(Modelos_TexturePart,filter);
+    let response  = await dbService.deleteMany(Modelos_Part,filter);
     return response;
   } catch (error){
     throw new Error(error.message);
@@ -377,20 +613,20 @@ const deleteModelos_item = async (filter) =>{
   }
 };
 
-const deleteAtomModelos_File = async (filter) =>{
+const deleteBase_Modelos_File = async (filter) =>{
   try {
-    let atommodelos_file = await dbService.findMany(AtomModelos_File,filter);
-    if (atommodelos_file && atommodelos_file.length){
-      atommodelos_file = atommodelos_file.map((obj) => obj.id);
+    let base_modelos_file = await dbService.findMany(Base_Modelos_File,filter);
+    if (base_modelos_file && base_modelos_file.length){
+      base_modelos_file = base_modelos_file.map((obj) => obj.id);
 
-      const Modelos_TexturePartFilter = { $or: [{ texture : { $in : atommodelos_file } }] };
-      const Modelos_TexturePartCnt = await dbService.deleteMany(Modelos_TexturePart,Modelos_TexturePartFilter);
+      const Modelos_PartFilter = { $or: [{ texture : { $in : base_modelos_file } }] };
+      const Modelos_PartCnt = await dbService.deleteMany(Modelos_Part,Modelos_PartFilter);
 
-      let deleted  = await dbService.deleteMany(AtomModelos_File,filter);
-      let response = { Modelos_TexturePart :Modelos_TexturePartCnt, };
+      let deleted  = await dbService.deleteMany(Base_Modelos_File,filter);
+      let response = { Modelos_Part :Modelos_PartCnt, };
       return response; 
     } else {
-      return {  atommodelos_file : 0 };
+      return {  base_modelos_file : 0 };
     }
 
   } catch (error){
@@ -398,20 +634,20 @@ const deleteAtomModelos_File = async (filter) =>{
   }
 };
 
-const deleteAtomModelos_Model = async (filter) =>{
+const deleteBase_Modelos_Model = async (filter) =>{
   try {
-    let atommodelos_model = await dbService.findMany(AtomModelos_Model,filter);
-    if (atommodelos_model && atommodelos_model.length){
-      atommodelos_model = atommodelos_model.map((obj) => obj.id);
+    let base_modelos_model = await dbService.findMany(Base_Modelos_Model,filter);
+    if (base_modelos_model && base_modelos_model.length){
+      base_modelos_model = base_modelos_model.map((obj) => obj.id);
 
-      const Modelos_itemFilter = { $or: [{ model : { $in : atommodelos_model } }] };
+      const Modelos_itemFilter = { $or: [{ model : { $in : base_modelos_model } }] };
       const Modelos_itemCnt = await dbService.deleteMany(Modelos_item,Modelos_itemFilter);
 
-      let deleted  = await dbService.deleteMany(AtomModelos_Model,filter);
+      let deleted  = await dbService.deleteMany(Base_Modelos_Model,filter);
       let response = { Modelos_item :Modelos_itemCnt, };
       return response; 
     } else {
-      return {  atommodelos_model : 0 };
+      return {  base_modelos_model : 0 };
     }
 
   } catch (error){
@@ -425,13 +661,16 @@ const deleteUniverse_Settings = async (filter) =>{
     if (universe_settings && universe_settings.length){
       universe_settings = universe_settings.map((obj) => obj.id);
 
+      const Base_CubeFilter = { $or: [{ universe : { $in : universe_settings } }] };
+      const Base_CubeCnt = await dbService.deleteMany(Base_Cube,Base_CubeFilter);
+
+      const Base_ChunkFilter = { $or: [{ settings : { $in : universe_settings } }] };
+      const Base_ChunkCnt = await dbService.deleteMany(Base_Chunk,Base_ChunkFilter);
+
       const Universe_EntityFilter = { $or: [{ Universe : { $in : universe_settings } }] };
       const Universe_EntityCnt = await dbService.deleteMany(Universe_Entity,Universe_EntityFilter);
 
-      const Universe_BigitemFilter = { $or: [{ universe : { $in : universe_settings } }] };
-      const Universe_BigitemCnt = await dbService.deleteMany(Universe_Bigitem,Universe_BigitemFilter);
-
-      const Universe_ChunkFilter = { $or: [{ universe : { $in : universe_settings } }] };
+      const Universe_ChunkFilter = { $or: [{ settings : { $in : universe_settings } }] };
       const Universe_ChunkCnt = await dbService.deleteMany(Universe_Chunk,Universe_ChunkFilter);
 
       const Universe_cubeFilter = { $or: [{ universe : { $in : universe_settings } }] };
@@ -439,8 +678,9 @@ const deleteUniverse_Settings = async (filter) =>{
 
       let deleted  = await dbService.deleteMany(Universe_Settings,filter);
       let response = {
+        Base_Cube :Base_CubeCnt,
+        Base_Chunk :Base_ChunkCnt,
         Universe_Entity :Universe_EntityCnt,
-        Universe_Bigitem :Universe_BigitemCnt,
         Universe_Chunk :Universe_ChunkCnt,
         Universe_cube :Universe_cubeCnt,
       };
@@ -460,6 +700,9 @@ const deleteChat_group = async (filter) =>{
     if (chat_group && chat_group.length){
       chat_group = chat_group.map((obj) => obj.id);
 
+      const Base_ChunkFilter = { $or: [{ chat : { $in : chat_group } }] };
+      const Base_ChunkCnt = await dbService.deleteMany(Base_Chunk,Base_ChunkFilter);
+
       const Universe_ChunkFilter = { $or: [{ chat : { $in : chat_group } }] };
       const Universe_ChunkCnt = await dbService.deleteMany(Universe_Chunk,Universe_ChunkFilter);
 
@@ -468,6 +711,7 @@ const deleteChat_group = async (filter) =>{
 
       let deleted  = await dbService.deleteMany(Chat_group,filter);
       let response = {
+        Base_Chunk :Base_ChunkCnt,
         Universe_Chunk :Universe_ChunkCnt,
         Chat_message :Chat_messageCnt,
       };
@@ -495,6 +739,27 @@ const deleteUser = async (filter) =>{
     let user = await dbService.findMany(User,filter);
     if (user && user.length){
       user = user.map((obj) => obj.id);
+
+      const Base_CubeFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Base_CubeCnt = await dbService.deleteMany(Base_Cube,Base_CubeFilter);
+
+      const Base_ChunkFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } },{ op : { $in : user } }] };
+      const Base_ChunkCnt = await dbService.deleteMany(Base_Chunk,Base_ChunkFilter);
+
+      const Modelos_chemistry_elementFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_chemistry_elementCnt = await dbService.deleteMany(Modelos_chemistry_element,Modelos_chemistry_elementFilter);
+
+      const user_characterFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const user_characterCnt = await dbService.deleteMany(User_character,user_characterFilter);
+
+      const Modelos_chemistry_SubstancesFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_chemistry_SubstancesCnt = await dbService.deleteMany(Modelos_chemistry_Substances,Modelos_chemistry_SubstancesFilter);
+
+      const Modelos_chemistry_compoundsFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_chemistry_compoundsCnt = await dbService.deleteMany(Modelos_chemistry_compounds,Modelos_chemistry_compoundsFilter);
+
+      const user_sectionFilter = { $or: [{ user : { $in : user } },{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const user_sectionCnt = await dbService.deleteMany(User_section,user_sectionFilter);
 
       const Modelos_ReceitaFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Modelos_ReceitaCnt = await dbService.deleteMany(Modelos_Receita,Modelos_ReceitaFilter);
@@ -526,10 +791,10 @@ const deleteUser = async (filter) =>{
       const Modelos_StructureFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Modelos_StructureCnt = await dbService.deleteMany(Modelos_Structure,Modelos_StructureFilter);
 
-      const Universe_BigitemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const Universe_BigitemCnt = await dbService.deleteMany(Universe_Bigitem,Universe_BigitemFilter);
+      const Universe_StructureFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Universe_StructureCnt = await dbService.deleteMany(Universe_Structure,Universe_StructureFilter);
 
-      const Universe_ChunkFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Universe_ChunkFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } },{ op : { $in : user } }] };
       const Universe_ChunkCnt = await dbService.deleteMany(Universe_Chunk,Universe_ChunkFilter);
 
       const Universe_cubeFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
@@ -544,8 +809,8 @@ const deleteUser = async (filter) =>{
       const Modelos_TagFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Modelos_TagCnt = await dbService.deleteMany(Modelos_Tag,Modelos_TagFilter);
 
-      const Modelos_TexturePartFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const Modelos_TexturePartCnt = await dbService.deleteMany(Modelos_TexturePart,Modelos_TexturePartFilter);
+      const Modelos_PartFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_PartCnt = await dbService.deleteMany(Modelos_Part,Modelos_PartFilter);
 
       const Modelos_TextureMapFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Modelos_TextureMapCnt = await dbService.deleteMany(Modelos_TextureMap,Modelos_TextureMapFilter);
@@ -553,11 +818,11 @@ const deleteUser = async (filter) =>{
       const Modelos_itemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Modelos_itemCnt = await dbService.deleteMany(Modelos_item,Modelos_itemFilter);
 
-      const AtomModelos_FileFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const AtomModelos_FileCnt = await dbService.deleteMany(AtomModelos_File,AtomModelos_FileFilter);
+      const Base_Modelos_FileFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Base_Modelos_FileCnt = await dbService.deleteMany(Base_Modelos_File,Base_Modelos_FileFilter);
 
-      const AtomModelos_ModelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const AtomModelos_ModelCnt = await dbService.deleteMany(AtomModelos_Model,AtomModelos_ModelFilter);
+      const Base_Modelos_ModelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Base_Modelos_ModelCnt = await dbService.deleteMany(Base_Modelos_Model,Base_Modelos_ModelFilter);
 
       const Universe_SettingsFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Universe_SettingsCnt = await dbService.deleteMany(Universe_Settings,Universe_SettingsFilter);
@@ -588,6 +853,13 @@ const deleteUser = async (filter) =>{
 
       let deleted  = await dbService.deleteMany(User,filter);
       let response = {
+        Base_Cube :Base_CubeCnt,
+        Base_Chunk :Base_ChunkCnt,
+        Modelos_chemistry_element :Modelos_chemistry_elementCnt,
+        user_character :user_characterCnt,
+        Modelos_chemistry_Substances :Modelos_chemistry_SubstancesCnt,
+        Modelos_chemistry_compounds :Modelos_chemistry_compoundsCnt,
+        user_section :user_sectionCnt,
         Modelos_Receita :Modelos_ReceitaCnt,
         Modelos_Action :Modelos_ActionCnt,
         Universe_Item :Universe_ItemCnt,
@@ -598,17 +870,17 @@ const deleteUser = async (filter) =>{
         Universe_Slot :Universe_SlotCnt,
         Modelos_interface :Modelos_interfaceCnt,
         Modelos_Structure :Modelos_StructureCnt,
-        Universe_Bigitem :Universe_BigitemCnt,
+        Universe_Structure :Universe_StructureCnt,
         Universe_Chunk :Universe_ChunkCnt,
         Universe_cube :Universe_cubeCnt,
         Modelos_Biomes :Modelos_BiomesCnt,
         Modelos_Rule :Modelos_RuleCnt,
         Modelos_Tag :Modelos_TagCnt,
-        Modelos_TexturePart :Modelos_TexturePartCnt,
+        Modelos_Part :Modelos_PartCnt,
         Modelos_TextureMap :Modelos_TextureMapCnt,
         Modelos_item :Modelos_itemCnt,
-        AtomModelos_File :AtomModelos_FileCnt,
-        AtomModelos_Model :AtomModelos_ModelCnt,
+        Base_Modelos_File :Base_Modelos_FileCnt,
+        Base_Modelos_Model :Base_Modelos_ModelCnt,
         Universe_Settings :Universe_SettingsCnt,
         Chat_group :Chat_groupCnt,
         Chat_message :Chat_messageCnt,
@@ -713,16 +985,174 @@ const deleteUserRole = async (filter) =>{
   }
 };
 
+const countUniverse_Age = async (filter) =>{
+  try {
+    const Universe_AgeCnt =  await dbService.count(Universe_Age,filter);
+    return { Universe_Age : Universe_AgeCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countModelos_Age = async (filter) =>{
+  try {
+    const Modelos_AgeCnt =  await dbService.count(Modelos_Age,filter);
+    return { Modelos_Age : Modelos_AgeCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countBase_Cube = async (filter) =>{
+  try {
+    let base_cube = await dbService.findMany(Base_Cube,filter);
+    if (base_cube && base_cube.length){
+      base_cube = base_cube.map((obj) => obj.id);
+
+      const Base_ChunkFilter = { $or: [{ chunk : { $in : base_cube } }] };
+      const Base_ChunkCnt =  await dbService.count(Base_Chunk,Base_ChunkFilter);
+
+      let response = { Base_Chunk : Base_ChunkCnt, };
+      return response; 
+    } else {
+      return {  base_cube : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countBase_Chunk = async (filter) =>{
+  try {
+    let base_chunk = await dbService.findMany(Base_Chunk,filter);
+    if (base_chunk && base_chunk.length){
+      base_chunk = base_chunk.map((obj) => obj.id);
+
+      const Base_CubeFilter = { $or: [{ chunk : { $in : base_chunk } }] };
+      const Base_CubeCnt =  await dbService.count(Base_Cube,Base_CubeFilter);
+
+      let response = { Base_Cube : Base_CubeCnt, };
+      return response; 
+    } else {
+      return {  base_chunk : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countModelos_chemistry_element = async (filter) =>{
+  try {
+    const Modelos_chemistry_elementCnt =  await dbService.count(Modelos_chemistry_element,filter);
+    return { Modelos_chemistry_element : Modelos_chemistry_elementCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countUser_character = async (filter) =>{
+  try {
+    const user_characterCnt =  await dbService.count(User_character,filter);
+    return { user_character : user_characterCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countModelos_chemistry_Substances = async (filter) =>{
+  try {
+    const Modelos_chemistry_SubstancesCnt =  await dbService.count(Modelos_chemistry_Substances,filter);
+    return { Modelos_chemistry_Substances : Modelos_chemistry_SubstancesCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countModelos_chemistry_compounds = async (filter) =>{
+  try {
+    const Modelos_chemistry_compoundsCnt =  await dbService.count(Modelos_chemistry_compounds,filter);
+    return { Modelos_chemistry_compounds : Modelos_chemistry_compoundsCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countUser_section = async (filter) =>{
+  try {
+    let user_section = await dbService.findMany(User_section,filter);
+    if (user_section && user_section.length){
+      user_section = user_section.map((obj) => obj.id);
+
+      const userFilter = { $or: [{ lastsection : { $in : user_section } }] };
+      const userCnt =  await dbService.count(User,userFilter);
+
+      let response = { user : userCnt, };
+      return response; 
+    } else {
+      return {  user_section : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const countModelos_Size = async (filter) =>{
+  try {
+    let modelos_size = await dbService.findMany(Modelos_Size,filter);
+    if (modelos_size && modelos_size.length){
+      modelos_size = modelos_size.map((obj) => obj.id);
+
+      const Base_ChunkFilter = { $or: [{ size : { $in : modelos_size } }] };
+      const Base_ChunkCnt =  await dbService.count(Base_Chunk,Base_ChunkFilter);
+
+      const Modelos_EntityFilter = { $or: [{ Size : { $in : modelos_size } }] };
+      const Modelos_EntityCnt =  await dbService.count(Modelos_Entity,Modelos_EntityFilter);
+
+      const Modelos_StructureFilter = { $or: [{ size : { $in : modelos_size } }] };
+      const Modelos_StructureCnt =  await dbService.count(Modelos_Structure,Modelos_StructureFilter);
+
+      const Universe_StructureFilter = { $or: [{ size : { $in : modelos_size } }] };
+      const Universe_StructureCnt =  await dbService.count(Universe_Structure,Universe_StructureFilter);
+
+      const Universe_ChunkFilter = { $or: [{ size : { $in : modelos_size } }] };
+      const Universe_ChunkCnt =  await dbService.count(Universe_Chunk,Universe_ChunkFilter);
+
+      let response = {
+        Base_Chunk : Base_ChunkCnt,
+        Modelos_Entity : Modelos_EntityCnt,
+        Modelos_Structure : Modelos_StructureCnt,
+        Universe_Structure : Universe_StructureCnt,
+        Universe_Chunk : Universe_ChunkCnt,
+      };
+      return response; 
+    } else {
+      return {  modelos_size : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
 const countUniverse_Blockstate = async (filter) =>{
   try {
     let universe_blockstate = await dbService.findMany(Universe_Blockstate,filter);
     if (universe_blockstate && universe_blockstate.length){
       universe_blockstate = universe_blockstate.map((obj) => obj.id);
 
+      const Modelos_StructureFilter = { $or: [{ Blockstate : { $in : universe_blockstate } }] };
+      const Modelos_StructureCnt =  await dbService.count(Modelos_Structure,Modelos_StructureFilter);
+
+      const Universe_StructureFilter = { $or: [{ Blockstate : { $in : universe_blockstate } }] };
+      const Universe_StructureCnt =  await dbService.count(Universe_Structure,Universe_StructureFilter);
+
       const Universe_SettingsFilter = { $or: [{ Blockstate : { $in : universe_blockstate } }] };
       const Universe_SettingsCnt =  await dbService.count(Universe_Settings,Universe_SettingsFilter);
 
-      let response = { Universe_Settings : Universe_SettingsCnt, };
+      let response = {
+        Modelos_Structure : Modelos_StructureCnt,
+        Universe_Structure : Universe_StructureCnt,
+        Universe_Settings : Universe_SettingsCnt,
+      };
       return response; 
     } else {
       return {  universe_blockstate : 0 };
@@ -803,10 +1233,20 @@ const countUniverse_Interface = async (filter) =>{
     if (universe_interface && universe_interface.length){
       universe_interface = universe_interface.map((obj) => obj.id);
 
+      const Base_CubeFilter = { $or: [{ interface : { $in : universe_interface } }] };
+      const Base_CubeCnt =  await dbService.count(Base_Cube,Base_CubeFilter);
+
       const Universe_StorageFilter = { $or: [{ Interface : { $in : universe_interface } }] };
       const Universe_StorageCnt =  await dbService.count(Universe_Storage,Universe_StorageFilter);
 
-      let response = { Universe_Storage : Universe_StorageCnt, };
+      const Universe_cubeFilter = { $or: [{ interface : { $in : universe_interface } }] };
+      const Universe_cubeCnt =  await dbService.count(Universe_cube,Universe_cubeFilter);
+
+      let response = {
+        Base_Cube : Base_CubeCnt,
+        Universe_Storage : Universe_StorageCnt,
+        Universe_cube : Universe_cubeCnt,
+      };
       return response; 
     } else {
       return {  universe_interface : 0 };
@@ -818,8 +1258,24 @@ const countUniverse_Interface = async (filter) =>{
 
 const countUniverse_Storage = async (filter) =>{
   try {
-    const Universe_StorageCnt =  await dbService.count(Universe_Storage,filter);
-    return { Universe_Storage : Universe_StorageCnt };
+    let universe_storage = await dbService.findMany(Universe_Storage,filter);
+    if (universe_storage && universe_storage.length){
+      universe_storage = universe_storage.map((obj) => obj.id);
+
+      const Base_CubeFilter = { $or: [{ storage : { $in : universe_storage } }] };
+      const Base_CubeCnt =  await dbService.count(Base_Cube,Base_CubeFilter);
+
+      const Universe_cubeFilter = { $or: [{ storage : { $in : universe_storage } }] };
+      const Universe_cubeCnt =  await dbService.count(Universe_cube,Universe_cubeFilter);
+
+      let response = {
+        Base_Cube : Base_CubeCnt,
+        Universe_cube : Universe_cubeCnt,
+      };
+      return response; 
+    } else {
+      return {  universe_storage : 0 };
+    }
   } catch (error){
     throw new Error(error.message);
   }
@@ -875,10 +1331,16 @@ const countModelos_Structure = async (filter) =>{
     if (modelos_structure && modelos_structure.length){
       modelos_structure = modelos_structure.map((obj) => obj.id);
 
-      const Universe_BigitemFilter = { $or: [{ structure : { $in : modelos_structure } }] };
-      const Universe_BigitemCnt =  await dbService.count(Universe_Bigitem,Universe_BigitemFilter);
+      const Universe_AgeFilter = { $or: [{ relativeto : { $in : modelos_structure } }] };
+      const Universe_AgeCnt =  await dbService.count(Universe_Age,Universe_AgeFilter);
 
-      let response = { Universe_Bigitem : Universe_BigitemCnt, };
+      const Modelos_AgeFilter = { $or: [{ relativeto : { $in : modelos_structure } }] };
+      const Modelos_AgeCnt =  await dbService.count(Modelos_Age,Modelos_AgeFilter);
+
+      let response = {
+        Universe_Age : Universe_AgeCnt,
+        Modelos_Age : Modelos_AgeCnt,
+      };
       return response; 
     } else {
       return {  modelos_structure : 0 };
@@ -888,10 +1350,10 @@ const countModelos_Structure = async (filter) =>{
   }
 };
 
-const countUniverse_Bigitem = async (filter) =>{
+const countUniverse_Structure = async (filter) =>{
   try {
-    const Universe_BigitemCnt =  await dbService.count(Universe_Bigitem,filter);
-    return { Universe_Bigitem : Universe_BigitemCnt };
+    const Universe_StructureCnt =  await dbService.count(Universe_Structure,filter);
+    return { Universe_Structure : Universe_StructureCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -909,9 +1371,13 @@ const countUniverse_Chunk = async (filter) =>{
       const Universe_cubeFilter = { $or: [{ chunk : { $in : universe_chunk } }] };
       const Universe_cubeCnt =  await dbService.count(Universe_cube,Universe_cubeFilter);
 
+      const Modelos_PartFilter = { $or: [{ chunk : { $in : universe_chunk } }] };
+      const Modelos_PartCnt =  await dbService.count(Modelos_Part,Modelos_PartFilter);
+
       let response = {
         Universe_Entity : Universe_EntityCnt,
         Universe_cube : Universe_cubeCnt,
+        Modelos_Part : Modelos_PartCnt,
       };
       return response; 
     } else {
@@ -931,6 +1397,9 @@ const countUniverse_cube = async (filter) =>{
       const Universe_ItemFilter = { $or: [{ cube : { $in : universe_cube } }] };
       const Universe_ItemCnt =  await dbService.count(Universe_Item,Universe_ItemFilter);
 
+      const Modelos_EntityFilter = { $or: [{ Location : { $in : universe_cube } }] };
+      const Modelos_EntityCnt =  await dbService.count(Modelos_Entity,Modelos_EntityFilter);
+
       const Universe_InterfaceFilter = { $or: [{ Cube : { $in : universe_cube } }] };
       const Universe_InterfaceCnt =  await dbService.count(Universe_Interface,Universe_InterfaceFilter);
 
@@ -939,6 +1408,7 @@ const countUniverse_cube = async (filter) =>{
 
       let response = {
         Universe_Item : Universe_ItemCnt,
+        Modelos_Entity : Modelos_EntityCnt,
         Universe_Interface : Universe_InterfaceCnt,
         Universe_Chunk : Universe_ChunkCnt,
       };
@@ -953,8 +1423,24 @@ const countUniverse_cube = async (filter) =>{
 
 const countModelos_Biomes = async (filter) =>{
   try {
-    const Modelos_BiomesCnt =  await dbService.count(Modelos_Biomes,filter);
-    return { Modelos_Biomes : Modelos_BiomesCnt };
+    let modelos_biomes = await dbService.findMany(Modelos_Biomes,filter);
+    if (modelos_biomes && modelos_biomes.length){
+      modelos_biomes = modelos_biomes.map((obj) => obj.id);
+
+      const Base_ChunkFilter = { $or: [{ biome : { $in : modelos_biomes } }] };
+      const Base_ChunkCnt =  await dbService.count(Base_Chunk,Base_ChunkFilter);
+
+      const Universe_ChunkFilter = { $or: [{ biome : { $in : modelos_biomes } }] };
+      const Universe_ChunkCnt =  await dbService.count(Universe_Chunk,Universe_ChunkFilter);
+
+      let response = {
+        Base_Chunk : Base_ChunkCnt,
+        Universe_Chunk : Universe_ChunkCnt,
+      };
+      return response; 
+    } else {
+      return {  modelos_biomes : 0 };
+    }
   } catch (error){
     throw new Error(error.message);
   }
@@ -978,10 +1464,10 @@ const countModelos_Tag = async (filter) =>{
   }
 };
 
-const countModelos_TexturePart = async (filter) =>{
+const countModelos_Part = async (filter) =>{
   try {
-    const Modelos_TexturePartCnt =  await dbService.count(Modelos_TexturePart,filter);
-    return { Modelos_TexturePart : Modelos_TexturePartCnt };
+    const Modelos_PartCnt =  await dbService.count(Modelos_Part,filter);
+    return { Modelos_Part : Modelos_PartCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -1031,38 +1517,38 @@ const countModelos_item = async (filter) =>{
   }
 };
 
-const countAtomModelos_File = async (filter) =>{
+const countBase_Modelos_File = async (filter) =>{
   try {
-    let atommodelos_file = await dbService.findMany(AtomModelos_File,filter);
-    if (atommodelos_file && atommodelos_file.length){
-      atommodelos_file = atommodelos_file.map((obj) => obj.id);
+    let base_modelos_file = await dbService.findMany(Base_Modelos_File,filter);
+    if (base_modelos_file && base_modelos_file.length){
+      base_modelos_file = base_modelos_file.map((obj) => obj.id);
 
-      const Modelos_TexturePartFilter = { $or: [{ texture : { $in : atommodelos_file } }] };
-      const Modelos_TexturePartCnt =  await dbService.count(Modelos_TexturePart,Modelos_TexturePartFilter);
+      const Modelos_PartFilter = { $or: [{ texture : { $in : base_modelos_file } }] };
+      const Modelos_PartCnt =  await dbService.count(Modelos_Part,Modelos_PartFilter);
 
-      let response = { Modelos_TexturePart : Modelos_TexturePartCnt, };
+      let response = { Modelos_Part : Modelos_PartCnt, };
       return response; 
     } else {
-      return {  atommodelos_file : 0 };
+      return {  base_modelos_file : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const countAtomModelos_Model = async (filter) =>{
+const countBase_Modelos_Model = async (filter) =>{
   try {
-    let atommodelos_model = await dbService.findMany(AtomModelos_Model,filter);
-    if (atommodelos_model && atommodelos_model.length){
-      atommodelos_model = atommodelos_model.map((obj) => obj.id);
+    let base_modelos_model = await dbService.findMany(Base_Modelos_Model,filter);
+    if (base_modelos_model && base_modelos_model.length){
+      base_modelos_model = base_modelos_model.map((obj) => obj.id);
 
-      const Modelos_itemFilter = { $or: [{ model : { $in : atommodelos_model } }] };
+      const Modelos_itemFilter = { $or: [{ model : { $in : base_modelos_model } }] };
       const Modelos_itemCnt =  await dbService.count(Modelos_item,Modelos_itemFilter);
 
       let response = { Modelos_item : Modelos_itemCnt, };
       return response; 
     } else {
-      return {  atommodelos_model : 0 };
+      return {  base_modelos_model : 0 };
     }
   } catch (error){
     throw new Error(error.message);
@@ -1075,21 +1561,25 @@ const countUniverse_Settings = async (filter) =>{
     if (universe_settings && universe_settings.length){
       universe_settings = universe_settings.map((obj) => obj.id);
 
+      const Base_CubeFilter = { $or: [{ universe : { $in : universe_settings } }] };
+      const Base_CubeCnt =  await dbService.count(Base_Cube,Base_CubeFilter);
+
+      const Base_ChunkFilter = { $or: [{ settings : { $in : universe_settings } }] };
+      const Base_ChunkCnt =  await dbService.count(Base_Chunk,Base_ChunkFilter);
+
       const Universe_EntityFilter = { $or: [{ Universe : { $in : universe_settings } }] };
       const Universe_EntityCnt =  await dbService.count(Universe_Entity,Universe_EntityFilter);
 
-      const Universe_BigitemFilter = { $or: [{ universe : { $in : universe_settings } }] };
-      const Universe_BigitemCnt =  await dbService.count(Universe_Bigitem,Universe_BigitemFilter);
-
-      const Universe_ChunkFilter = { $or: [{ universe : { $in : universe_settings } }] };
+      const Universe_ChunkFilter = { $or: [{ settings : { $in : universe_settings } }] };
       const Universe_ChunkCnt =  await dbService.count(Universe_Chunk,Universe_ChunkFilter);
 
       const Universe_cubeFilter = { $or: [{ universe : { $in : universe_settings } }] };
       const Universe_cubeCnt =  await dbService.count(Universe_cube,Universe_cubeFilter);
 
       let response = {
+        Base_Cube : Base_CubeCnt,
+        Base_Chunk : Base_ChunkCnt,
         Universe_Entity : Universe_EntityCnt,
-        Universe_Bigitem : Universe_BigitemCnt,
         Universe_Chunk : Universe_ChunkCnt,
         Universe_cube : Universe_cubeCnt,
       };
@@ -1108,6 +1598,9 @@ const countChat_group = async (filter) =>{
     if (chat_group && chat_group.length){
       chat_group = chat_group.map((obj) => obj.id);
 
+      const Base_ChunkFilter = { $or: [{ chat : { $in : chat_group } }] };
+      const Base_ChunkCnt =  await dbService.count(Base_Chunk,Base_ChunkFilter);
+
       const Universe_ChunkFilter = { $or: [{ chat : { $in : chat_group } }] };
       const Universe_ChunkCnt =  await dbService.count(Universe_Chunk,Universe_ChunkFilter);
 
@@ -1115,6 +1608,7 @@ const countChat_group = async (filter) =>{
       const Chat_messageCnt =  await dbService.count(Chat_message,Chat_messageFilter);
 
       let response = {
+        Base_Chunk : Base_ChunkCnt,
         Universe_Chunk : Universe_ChunkCnt,
         Chat_message : Chat_messageCnt,
       };
@@ -1141,6 +1635,27 @@ const countUser = async (filter) =>{
     let user = await dbService.findMany(User,filter);
     if (user && user.length){
       user = user.map((obj) => obj.id);
+
+      const Base_CubeFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Base_CubeCnt =  await dbService.count(Base_Cube,Base_CubeFilter);
+
+      const Base_ChunkFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } },{ op : { $in : user } }] };
+      const Base_ChunkCnt =  await dbService.count(Base_Chunk,Base_ChunkFilter);
+
+      const Modelos_chemistry_elementFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_chemistry_elementCnt =  await dbService.count(Modelos_chemistry_element,Modelos_chemistry_elementFilter);
+
+      const user_characterFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const user_characterCnt =  await dbService.count(User_character,user_characterFilter);
+
+      const Modelos_chemistry_SubstancesFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_chemistry_SubstancesCnt =  await dbService.count(Modelos_chemistry_Substances,Modelos_chemistry_SubstancesFilter);
+
+      const Modelos_chemistry_compoundsFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_chemistry_compoundsCnt =  await dbService.count(Modelos_chemistry_compounds,Modelos_chemistry_compoundsFilter);
+
+      const user_sectionFilter = { $or: [{ user : { $in : user } },{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const user_sectionCnt =  await dbService.count(User_section,user_sectionFilter);
 
       const Modelos_ReceitaFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Modelos_ReceitaCnt =  await dbService.count(Modelos_Receita,Modelos_ReceitaFilter);
@@ -1172,10 +1687,10 @@ const countUser = async (filter) =>{
       const Modelos_StructureFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Modelos_StructureCnt =  await dbService.count(Modelos_Structure,Modelos_StructureFilter);
 
-      const Universe_BigitemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const Universe_BigitemCnt =  await dbService.count(Universe_Bigitem,Universe_BigitemFilter);
+      const Universe_StructureFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Universe_StructureCnt =  await dbService.count(Universe_Structure,Universe_StructureFilter);
 
-      const Universe_ChunkFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Universe_ChunkFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } },{ op : { $in : user } }] };
       const Universe_ChunkCnt =  await dbService.count(Universe_Chunk,Universe_ChunkFilter);
 
       const Universe_cubeFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
@@ -1190,8 +1705,8 @@ const countUser = async (filter) =>{
       const Modelos_TagFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Modelos_TagCnt =  await dbService.count(Modelos_Tag,Modelos_TagFilter);
 
-      const Modelos_TexturePartFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const Modelos_TexturePartCnt =  await dbService.count(Modelos_TexturePart,Modelos_TexturePartFilter);
+      const Modelos_PartFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Modelos_PartCnt =  await dbService.count(Modelos_Part,Modelos_PartFilter);
 
       const Modelos_TextureMapFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Modelos_TextureMapCnt =  await dbService.count(Modelos_TextureMap,Modelos_TextureMapFilter);
@@ -1199,11 +1714,11 @@ const countUser = async (filter) =>{
       const Modelos_itemFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Modelos_itemCnt =  await dbService.count(Modelos_item,Modelos_itemFilter);
 
-      const AtomModelos_FileFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const AtomModelos_FileCnt =  await dbService.count(AtomModelos_File,AtomModelos_FileFilter);
+      const Base_Modelos_FileFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Base_Modelos_FileCnt =  await dbService.count(Base_Modelos_File,Base_Modelos_FileFilter);
 
-      const AtomModelos_ModelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
-      const AtomModelos_ModelCnt =  await dbService.count(AtomModelos_Model,AtomModelos_ModelFilter);
+      const Base_Modelos_ModelFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
+      const Base_Modelos_ModelCnt =  await dbService.count(Base_Modelos_Model,Base_Modelos_ModelFilter);
 
       const Universe_SettingsFilter = { $or: [{ addedBy : { $in : user } },{ updatedBy : { $in : user } }] };
       const Universe_SettingsCnt =  await dbService.count(Universe_Settings,Universe_SettingsFilter);
@@ -1233,6 +1748,13 @@ const countUser = async (filter) =>{
       const userRoleCnt =  await dbService.count(UserRole,userRoleFilter);
 
       let response = {
+        Base_Cube : Base_CubeCnt,
+        Base_Chunk : Base_ChunkCnt,
+        Modelos_chemistry_element : Modelos_chemistry_elementCnt,
+        user_character : user_characterCnt,
+        Modelos_chemistry_Substances : Modelos_chemistry_SubstancesCnt,
+        Modelos_chemistry_compounds : Modelos_chemistry_compoundsCnt,
+        user_section : user_sectionCnt,
         Modelos_Receita : Modelos_ReceitaCnt,
         Modelos_Action : Modelos_ActionCnt,
         Universe_Item : Universe_ItemCnt,
@@ -1243,17 +1765,17 @@ const countUser = async (filter) =>{
         Universe_Slot : Universe_SlotCnt,
         Modelos_interface : Modelos_interfaceCnt,
         Modelos_Structure : Modelos_StructureCnt,
-        Universe_Bigitem : Universe_BigitemCnt,
+        Universe_Structure : Universe_StructureCnt,
         Universe_Chunk : Universe_ChunkCnt,
         Universe_cube : Universe_cubeCnt,
         Modelos_Biomes : Modelos_BiomesCnt,
         Modelos_Rule : Modelos_RuleCnt,
         Modelos_Tag : Modelos_TagCnt,
-        Modelos_TexturePart : Modelos_TexturePartCnt,
+        Modelos_Part : Modelos_PartCnt,
         Modelos_TextureMap : Modelos_TextureMapCnt,
         Modelos_item : Modelos_itemCnt,
-        AtomModelos_File : AtomModelos_FileCnt,
-        AtomModelos_Model : AtomModelos_ModelCnt,
+        Base_Modelos_File : Base_Modelos_FileCnt,
+        Base_Modelos_Model : Base_Modelos_ModelCnt,
         Universe_Settings : Universe_SettingsCnt,
         Chat_group : Chat_groupCnt,
         Chat_message : Chat_messageCnt,
@@ -1353,17 +1875,179 @@ const countUserRole = async (filter) =>{
   }
 };
 
+const softDeleteUniverse_Age = async (filter,updateBody) =>{  
+  try {
+    const Universe_AgeCnt =  await dbService.updateMany(Universe_Age,filter);
+    return { Universe_Age : Universe_AgeCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteModelos_Age = async (filter,updateBody) =>{  
+  try {
+    const Modelos_AgeCnt =  await dbService.updateMany(Modelos_Age,filter);
+    return { Modelos_Age : Modelos_AgeCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteBase_Cube = async (filter,updateBody) =>{  
+  try {
+    let base_cube = await dbService.findMany(Base_Cube,filter, { id:1 });
+    if (base_cube.length){
+      base_cube = base_cube.map((obj) => obj.id);
+
+      const Base_ChunkFilter = { '$or': [{ chunk : { '$in' : base_cube } }] };
+      const Base_ChunkCnt = await dbService.updateMany(Base_Chunk,Base_ChunkFilter,updateBody);
+      let updated = await dbService.updateMany(Base_Cube,filter,updateBody);
+
+      let response = { Base_Chunk :Base_ChunkCnt, };
+      return response;
+    } else {
+      return {  base_cube : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteBase_Chunk = async (filter,updateBody) =>{  
+  try {
+    let base_chunk = await dbService.findMany(Base_Chunk,filter, { id:1 });
+    if (base_chunk.length){
+      base_chunk = base_chunk.map((obj) => obj.id);
+
+      const Base_CubeFilter = { '$or': [{ chunk : { '$in' : base_chunk } }] };
+      const Base_CubeCnt = await dbService.updateMany(Base_Cube,Base_CubeFilter,updateBody);
+      let updated = await dbService.updateMany(Base_Chunk,filter,updateBody);
+
+      let response = { Base_Cube :Base_CubeCnt, };
+      return response;
+    } else {
+      return {  base_chunk : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteModelos_chemistry_element = async (filter,updateBody) =>{  
+  try {
+    const Modelos_chemistry_elementCnt =  await dbService.updateMany(Modelos_chemistry_element,filter);
+    return { Modelos_chemistry_element : Modelos_chemistry_elementCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteUser_character = async (filter,updateBody) =>{  
+  try {
+    const user_characterCnt =  await dbService.updateMany(User_character,filter);
+    return { user_character : user_characterCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteModelos_chemistry_Substances = async (filter,updateBody) =>{  
+  try {
+    const Modelos_chemistry_SubstancesCnt =  await dbService.updateMany(Modelos_chemistry_Substances,filter);
+    return { Modelos_chemistry_Substances : Modelos_chemistry_SubstancesCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteModelos_chemistry_compounds = async (filter,updateBody) =>{  
+  try {
+    const Modelos_chemistry_compoundsCnt =  await dbService.updateMany(Modelos_chemistry_compounds,filter);
+    return { Modelos_chemistry_compounds : Modelos_chemistry_compoundsCnt };
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteUser_section = async (filter,updateBody) =>{  
+  try {
+    let user_section = await dbService.findMany(User_section,filter, { id:1 });
+    if (user_section.length){
+      user_section = user_section.map((obj) => obj.id);
+
+      const userFilter = { '$or': [{ lastsection : { '$in' : user_section } }] };
+      const userCnt = await dbService.updateMany(User,userFilter,updateBody);
+      let updated = await dbService.updateMany(User_section,filter,updateBody);
+
+      let response = { user :userCnt, };
+      return response;
+    } else {
+      return {  user_section : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
+const softDeleteModelos_Size = async (filter,updateBody) =>{  
+  try {
+    let modelos_size = await dbService.findMany(Modelos_Size,filter, { id:1 });
+    if (modelos_size.length){
+      modelos_size = modelos_size.map((obj) => obj.id);
+
+      const Base_ChunkFilter = { '$or': [{ size : { '$in' : modelos_size } }] };
+      const Base_ChunkCnt = await dbService.updateMany(Base_Chunk,Base_ChunkFilter,updateBody);
+
+      const Modelos_EntityFilter = { '$or': [{ Size : { '$in' : modelos_size } }] };
+      const Modelos_EntityCnt = await dbService.updateMany(Modelos_Entity,Modelos_EntityFilter,updateBody);
+
+      const Modelos_StructureFilter = { '$or': [{ size : { '$in' : modelos_size } }] };
+      const Modelos_StructureCnt = await dbService.updateMany(Modelos_Structure,Modelos_StructureFilter,updateBody);
+
+      const Universe_StructureFilter = { '$or': [{ size : { '$in' : modelos_size } }] };
+      const Universe_StructureCnt = await dbService.updateMany(Universe_Structure,Universe_StructureFilter,updateBody);
+
+      const Universe_ChunkFilter = { '$or': [{ size : { '$in' : modelos_size } }] };
+      const Universe_ChunkCnt = await dbService.updateMany(Universe_Chunk,Universe_ChunkFilter,updateBody);
+      let updated = await dbService.updateMany(Modelos_Size,filter,updateBody);
+
+      let response = {
+        Base_Chunk :Base_ChunkCnt,
+        Modelos_Entity :Modelos_EntityCnt,
+        Modelos_Structure :Modelos_StructureCnt,
+        Universe_Structure :Universe_StructureCnt,
+        Universe_Chunk :Universe_ChunkCnt,
+      };
+      return response;
+    } else {
+      return {  modelos_size : 0 };
+    }
+  } catch (error){
+    throw new Error(error.message);
+  }
+};
+
 const softDeleteUniverse_Blockstate = async (filter,updateBody) =>{  
   try {
     let universe_blockstate = await dbService.findMany(Universe_Blockstate,filter, { id:1 });
     if (universe_blockstate.length){
       universe_blockstate = universe_blockstate.map((obj) => obj.id);
 
+      const Modelos_StructureFilter = { '$or': [{ Blockstate : { '$in' : universe_blockstate } }] };
+      const Modelos_StructureCnt = await dbService.updateMany(Modelos_Structure,Modelos_StructureFilter,updateBody);
+
+      const Universe_StructureFilter = { '$or': [{ Blockstate : { '$in' : universe_blockstate } }] };
+      const Universe_StructureCnt = await dbService.updateMany(Universe_Structure,Universe_StructureFilter,updateBody);
+
       const Universe_SettingsFilter = { '$or': [{ Blockstate : { '$in' : universe_blockstate } }] };
       const Universe_SettingsCnt = await dbService.updateMany(Universe_Settings,Universe_SettingsFilter,updateBody);
       let updated = await dbService.updateMany(Universe_Blockstate,filter,updateBody);
 
-      let response = { Universe_Settings :Universe_SettingsCnt, };
+      let response = {
+        Modelos_Structure :Modelos_StructureCnt,
+        Universe_Structure :Universe_StructureCnt,
+        Universe_Settings :Universe_SettingsCnt,
+      };
       return response;
     } else {
       return {  universe_blockstate : 0 };
@@ -1446,11 +2130,21 @@ const softDeleteUniverse_Interface = async (filter,updateBody) =>{
     if (universe_interface.length){
       universe_interface = universe_interface.map((obj) => obj.id);
 
+      const Base_CubeFilter = { '$or': [{ interface : { '$in' : universe_interface } }] };
+      const Base_CubeCnt = await dbService.updateMany(Base_Cube,Base_CubeFilter,updateBody);
+
       const Universe_StorageFilter = { '$or': [{ Interface : { '$in' : universe_interface } }] };
       const Universe_StorageCnt = await dbService.updateMany(Universe_Storage,Universe_StorageFilter,updateBody);
+
+      const Universe_cubeFilter = { '$or': [{ interface : { '$in' : universe_interface } }] };
+      const Universe_cubeCnt = await dbService.updateMany(Universe_cube,Universe_cubeFilter,updateBody);
       let updated = await dbService.updateMany(Universe_Interface,filter,updateBody);
 
-      let response = { Universe_Storage :Universe_StorageCnt, };
+      let response = {
+        Base_Cube :Base_CubeCnt,
+        Universe_Storage :Universe_StorageCnt,
+        Universe_cube :Universe_cubeCnt,
+      };
       return response;
     } else {
       return {  universe_interface : 0 };
@@ -1462,8 +2156,25 @@ const softDeleteUniverse_Interface = async (filter,updateBody) =>{
 
 const softDeleteUniverse_Storage = async (filter,updateBody) =>{  
   try {
-    const Universe_StorageCnt =  await dbService.updateMany(Universe_Storage,filter);
-    return { Universe_Storage : Universe_StorageCnt };
+    let universe_storage = await dbService.findMany(Universe_Storage,filter, { id:1 });
+    if (universe_storage.length){
+      universe_storage = universe_storage.map((obj) => obj.id);
+
+      const Base_CubeFilter = { '$or': [{ storage : { '$in' : universe_storage } }] };
+      const Base_CubeCnt = await dbService.updateMany(Base_Cube,Base_CubeFilter,updateBody);
+
+      const Universe_cubeFilter = { '$or': [{ storage : { '$in' : universe_storage } }] };
+      const Universe_cubeCnt = await dbService.updateMany(Universe_cube,Universe_cubeFilter,updateBody);
+      let updated = await dbService.updateMany(Universe_Storage,filter,updateBody);
+
+      let response = {
+        Base_Cube :Base_CubeCnt,
+        Universe_cube :Universe_cubeCnt,
+      };
+      return response;
+    } else {
+      return {  universe_storage : 0 };
+    }
   } catch (error){
     throw new Error(error.message);
   }
@@ -1521,11 +2232,17 @@ const softDeleteModelos_Structure = async (filter,updateBody) =>{
     if (modelos_structure.length){
       modelos_structure = modelos_structure.map((obj) => obj.id);
 
-      const Universe_BigitemFilter = { '$or': [{ structure : { '$in' : modelos_structure } }] };
-      const Universe_BigitemCnt = await dbService.updateMany(Universe_Bigitem,Universe_BigitemFilter,updateBody);
+      const Universe_AgeFilter = { '$or': [{ relativeto : { '$in' : modelos_structure } }] };
+      const Universe_AgeCnt = await dbService.updateMany(Universe_Age,Universe_AgeFilter,updateBody);
+
+      const Modelos_AgeFilter = { '$or': [{ relativeto : { '$in' : modelos_structure } }] };
+      const Modelos_AgeCnt = await dbService.updateMany(Modelos_Age,Modelos_AgeFilter,updateBody);
       let updated = await dbService.updateMany(Modelos_Structure,filter,updateBody);
 
-      let response = { Universe_Bigitem :Universe_BigitemCnt, };
+      let response = {
+        Universe_Age :Universe_AgeCnt,
+        Modelos_Age :Modelos_AgeCnt,
+      };
       return response;
     } else {
       return {  modelos_structure : 0 };
@@ -1535,10 +2252,10 @@ const softDeleteModelos_Structure = async (filter,updateBody) =>{
   }
 };
 
-const softDeleteUniverse_Bigitem = async (filter,updateBody) =>{  
+const softDeleteUniverse_Structure = async (filter,updateBody) =>{  
   try {
-    const Universe_BigitemCnt =  await dbService.updateMany(Universe_Bigitem,filter);
-    return { Universe_Bigitem : Universe_BigitemCnt };
+    const Universe_StructureCnt =  await dbService.updateMany(Universe_Structure,filter);
+    return { Universe_Structure : Universe_StructureCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -1555,11 +2272,15 @@ const softDeleteUniverse_Chunk = async (filter,updateBody) =>{
 
       const Universe_cubeFilter = { '$or': [{ chunk : { '$in' : universe_chunk } }] };
       const Universe_cubeCnt = await dbService.updateMany(Universe_cube,Universe_cubeFilter,updateBody);
+
+      const Modelos_PartFilter = { '$or': [{ chunk : { '$in' : universe_chunk } }] };
+      const Modelos_PartCnt = await dbService.updateMany(Modelos_Part,Modelos_PartFilter,updateBody);
       let updated = await dbService.updateMany(Universe_Chunk,filter,updateBody);
 
       let response = {
         Universe_Entity :Universe_EntityCnt,
         Universe_cube :Universe_cubeCnt,
+        Modelos_Part :Modelos_PartCnt,
       };
       return response;
     } else {
@@ -1579,6 +2300,9 @@ const softDeleteUniverse_cube = async (filter,updateBody) =>{
       const Universe_ItemFilter = { '$or': [{ cube : { '$in' : universe_cube } }] };
       const Universe_ItemCnt = await dbService.updateMany(Universe_Item,Universe_ItemFilter,updateBody);
 
+      const Modelos_EntityFilter = { '$or': [{ Location : { '$in' : universe_cube } }] };
+      const Modelos_EntityCnt = await dbService.updateMany(Modelos_Entity,Modelos_EntityFilter,updateBody);
+
       const Universe_InterfaceFilter = { '$or': [{ Cube : { '$in' : universe_cube } }] };
       const Universe_InterfaceCnt = await dbService.updateMany(Universe_Interface,Universe_InterfaceFilter,updateBody);
 
@@ -1588,6 +2312,7 @@ const softDeleteUniverse_cube = async (filter,updateBody) =>{
 
       let response = {
         Universe_Item :Universe_ItemCnt,
+        Modelos_Entity :Modelos_EntityCnt,
         Universe_Interface :Universe_InterfaceCnt,
         Universe_Chunk :Universe_ChunkCnt,
       };
@@ -1602,8 +2327,25 @@ const softDeleteUniverse_cube = async (filter,updateBody) =>{
 
 const softDeleteModelos_Biomes = async (filter,updateBody) =>{  
   try {
-    const Modelos_BiomesCnt =  await dbService.updateMany(Modelos_Biomes,filter);
-    return { Modelos_Biomes : Modelos_BiomesCnt };
+    let modelos_biomes = await dbService.findMany(Modelos_Biomes,filter, { id:1 });
+    if (modelos_biomes.length){
+      modelos_biomes = modelos_biomes.map((obj) => obj.id);
+
+      const Base_ChunkFilter = { '$or': [{ biome : { '$in' : modelos_biomes } }] };
+      const Base_ChunkCnt = await dbService.updateMany(Base_Chunk,Base_ChunkFilter,updateBody);
+
+      const Universe_ChunkFilter = { '$or': [{ biome : { '$in' : modelos_biomes } }] };
+      const Universe_ChunkCnt = await dbService.updateMany(Universe_Chunk,Universe_ChunkFilter,updateBody);
+      let updated = await dbService.updateMany(Modelos_Biomes,filter,updateBody);
+
+      let response = {
+        Base_Chunk :Base_ChunkCnt,
+        Universe_Chunk :Universe_ChunkCnt,
+      };
+      return response;
+    } else {
+      return {  modelos_biomes : 0 };
+    }
   } catch (error){
     throw new Error(error.message);
   }
@@ -1627,10 +2369,10 @@ const softDeleteModelos_Tag = async (filter,updateBody) =>{
   }
 };
 
-const softDeleteModelos_TexturePart = async (filter,updateBody) =>{  
+const softDeleteModelos_Part = async (filter,updateBody) =>{  
   try {
-    const Modelos_TexturePartCnt =  await dbService.updateMany(Modelos_TexturePart,filter);
-    return { Modelos_TexturePart : Modelos_TexturePartCnt };
+    const Modelos_PartCnt =  await dbService.updateMany(Modelos_Part,filter);
+    return { Modelos_Part : Modelos_PartCnt };
   } catch (error){
     throw new Error(error.message);
   }
@@ -1682,40 +2424,40 @@ const softDeleteModelos_item = async (filter,updateBody) =>{
   }
 };
 
-const softDeleteAtomModelos_File = async (filter,updateBody) =>{  
+const softDeleteBase_Modelos_File = async (filter,updateBody) =>{  
   try {
-    let atommodelos_file = await dbService.findMany(AtomModelos_File,filter, { id:1 });
-    if (atommodelos_file.length){
-      atommodelos_file = atommodelos_file.map((obj) => obj.id);
+    let base_modelos_file = await dbService.findMany(Base_Modelos_File,filter, { id:1 });
+    if (base_modelos_file.length){
+      base_modelos_file = base_modelos_file.map((obj) => obj.id);
 
-      const Modelos_TexturePartFilter = { '$or': [{ texture : { '$in' : atommodelos_file } }] };
-      const Modelos_TexturePartCnt = await dbService.updateMany(Modelos_TexturePart,Modelos_TexturePartFilter,updateBody);
-      let updated = await dbService.updateMany(AtomModelos_File,filter,updateBody);
+      const Modelos_PartFilter = { '$or': [{ texture : { '$in' : base_modelos_file } }] };
+      const Modelos_PartCnt = await dbService.updateMany(Modelos_Part,Modelos_PartFilter,updateBody);
+      let updated = await dbService.updateMany(Base_Modelos_File,filter,updateBody);
 
-      let response = { Modelos_TexturePart :Modelos_TexturePartCnt, };
+      let response = { Modelos_Part :Modelos_PartCnt, };
       return response;
     } else {
-      return {  atommodelos_file : 0 };
+      return {  base_modelos_file : 0 };
     }
   } catch (error){
     throw new Error(error.message);
   }
 };
 
-const softDeleteAtomModelos_Model = async (filter,updateBody) =>{  
+const softDeleteBase_Modelos_Model = async (filter,updateBody) =>{  
   try {
-    let atommodelos_model = await dbService.findMany(AtomModelos_Model,filter, { id:1 });
-    if (atommodelos_model.length){
-      atommodelos_model = atommodelos_model.map((obj) => obj.id);
+    let base_modelos_model = await dbService.findMany(Base_Modelos_Model,filter, { id:1 });
+    if (base_modelos_model.length){
+      base_modelos_model = base_modelos_model.map((obj) => obj.id);
 
-      const Modelos_itemFilter = { '$or': [{ model : { '$in' : atommodelos_model } }] };
+      const Modelos_itemFilter = { '$or': [{ model : { '$in' : base_modelos_model } }] };
       const Modelos_itemCnt = await dbService.updateMany(Modelos_item,Modelos_itemFilter,updateBody);
-      let updated = await dbService.updateMany(AtomModelos_Model,filter,updateBody);
+      let updated = await dbService.updateMany(Base_Modelos_Model,filter,updateBody);
 
       let response = { Modelos_item :Modelos_itemCnt, };
       return response;
     } else {
-      return {  atommodelos_model : 0 };
+      return {  base_modelos_model : 0 };
     }
   } catch (error){
     throw new Error(error.message);
@@ -1728,13 +2470,16 @@ const softDeleteUniverse_Settings = async (filter,updateBody) =>{
     if (universe_settings.length){
       universe_settings = universe_settings.map((obj) => obj.id);
 
+      const Base_CubeFilter = { '$or': [{ universe : { '$in' : universe_settings } }] };
+      const Base_CubeCnt = await dbService.updateMany(Base_Cube,Base_CubeFilter,updateBody);
+
+      const Base_ChunkFilter = { '$or': [{ settings : { '$in' : universe_settings } }] };
+      const Base_ChunkCnt = await dbService.updateMany(Base_Chunk,Base_ChunkFilter,updateBody);
+
       const Universe_EntityFilter = { '$or': [{ Universe : { '$in' : universe_settings } }] };
       const Universe_EntityCnt = await dbService.updateMany(Universe_Entity,Universe_EntityFilter,updateBody);
 
-      const Universe_BigitemFilter = { '$or': [{ universe : { '$in' : universe_settings } }] };
-      const Universe_BigitemCnt = await dbService.updateMany(Universe_Bigitem,Universe_BigitemFilter,updateBody);
-
-      const Universe_ChunkFilter = { '$or': [{ universe : { '$in' : universe_settings } }] };
+      const Universe_ChunkFilter = { '$or': [{ settings : { '$in' : universe_settings } }] };
       const Universe_ChunkCnt = await dbService.updateMany(Universe_Chunk,Universe_ChunkFilter,updateBody);
 
       const Universe_cubeFilter = { '$or': [{ universe : { '$in' : universe_settings } }] };
@@ -1742,8 +2487,9 @@ const softDeleteUniverse_Settings = async (filter,updateBody) =>{
       let updated = await dbService.updateMany(Universe_Settings,filter,updateBody);
 
       let response = {
+        Base_Cube :Base_CubeCnt,
+        Base_Chunk :Base_ChunkCnt,
         Universe_Entity :Universe_EntityCnt,
-        Universe_Bigitem :Universe_BigitemCnt,
         Universe_Chunk :Universe_ChunkCnt,
         Universe_cube :Universe_cubeCnt,
       };
@@ -1762,6 +2508,9 @@ const softDeleteChat_group = async (filter,updateBody) =>{
     if (chat_group.length){
       chat_group = chat_group.map((obj) => obj.id);
 
+      const Base_ChunkFilter = { '$or': [{ chat : { '$in' : chat_group } }] };
+      const Base_ChunkCnt = await dbService.updateMany(Base_Chunk,Base_ChunkFilter,updateBody);
+
       const Universe_ChunkFilter = { '$or': [{ chat : { '$in' : chat_group } }] };
       const Universe_ChunkCnt = await dbService.updateMany(Universe_Chunk,Universe_ChunkFilter,updateBody);
 
@@ -1770,6 +2519,7 @@ const softDeleteChat_group = async (filter,updateBody) =>{
       let updated = await dbService.updateMany(Chat_group,filter,updateBody);
 
       let response = {
+        Base_Chunk :Base_ChunkCnt,
         Universe_Chunk :Universe_ChunkCnt,
         Chat_message :Chat_messageCnt,
       };
@@ -1796,6 +2546,27 @@ const softDeleteUser = async (filter,updateBody) =>{
     let user = await dbService.findMany(User,filter, { id:1 });
     if (user.length){
       user = user.map((obj) => obj.id);
+
+      const Base_CubeFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Base_CubeCnt = await dbService.updateMany(Base_Cube,Base_CubeFilter,updateBody);
+
+      const Base_ChunkFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } },{ op : { '$in' : user } }] };
+      const Base_ChunkCnt = await dbService.updateMany(Base_Chunk,Base_ChunkFilter,updateBody);
+
+      const Modelos_chemistry_elementFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Modelos_chemistry_elementCnt = await dbService.updateMany(Modelos_chemistry_element,Modelos_chemistry_elementFilter,updateBody);
+
+      const user_characterFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const user_characterCnt = await dbService.updateMany(User_character,user_characterFilter,updateBody);
+
+      const Modelos_chemistry_SubstancesFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Modelos_chemistry_SubstancesCnt = await dbService.updateMany(Modelos_chemistry_Substances,Modelos_chemistry_SubstancesFilter,updateBody);
+
+      const Modelos_chemistry_compoundsFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Modelos_chemistry_compoundsCnt = await dbService.updateMany(Modelos_chemistry_compounds,Modelos_chemistry_compoundsFilter,updateBody);
+
+      const user_sectionFilter = { '$or': [{ user : { '$in' : user } },{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const user_sectionCnt = await dbService.updateMany(User_section,user_sectionFilter,updateBody);
 
       const Modelos_ReceitaFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
       const Modelos_ReceitaCnt = await dbService.updateMany(Modelos_Receita,Modelos_ReceitaFilter,updateBody);
@@ -1827,10 +2598,10 @@ const softDeleteUser = async (filter,updateBody) =>{
       const Modelos_StructureFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
       const Modelos_StructureCnt = await dbService.updateMany(Modelos_Structure,Modelos_StructureFilter,updateBody);
 
-      const Universe_BigitemFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const Universe_BigitemCnt = await dbService.updateMany(Universe_Bigitem,Universe_BigitemFilter,updateBody);
+      const Universe_StructureFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Universe_StructureCnt = await dbService.updateMany(Universe_Structure,Universe_StructureFilter,updateBody);
 
-      const Universe_ChunkFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Universe_ChunkFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } },{ op : { '$in' : user } }] };
       const Universe_ChunkCnt = await dbService.updateMany(Universe_Chunk,Universe_ChunkFilter,updateBody);
 
       const Universe_cubeFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
@@ -1845,8 +2616,8 @@ const softDeleteUser = async (filter,updateBody) =>{
       const Modelos_TagFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
       const Modelos_TagCnt = await dbService.updateMany(Modelos_Tag,Modelos_TagFilter,updateBody);
 
-      const Modelos_TexturePartFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const Modelos_TexturePartCnt = await dbService.updateMany(Modelos_TexturePart,Modelos_TexturePartFilter,updateBody);
+      const Modelos_PartFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Modelos_PartCnt = await dbService.updateMany(Modelos_Part,Modelos_PartFilter,updateBody);
 
       const Modelos_TextureMapFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
       const Modelos_TextureMapCnt = await dbService.updateMany(Modelos_TextureMap,Modelos_TextureMapFilter,updateBody);
@@ -1854,11 +2625,11 @@ const softDeleteUser = async (filter,updateBody) =>{
       const Modelos_itemFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
       const Modelos_itemCnt = await dbService.updateMany(Modelos_item,Modelos_itemFilter,updateBody);
 
-      const AtomModelos_FileFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const AtomModelos_FileCnt = await dbService.updateMany(AtomModelos_File,AtomModelos_FileFilter,updateBody);
+      const Base_Modelos_FileFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Base_Modelos_FileCnt = await dbService.updateMany(Base_Modelos_File,Base_Modelos_FileFilter,updateBody);
 
-      const AtomModelos_ModelFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
-      const AtomModelos_ModelCnt = await dbService.updateMany(AtomModelos_Model,AtomModelos_ModelFilter,updateBody);
+      const Base_Modelos_ModelFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
+      const Base_Modelos_ModelCnt = await dbService.updateMany(Base_Modelos_Model,Base_Modelos_ModelFilter,updateBody);
 
       const Universe_SettingsFilter = { '$or': [{ addedBy : { '$in' : user } },{ updatedBy : { '$in' : user } }] };
       const Universe_SettingsCnt = await dbService.updateMany(Universe_Settings,Universe_SettingsFilter,updateBody);
@@ -1889,6 +2660,13 @@ const softDeleteUser = async (filter,updateBody) =>{
       let updated = await dbService.updateMany(User,filter,updateBody);
 
       let response = {
+        Base_Cube :Base_CubeCnt,
+        Base_Chunk :Base_ChunkCnt,
+        Modelos_chemistry_element :Modelos_chemistry_elementCnt,
+        user_character :user_characterCnt,
+        Modelos_chemistry_Substances :Modelos_chemistry_SubstancesCnt,
+        Modelos_chemistry_compounds :Modelos_chemistry_compoundsCnt,
+        user_section :user_sectionCnt,
         Modelos_Receita :Modelos_ReceitaCnt,
         Modelos_Action :Modelos_ActionCnt,
         Universe_Item :Universe_ItemCnt,
@@ -1899,17 +2677,17 @@ const softDeleteUser = async (filter,updateBody) =>{
         Universe_Slot :Universe_SlotCnt,
         Modelos_interface :Modelos_interfaceCnt,
         Modelos_Structure :Modelos_StructureCnt,
-        Universe_Bigitem :Universe_BigitemCnt,
+        Universe_Structure :Universe_StructureCnt,
         Universe_Chunk :Universe_ChunkCnt,
         Universe_cube :Universe_cubeCnt,
         Modelos_Biomes :Modelos_BiomesCnt,
         Modelos_Rule :Modelos_RuleCnt,
         Modelos_Tag :Modelos_TagCnt,
-        Modelos_TexturePart :Modelos_TexturePartCnt,
+        Modelos_Part :Modelos_PartCnt,
         Modelos_TextureMap :Modelos_TextureMapCnt,
         Modelos_item :Modelos_itemCnt,
-        AtomModelos_File :AtomModelos_FileCnt,
-        AtomModelos_Model :AtomModelos_ModelCnt,
+        Base_Modelos_File :Base_Modelos_FileCnt,
+        Base_Modelos_Model :Base_Modelos_ModelCnt,
         Universe_Settings :Universe_SettingsCnt,
         Chat_group :Chat_groupCnt,
         Chat_message :Chat_messageCnt,
@@ -2012,6 +2790,16 @@ const softDeleteUserRole = async (filter,updateBody) =>{
 };
 
 module.exports = {
+  deleteUniverse_Age,
+  deleteModelos_Age,
+  deleteBase_Cube,
+  deleteBase_Chunk,
+  deleteModelos_chemistry_element,
+  deleteUser_character,
+  deleteModelos_chemistry_Substances,
+  deleteModelos_chemistry_compounds,
+  deleteUser_section,
+  deleteModelos_Size,
   deleteUniverse_Blockstate,
   deleteModelos_Receita,
   deleteModelos_Action,
@@ -2023,17 +2811,17 @@ module.exports = {
   deleteUniverse_Slot,
   deleteModelos_interface,
   deleteModelos_Structure,
-  deleteUniverse_Bigitem,
+  deleteUniverse_Structure,
   deleteUniverse_Chunk,
   deleteUniverse_cube,
   deleteModelos_Biomes,
   deleteModelos_Rule,
   deleteModelos_Tag,
-  deleteModelos_TexturePart,
+  deleteModelos_Part,
   deleteModelos_TextureMap,
   deleteModelos_item,
-  deleteAtomModelos_File,
-  deleteAtomModelos_Model,
+  deleteBase_Modelos_File,
+  deleteBase_Modelos_Model,
   deleteUniverse_Settings,
   deleteChat_group,
   deleteChat_message,
@@ -2044,6 +2832,16 @@ module.exports = {
   deleteProjectRoute,
   deleteRouteRole,
   deleteUserRole,
+  countUniverse_Age,
+  countModelos_Age,
+  countBase_Cube,
+  countBase_Chunk,
+  countModelos_chemistry_element,
+  countUser_character,
+  countModelos_chemistry_Substances,
+  countModelos_chemistry_compounds,
+  countUser_section,
+  countModelos_Size,
   countUniverse_Blockstate,
   countModelos_Receita,
   countModelos_Action,
@@ -2055,17 +2853,17 @@ module.exports = {
   countUniverse_Slot,
   countModelos_interface,
   countModelos_Structure,
-  countUniverse_Bigitem,
+  countUniverse_Structure,
   countUniverse_Chunk,
   countUniverse_cube,
   countModelos_Biomes,
   countModelos_Rule,
   countModelos_Tag,
-  countModelos_TexturePart,
+  countModelos_Part,
   countModelos_TextureMap,
   countModelos_item,
-  countAtomModelos_File,
-  countAtomModelos_Model,
+  countBase_Modelos_File,
+  countBase_Modelos_Model,
   countUniverse_Settings,
   countChat_group,
   countChat_message,
@@ -2076,6 +2874,16 @@ module.exports = {
   countProjectRoute,
   countRouteRole,
   countUserRole,
+  softDeleteUniverse_Age,
+  softDeleteModelos_Age,
+  softDeleteBase_Cube,
+  softDeleteBase_Chunk,
+  softDeleteModelos_chemistry_element,
+  softDeleteUser_character,
+  softDeleteModelos_chemistry_Substances,
+  softDeleteModelos_chemistry_compounds,
+  softDeleteUser_section,
+  softDeleteModelos_Size,
   softDeleteUniverse_Blockstate,
   softDeleteModelos_Receita,
   softDeleteModelos_Action,
@@ -2087,17 +2895,17 @@ module.exports = {
   softDeleteUniverse_Slot,
   softDeleteModelos_interface,
   softDeleteModelos_Structure,
-  softDeleteUniverse_Bigitem,
+  softDeleteUniverse_Structure,
   softDeleteUniverse_Chunk,
   softDeleteUniverse_cube,
   softDeleteModelos_Biomes,
   softDeleteModelos_Rule,
   softDeleteModelos_Tag,
-  softDeleteModelos_TexturePart,
+  softDeleteModelos_Part,
   softDeleteModelos_TextureMap,
   softDeleteModelos_item,
-  softDeleteAtomModelos_File,
-  softDeleteAtomModelos_Model,
+  softDeleteBase_Modelos_File,
+  softDeleteBase_Modelos_Model,
   softDeleteUniverse_Settings,
   softDeleteChat_group,
   softDeleteChat_message,

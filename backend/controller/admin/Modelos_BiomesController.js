@@ -8,6 +8,7 @@ const Modelos_BiomesSchemaKey = require('../../utils/validation/Modelos_BiomesVa
 const validation = require('../../utils/validateRequest');
 const dbService = require('../../utils/dbService');
 const ObjectId = require('mongodb').ObjectId;
+const deleteDependentService = require('../../utils/deleteDependent');
 const utils = require('../../utils/common');
    
 /**
@@ -25,6 +26,7 @@ const addModelos_Biomes = async (req, res) => {
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
+    dataToCreate.addedBy = req.user.id;
     dataToCreate = new Modelos_Biomes(dataToCreate);
     let createdModelos_Biomes = await dbService.create(Modelos_Biomes,dataToCreate);
     return res.success({ data : createdModelos_Biomes });
@@ -45,6 +47,12 @@ const bulkInsertModelos_Biomes = async (req,res)=>{
       return res.badRequest();
     }
     let dataToCreate = [ ...req.body.data ];
+    for (let i = 0;i < dataToCreate.length;i++){
+      dataToCreate[i] = {
+        ...dataToCreate[i],
+        addedBy: req.user.id
+      };
+    }
     let createdModelos_Biomess = await dbService.create(Modelos_Biomes,dataToCreate);
     createdModelos_Biomess = { count: createdModelos_Biomess ? createdModelos_Biomess.length : 0 };
     return res.success({ data:{ count:createdModelos_Biomess.count || 0 } });
@@ -150,7 +158,10 @@ const getModelos_BiomesCount = async (req,res) => {
  */
 const updateModelos_Biomes = async (req,res) => {
   try {
-    let dataToUpdate = { ...req.body, };
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Modelos_BiomesSchemaKey.updateSchemaKeys
@@ -179,8 +190,12 @@ const bulkUpdateModelos_Biomes = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
+    delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
-      dataToUpdate = { ...req.body.data, };
+      dataToUpdate = { 
+        ...req.body.data,
+        updatedBy : req.user.id
+      };
     }
     let updatedModelos_Biomes = await dbService.updateMany(Modelos_Biomes,filter,dataToUpdate);
     if (!updatedModelos_Biomes){
@@ -203,7 +218,11 @@ const partialUpdateModelos_Biomes = async (req,res) => {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let dataToUpdate = { ...req.body, };
+    delete req.body['addedBy'];
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       Modelos_BiomesSchemaKey.updateSchemaKeys
@@ -221,6 +240,7 @@ const partialUpdateModelos_Biomes = async (req,res) => {
     return res.internalServerError({ message:error.message });
   }
 };
+    
 /**
  * @description : deactivate document of Modelos_Biomes from table by id;
  * @param {Object} req : request including id in request params.
@@ -232,9 +252,12 @@ const softDeleteModelos_Biomes = async (req,res) => {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let query = { _id:req.params.id };
-    const updateBody = { isDeleted: true, };
-    let updatedModelos_Biomes = await dbService.updateOne(Modelos_Biomes, query, updateBody);
+    const query = { _id:req.params.id };
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
+    let updatedModelos_Biomes = await deleteDependentService.softDeleteModelos_Biomes(query, updateBody);
     if (!updatedModelos_Biomes){
       return res.recordNotFound();
     }
@@ -243,7 +266,7 @@ const softDeleteModelos_Biomes = async (req,res) => {
     return res.internalServerError({ message:error.message }); 
   }
 };
-
+    
 /**
  * @description : delete document of Modelos_Biomes from table.
  * @param {Object} req : request including id as req param.
@@ -251,20 +274,24 @@ const softDeleteModelos_Biomes = async (req,res) => {
  * @return {Object} : deleted Modelos_Biomes. {status, message, data}
  */
 const deleteModelos_Biomes = async (req,res) => {
-  try { 
+  try {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const deletedModelos_Biomes = await dbService.deleteOne(Modelos_Biomes, query);
+    let deletedModelos_Biomes;
+    if (req.body.isWarning) { 
+      deletedModelos_Biomes = await deleteDependentService.countModelos_Biomes(query);
+    } else {
+      deletedModelos_Biomes = await deleteDependentService.deleteModelos_Biomes(query);
+    }
     if (!deletedModelos_Biomes){
       return res.recordNotFound();
     }
     return res.success({ data :deletedModelos_Biomes });
-        
   }
   catch (error){
-    return res.internalServerError({ message:error.message });
+    return res.internalServerError({ message:error.message }); 
   }
 };
     
@@ -281,15 +308,22 @@ const deleteManyModelos_Biomes = async (req, res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const deletedModelos_Biomes = await dbService.deleteMany(Modelos_Biomes,query);
+    let deletedModelos_Biomes;
+    if (req.body.isWarning) {
+      deletedModelos_Biomes = await deleteDependentService.countModelos_Biomes(query);
+    }
+    else {
+      deletedModelos_Biomes = await deleteDependentService.deleteModelos_Biomes(query);
+    }
     if (!deletedModelos_Biomes){
       return res.recordNotFound();
     }
-    return res.success({ data :{ count :deletedModelos_Biomes } });
+    return res.success({ data :deletedModelos_Biomes });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }
 };
+    
 /**
  * @description : deactivate multiple documents of Modelos_Biomes from table by ids;
  * @param {Object} req : request including array of ids in request body.
@@ -303,13 +337,15 @@ const softDeleteManyModelos_Biomes = async (req,res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const updateBody = { isDeleted: true, };
-    let updatedModelos_Biomes = await dbService.updateMany(Modelos_Biomes,query, updateBody);
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
+    let updatedModelos_Biomes = await deleteDependentService.softDeleteModelos_Biomes(query, updateBody);
     if (!updatedModelos_Biomes) {
       return res.recordNotFound();
     }
-    return res.success({ data:{ count :updatedModelos_Biomes } });
-        
+    return res.success({ data:updatedModelos_Biomes });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }

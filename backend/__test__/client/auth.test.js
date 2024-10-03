@@ -18,6 +18,7 @@ const client = new MongoClient(uri, {
   useNewUrlParser: true
 });
 
+let insertedUser_section = {};
 let insertedUser = {};
 
 /**
@@ -28,18 +29,27 @@ beforeAll(async function (){
     await client.connect();
     const dbInstance = client.db('EcomDb_test');
 
+    const user_section = dbInstance.collection('user_sections');
+    insertedUser_section = await user_section.insertOne({
+      user: '66fdc6914321ad02712a1cc1',
+      universe: 'withdrawal',
+      location: 'National',
+      data: 'Bedfordshire',
+      id: '66fdc6914321ad02712a1cc2'
+    });
     const user = dbInstance.collection('users');
     insertedUser = await user.insertOne({
-      username: 'Adolphus_Gleichner',
-      password: '8GBRvNLWIsiy5me',
-      email: 'Anabel.Walsh98@yahoo.com',
-      name: 'Eileen Kassulke',
-      userType: 629,
-      mobileNo: '(994) 006-0596',
+      username: 'Jessica.Hauck85',
+      password: 'mbag42Np1TIqXqx',
+      email: 'Pearlie_Brown14@yahoo.com',
+      name: 'Boyd Mraz',
+      userType: 402,
+      lastsection: '66fdc6914321ad02712a1cff',
+      mobileNo: '(014) 443-1669',
       resetPasswordLink: {},
-      loginRetryLimit: 831,
-      loginReactiveTime: '2025-07-08T18:57:39.696Z',
-      id: '66f22cad2177a4013fe6111e'
+      loginRetryLimit: 574,
+      loginReactiveTime: '2024-12-05T09:26:06.931Z',
+      id: '66fdc6914321ad02712a1d00'
     });
   }
   catch (error) {
@@ -57,12 +67,13 @@ describe('POST /register -> if email and username is given', () => {
     let registeredUser = await request(app)
       .post('/client/auth/register')
       .send({
-        'username':'Will.Ratke79',
-        'password':'pvDsZOHedW_01RE',
-        'email':'Percy.DuBuque17@yahoo.com',
-        'name':'Kelly Ebert',
+        'username':'Garrison88',
+        'password':'Z7FeAoIjsPHA8qV',
+        'email':'Henri.Kunde78@hotmail.com',
+        'name':'Albert Gaylord',
         'userType':authConstant.USER_TYPES.User,
-        'mobileNo':'(696) 898-8708',
+        'lastsection':insertedUser_section.insertedId,
+        'mobileNo':'(666) 397-0147',
         'addedBy':insertedUser.insertedId,
         'updatedBy':insertedUser.insertedId
       });
@@ -78,8 +89,8 @@ describe('POST /login -> if username and password is correct', () => {
       .post('/client/auth/login')
       .send(
         {
-          username: 'Will.Ratke79',
-          password: 'pvDsZOHedW_01RE'
+          username: 'Garrison88',
+          password: 'Z7FeAoIjsPHA8qV'
         }
       );
     expect(user.statusCode).toBe(200);
@@ -98,7 +109,7 @@ describe('POST /login -> if username is incorrect', () => {
       .send(
         {
           username: 'wrong.username',
-          password: 'pvDsZOHedW_01RE'
+          password: 'Z7FeAoIjsPHA8qV'
         }
       );
 
@@ -113,7 +124,7 @@ describe('POST /login -> if password is incorrect', () => {
       .post('/client/auth/login')
       .send(
         {
-          username: 'Will.Ratke79',
+          username: 'Garrison88',
           password: 'wrong@password'
         }
       );
@@ -160,7 +171,7 @@ describe('POST /forgot-password -> if email passed from request body is valid an
   test('should return success message', async () => {
     let user = await request(app)
       .post('/client/auth/forgot-password')
-      .send({ 'email':'Percy.DuBuque17@yahoo.com', });
+      .send({ 'email':'Henri.Kunde78@hotmail.com', });
 
     expect(user.statusCode).toBe(200);
     expect(user.body.status).toBe('SUCCESS');
@@ -173,8 +184,8 @@ describe('POST /validate-otp -> OTP is sent in request body and OTP is correct',
       .post('/client/auth/login')
       .send(
         {
-          username: 'Will.Ratke79',
-          password: 'pvDsZOHedW_01RE'
+          username: 'Garrison88',
+          password: 'Z7FeAoIjsPHA8qV'
         }).then(login => () => {
         return request(app)
           .get(`/client/api/v1/user/${login.body.data.id}`)
@@ -222,8 +233,8 @@ describe('PUT /reset-password -> code is sent in request body and code is correc
       .post('/client/auth/login')
       .send(
         {
-          username: 'Will.Ratke79',
-          password: 'pvDsZOHedW_01RE'
+          username: 'Garrison88',
+          password: 'Z7FeAoIjsPHA8qV'
         }).then(login => () => {
         return request(app)
           .get(`/client/api/v1/user/${login.body.data.id}`)

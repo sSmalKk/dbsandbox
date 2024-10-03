@@ -28,11 +28,6 @@ const schema = new Schema(
 
     isActive:{ type:Boolean },
 
-    rules:{
-      type:{ type:Array },
-      items:{ type:String }
-    },
-
     items:{
       type:{ type:Array },
       items:{ type:String }
@@ -69,11 +64,28 @@ const schema = new Schema(
       type:Schema.Types.ObjectId
     },
 
+    Rules:{ type:Array },
+
+    Tags:{ type:Array },
+
+    structures:{ type:Array },
+
+    ChunkLoaded:{ type:Array },
+
+    chemsData:{ type:Schema.Types.Mixed },
+
     isDeleted:{ type:Boolean }
+  }
+  ,{ 
+    timestamps: { 
+      createdAt: 'createdAt', 
+      updatedAt: 'updatedAt' 
+    } 
   }
 );
 schema.pre('save', async function (next) {
   this.isDeleted = false;
+  this.isActive = true;
   next();
 });
 
@@ -82,6 +94,7 @@ schema.pre('insertMany', async function (next, docs) {
     for (let index = 0; index < docs.length; index++) {
       const element = docs[index];
       element.isDeleted = false;
+      element.isActive = true;
     }
   }
   next();

@@ -24,19 +24,21 @@ const schema = new Schema(
 
     name:{ type:String },
 
-    texture:{ type:String },
+    description:{ type:String },
 
-    model:{ type:String },
+    isDeleted:{ type:Boolean },
 
-    textures:{ type:String },
-
-    RigidBody:{ type:String },
-
-    RigidBodyType:{ type:String },
-
-    type:{ type:Number },
-
-    isDeleted:{ type:Boolean }
+    normal:[{
+      _id:false,
+      name:{ type:String },
+      description:{ type:String },
+      texture:{ type:String },
+      model:{ type:String },
+      textures:{ type:String },
+      RigidBody:{ type:String },
+      RigidBodyType:{ type:String },
+      type:{ type:Number }
+    }]
   }
 );
 schema.pre('save', async function (next) {

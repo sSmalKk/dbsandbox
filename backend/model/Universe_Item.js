@@ -60,11 +60,24 @@ const schema = new Schema(
     cube:{
       ref:'Universe_cube',
       type:Schema.Types.ObjectId
-    }
+    },
+
+    Rules:{ type:Array },
+
+    Tags:{ type:Array },
+
+    chemsData:{ type:Schema.Types.Mixed }
+  }
+  ,{ 
+    timestamps: { 
+      createdAt: 'createdAt', 
+      updatedAt: 'updatedAt' 
+    } 
   }
 );
 schema.pre('save', async function (next) {
   this.isDeleted = false;
+  this.isActive = true;
   next();
 });
 
@@ -73,6 +86,7 @@ schema.pre('insertMany', async function (next, docs) {
     for (let index = 0; index < docs.length; index++) {
       const element = docs[index];
       element.isDeleted = false;
+      element.isActive = true;
     }
   }
   next();

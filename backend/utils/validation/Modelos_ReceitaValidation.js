@@ -17,11 +17,9 @@ exports.schemaKeys = joi.object({
   action: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   isDeleted: joi.boolean(),
   isActive: joi.boolean(),
-  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  addedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
-  updatedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
-  data: joi.array().items()
+  data: joi.array().items(),
+  Rules: joi.array().items(),
+  Tags: joi.array().items()
 }).unknown(true);
 
 /** validation keys and properties of Modelos_Receita for updation */
@@ -33,11 +31,9 @@ exports.updateSchemaKeys = joi.object({
   action: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   isDeleted: joi.boolean(),
   isActive: joi.boolean(),
-  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  addedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
-  updatedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   data: joi.array().items(),
+  Rules: joi.array().items(),
+  Tags: joi.array().items(),
   _id: joi.string().regex(/^[0-9a-fA-F]{24}$/)
 }).unknown(true);
 
@@ -54,11 +50,9 @@ exports.findFilterKeys = joi.object({
       action: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
       isDeleted: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
       isActive: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
-      createdAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
-      updatedAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
-      addedBy: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
-      updatedBy: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
       data: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
+      Rules: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
+      Tags: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
       id: joi.any(),
       _id: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object())
     }).unknown(true),])

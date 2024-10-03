@@ -14,10 +14,9 @@ exports.schemaKeys = joi.object({
   Description: joi.string().allow(null).allow(''),
   isDeleted: joi.boolean(),
   isActive: joi.boolean(),
-  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  addedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
-  updatedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow('')
+  data: joi.object(),
+  required: joi.array().items(),
+  chemsData: joi.object()
 }).unknown(true);
 
 /** validation keys and properties of Modelos_Action for updation */
@@ -26,10 +25,9 @@ exports.updateSchemaKeys = joi.object({
   Description: joi.string().allow(null).allow(''),
   isDeleted: joi.boolean(),
   isActive: joi.boolean(),
-  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  addedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
-  updatedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
+  data: joi.object(),
+  required: joi.array().items(),
+  chemsData: joi.object(),
   _id: joi.string().regex(/^[0-9a-fA-F]{24}$/)
 }).unknown(true);
 
@@ -43,10 +41,9 @@ exports.findFilterKeys = joi.object({
       Description: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
       isDeleted: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
       isActive: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
-      createdAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
-      updatedAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
-      addedBy: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
-      updatedBy: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
+      data: joi.alternatives().try(joi.array().items(),joi.object(),joi.object()),
+      required: joi.alternatives().try(joi.array().items(),joi.array().items(),joi.object()),
+      chemsData: joi.alternatives().try(joi.array().items(),joi.object(),joi.object()),
       id: joi.any(),
       _id: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object())
     }).unknown(true),])
