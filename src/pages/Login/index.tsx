@@ -1,7 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button, Input, Text } from "../../components";
-import Footer from "../../components/Footer";
 
 export default function LoginPage() {
   const [loginSuccess, setLoginSuccess] = useState(false);
@@ -110,7 +109,6 @@ export default function LoginPage() {
           </Button>
         </form>
       </div>
-      <Footer />
     </>
   );
 }

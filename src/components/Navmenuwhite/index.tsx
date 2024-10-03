@@ -1,5 +1,4 @@
 import React from "react";
-import { CloseSVG } from "../assets/images/close"
 import { Button, Img, Input } from "./..";
 
 interface Props {
@@ -33,12 +32,14 @@ export default function Navmenuwhite({ ...props }: Props) {
         placeholder="Search"
         value={searchBarValue}
         onChange={(e: string) => setSearchBarValue(e)}
-        prefix={<Img src="images/img_search.svg" alt="search" className="cursor-pointer" />}
-        suffix={
-          searchBarValue?.length > 0 ? (
-            <CloseSVG onClick={() => setSearchBarValue("")} height={14} width={14} fillColor="#000000ff" />
-          ) : null
+        prefix={
+          <Img
+            src="images/img_search.svg"
+            alt="search"
+            className="cursor-pointer"
+          />
         }
+        suffix={searchBarValue?.length > 0 ? <text>X</text> : null}
         className="w-[28%] h-[44px] pl-5 pr-[35px] gap-[15px] text-black-900_60 tracking-[0.50px] font-inter text-xs bg-blue_gray-900_19 rounded-[3px]"
       />
       <Button

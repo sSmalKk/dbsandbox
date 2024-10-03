@@ -1,7 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button, Input, Text } from "../../components";
-import Footer from "../../components/Footer";
 
 export default function RegisterPage() {
   const [registerSuccess, setRegisterSuccess] = useState(false);
@@ -120,7 +119,6 @@ export default function RegisterPage() {
           </Button>
         </form>
       </div>
-      <Footer />
     </>
   );
 }

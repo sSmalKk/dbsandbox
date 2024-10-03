@@ -3,7 +3,7 @@
   import SlotItem from "components/Itemholder";
   import Perfil from "components/Perfil";
   import Chat from "components/chat";
-  import Dropdown from "components/dropdown";
+import Dropdown from "components/dropdown";
   import Hand from "components/hand";
   import React, { useEffect, useState } from "react";
   import { Helmet } from "react-helmet";

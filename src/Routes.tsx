@@ -3,9 +3,7 @@ import { useRoutes } from "react-router-dom";
 import NotFound from "pages/NotFound";
 import Inventario from "pages/Inventory";
 import LoginPage from "pages/Login";
-import Landingpage from "pages/Landingpage";
 import Register from "pages/Register";
-import Configuration from "pages/Configuration";
 import SandboxMenu from "pages/SandboxMenu";
 import Loading from "pages/Loading";
 import Post from "pages/Post";
@@ -27,10 +25,6 @@ const ProjectRoutes = () => {
     {
       path: "/*",
       element: <NotFound />,
-    },
-    {
-      path: "/Landingpage", //pagina de listas, precisa atualizar adicionanod objetos (tipo os presentes no posts pra linkar os recomendados) quando carrregar a pagina, alem disso precisa de um search e um input de categoria
-      element: <Landingpage />,
     },
     {
       path: "/sandboxmenu",
@@ -97,10 +91,6 @@ const ProjectRoutes = () => {
     {
       path: "/register", // registro duhh
       element: <Register />,
-    },
-    {
-      path: "/configuration",
-      element: <Configuration />,
     },
     {
       path: "/loading",
