@@ -3,7 +3,12 @@ import * as RAPIER from "@dimforge/rapier3d-compat";
 import { useRef, useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useKeyboardControls } from "@react-three/drei";
-import { CapsuleCollider, RigidBody, useRapier, Physics } from "@react-three/rapier";
+import {
+  CapsuleCollider,
+  RigidBody,
+  useRapier,
+  Physics,
+} from "@react-three/rapier";
 import { MathUtils } from "three";
 
 const lerp = MathUtils.lerp;
@@ -33,7 +38,10 @@ export function Player({
 
   useFrame((state) => {
     const { forward, backward, left, right, jump, shift, inventory } = get();
-    if (!ref.current) return;
+    if (!ref.current) {
+      console.error("ref.current is undefined");
+      return;
+    }
     if (inventory) {
       setInterfaceOpen(true);
     }
@@ -66,8 +74,10 @@ export function Player({
       .multiplyScalar(speed)
       .applyEuler(state.camera.rotation);
 
-    if (ref.current) {
+    if (ref.current && typeof ref.current.setLinvel === "function") {
       ref.current.setLinvel({ x: direction.x, y: velocity.y, z: direction.z });
+    } else {
+      console.error("setLinvel is not a function on ref.current");
     }
 
     const world = rapier.world.raw();
