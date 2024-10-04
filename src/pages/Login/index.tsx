@@ -2,12 +2,11 @@ import React, { FormEvent, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button, Input, Text } from "../../components";
 
-export default function LoginPage() {
+export default function LoginPage(apiUrl) {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [message, setMessage] = useState<string>("");
 
-  const apiUrl = "https://ea3298-base-sandbox.dhiwise.co";
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

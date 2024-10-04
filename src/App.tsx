@@ -3,7 +3,7 @@ import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import Routes from "./Routes";
 import Header from "components/Header";
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = "https://ea3298-base-sandbox.dhiwise.co";
 
 function App() {
   const [userData, setUserData] = useState(null);
