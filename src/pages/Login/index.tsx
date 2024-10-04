@@ -21,7 +21,7 @@ export default function LoginPage() {
     });
 
     try {
-      const response = await fetch(`${apiUrl}/admin/auth/login`, {
+      const response = await fetch(`https://ea3298-base-sandbox.dhiwise.co/admin/auth/login`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
