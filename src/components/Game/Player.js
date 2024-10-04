@@ -38,28 +38,27 @@ export function Player({
 
   useFrame((state) => {
     const { forward, backward, left, right, jump, shift, inventory } = get();
-  
+
     if (!ref.current) {
       console.error("ref.current is undefined or null");
       return;
     }
-  
+
     console.log("ref.current:", ref.current);
     console.log("setLinvel:", typeof ref.current.setLinvel);
-  
+
     // Verifique se 'direction' e 'velocity' estão definidos antes de usar
     console.log("direction:", direction);
     console.log("velocity:", velocity);
-  
+
     if (typeof ref.current.setLinvel === "function") {
       ref.current.setLinvel({ x: direction.x, y: velocity.y, z: direction.z });
     } else {
       console.error("setLinvel is not a function");
     }
-  
+
     const velocity = ref.current.linvel();
     state.camera.position.set(...ref.current.translation());
-  
 
     if (body.current && body.current.children && body.current.children[0]) {
       body.current.children[0].rotation.x = lerp(
@@ -87,7 +86,13 @@ export function Player({
       .applyEuler(state.camera.rotation);
 
     if (ref.current && typeof ref.current.setLinvel === "function") {
-      ref.current.setLinvel({ x: direction.x, y: velocity.y, z: direction.z });
+      if (direction) {
+        ref.current.setLinvel({
+          x: direction.x,
+          y: velocity.y,
+          z: direction.z,
+        });
+      }
     } else {
       console.error("setLinvel is not a function on ref.current");
     }
