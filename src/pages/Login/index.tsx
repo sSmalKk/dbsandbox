@@ -7,7 +7,7 @@ export default function LoginPage() {
   const [loginError, setLoginError] = useState(false);
   const [message, setMessage] = useState<string>("");
 
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = "https://ea3298-base-sandbox.dhiwise.co";
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
