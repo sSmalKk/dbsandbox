@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button, Input, Text } from "../../components";
 
-export default function LoginPage(apiUrl) {
+export default function LoginPage() {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [message, setMessage] = useState<string>("");
@@ -20,7 +20,7 @@ export default function LoginPage(apiUrl) {
     });
 
     try {
-      const response = await fetch(`${apiUrl}/admin/auth/login`, {
+      const response = await fetch(`https://ea3298-base-sandbox.dhiwise.co/admin/auth/login`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
