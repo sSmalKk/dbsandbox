@@ -7,6 +7,7 @@ export default function LoginPage() {
   const [loginError, setLoginError] = useState(false);
   const [message, setMessage] = useState<string>("");
 
+  const apiUrl = "https://ea3298-base-sandbox.dhiwise.co";
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,7 +21,7 @@ export default function LoginPage() {
     });
 
     try {
-      const response = await fetch(`https://ea3298-base-sandbox.dhiwise.co/admin/auth/login`, {
+      const response = await fetch(`${apiUrl}/admin/auth/login`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
