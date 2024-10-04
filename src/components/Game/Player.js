@@ -3,12 +3,10 @@ import * as RAPIER from "@dimforge/rapier3d-compat";
 import { useRef, useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useKeyboardControls } from "@react-three/drei";
-import {
-  CapsuleCollider,
-  RigidBody,
-  useRapier,
-  Physics,
-} from "@react-three/rapier";
+import { CapsuleCollider, RigidBody, useRapier, Physics } from "@react-three/rapier";
+import { MathUtils } from "three";
+
+const lerp = MathUtils.lerp;
 
 export function Player({
   setChunkPosition,
@@ -18,7 +16,6 @@ export function Player({
   frontVector,
   setInterfaceOpen,
   sideVector,
-  lerp = THREE.MathUtils.lerp,
   flying,
 }) {
   const [playerPosition, setPlayerPosition] = useState(initialPosition);
@@ -26,8 +23,7 @@ export function Player({
   const body = useRef();
   const ref = useRef();
   const rapier = useRapier();
-  const [, get] = useKeyboardControls();
-
+  const [subscribeKeys, get] = useKeyboardControls();
   const [currentGravity, setCurrentGravity] = useState([0, 0, 0]);
 
   useEffect(() => {
@@ -36,25 +32,16 @@ export function Player({
   }, []);
 
   useFrame((state) => {
-    const {
-      forward,
-      backward,
-      left,
-      right,
-      jump,
-      shift,
-      inventory,
-    } = get();
+    const { forward, backward, left, right, jump, shift, inventory } = get();
     if (!ref.current) return;
     if (inventory) {
       setInterfaceOpen(true);
     }
 
     const velocity = ref.current.linvel();
-
     state.camera.position.set(...ref.current.translation());
 
-    if (body.current && body.current.children[0]) {
+    if (body.current && body.current.children && body.current.children[0]) {
       body.current.children[0].rotation.x = lerp(
         body.current.children[0].rotation.x,
         Math.sin((velocity.length() > 1) * state.clock.elapsedTime * 10) / 6,
@@ -79,7 +66,9 @@ export function Player({
       .multiplyScalar(speed)
       .applyEuler(state.camera.rotation);
 
-    ref.current.setLinvel({ x: direction.x, y: velocity.y, z: direction.z });
+    if (ref.current) {
+      ref.current.setLinvel({ x: direction.x, y: velocity.y, z: direction.z });
+    }
 
     const world = rapier.world.raw();
     const ray = world.castRay(
@@ -98,8 +87,7 @@ export function Player({
       } else {
         ref.current.setLinvel({ x: direction.x, y: 0, z: direction.z });
       }
-    }
-    if (!flying && velocity.length() > 0.1) {
+    } else if (velocity.length() > 0.1) {
       ref.current.setLinvel({ x: 0, y: velocity.y, z: 0 });
     }
 
