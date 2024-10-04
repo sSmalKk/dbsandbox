@@ -47,7 +47,6 @@ export function Player({
     console.log("ref.current:", ref.current);
     console.log("setLinvel:", typeof ref.current.setLinvel);
 
-    // Verifique se setLinvel é uma função antes de chamar
     if (typeof ref.current.setLinvel === "function") {
       ref.current.setLinvel({ x: direction.x, y: velocity.y, z: direction.z });
     } else {
@@ -56,6 +55,7 @@ export function Player({
 
     const velocity = ref.current.linvel();
     state.camera.position.set(...ref.current.translation());
+
     if (body.current && body.current.children && body.current.children[0]) {
       body.current.children[0].rotation.x = lerp(
         body.current.children[0].rotation.x,
