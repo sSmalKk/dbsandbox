@@ -19,7 +19,6 @@ import Item from "pages/Model/Item";
 import TextureMapList from "pages/Model/TextureMapList";
 import TexturePartList from "pages/Model/TexturePartList";
 import TexturePart from "pages/Model/TexturePart";
-const apiUrl = "https://ea3298-base-sandbox.dhiwise.co";
 
 const ProjectRoutes = () => {
   let element = useRoutes([
@@ -87,7 +86,7 @@ const ProjectRoutes = () => {
     },
     {
       path: "/", //tela que abre antes de logar
-      element: <LoginPage apiUrl={apiUrl} />,
+      element: <LoginPage />,
     },
     {
       path: "/register", // registro duhh

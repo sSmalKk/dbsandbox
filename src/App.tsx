@@ -3,8 +3,7 @@ import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import Routes from "./Routes";
 import Header from "components/Header";
 
-const apiUrl = "https://ea3298-base-sandbox.dhiwise.co";
-
+ 
 function App() {
   const [userData, setUserData] = useState(null);
   const token = localStorage.getItem('token') || process.env.JWT;
@@ -17,7 +16,7 @@ function App() {
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`${apiUrl}/admin/user/me`, {
+        const response = await fetch(`https://ea3298-base-sandbox.dhiwise.co/admin/user/me`, {
           headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`,
