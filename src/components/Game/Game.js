@@ -11,7 +11,7 @@ const useStore = create((set) => ({
   playerPosition: [0, 10, 0],
   setPlayerPosition: (newPosition) => set({ playerPosition: newPosition }),
   chunkPosition: [0, 0, 0],
-  setChunkPosition: (newPosition) => set({ chunkPosition: newPosition }),
+  setChunkPosition: (newPosition) => set({ chunkPosition: newPosition }), // Aqui a função é definida
   canPlayerFly: true,
   flying: true,
   interfaceOpen: false,
@@ -35,8 +35,7 @@ export default function Game({
   fov = 45,
   keyboardMap,
 }) {
-
-  const [ setChunkPosition] = useStore((state) => [
+  const [setChunkPosition] = useStore((state) => [
     state.chunkPosition,
     state.setChunkPosition,
   ]);

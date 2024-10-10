@@ -9,9 +9,6 @@ import {
   useRapier,
   Physics,
 } from "@react-three/rapier";
-import { MathUtils } from "three";
-
-const lerp = MathUtils.lerp;
 
 export function Player({
   setChunkPosition,
@@ -19,8 +16,11 @@ export function Player({
   speed,
   direction,
   frontVector,
+  interfaceOpen,
   setInterfaceOpen,
   sideVector,
+  rotation,
+  lerp = THREE.MathUtils.lerp,
   flying,
 }) {
   const [playerPosition, setPlayerPosition] = useState(initialPosition);
@@ -28,7 +28,8 @@ export function Player({
   const body = useRef();
   const ref = useRef();
   const rapier = useRapier();
-  const [subscribeKeys, get] = useKeyboardControls();
+  const [, get] = useKeyboardControls();
+
   const [currentGravity, setCurrentGravity] = useState([0, 0, 0]);
 
   useEffect(() => {
@@ -37,30 +38,28 @@ export function Player({
   }, []);
 
   useFrame((state) => {
-    const { forward, backward, left, right, jump, shift, inventory } = get();
-
-    if (!ref.current) {
-      console.error("ref.current is undefined or null");
-      return;
-    }
-
-    console.log("ref.current:", ref.current);
-    console.log("setLinvel:", typeof ref.current.setLinvel);
-
-    // Verifique se 'direction' e 'velocity' estão definidos antes de usar
-    console.log("direction:", direction);
-    console.log("velocity:", velocity);
-
-    if (typeof ref.current.setLinvel === "function") {
-      ref.current.setLinvel({ x: direction.x, y: velocity.y, z: direction.z });
-    } else {
-      console.error("setLinvel is not a function");
+    const {
+      forward,
+      backward,
+      left,
+      right,
+      jump,
+      shift,
+      inventory,
+      escape,
+      layerp,
+      layerm,
+    } = get();
+    if (!ref.current) return;
+    if (inventory) {
+      setInterfaceOpen(true);
     }
 
     const velocity = ref.current.linvel();
+
     state.camera.position.set(...ref.current.translation());
 
-    if (body.current && body.current.children && body.current.children[0]) {
+    if (body.current && body.current.children[0]) {
       body.current.children[0].rotation.x = lerp(
         body.current.children[0].rotation.x,
         Math.sin((velocity.length() > 1) * state.clock.elapsedTime * 10) / 6,
@@ -85,17 +84,7 @@ export function Player({
       .multiplyScalar(speed)
       .applyEuler(state.camera.rotation);
 
-    if (ref.current && typeof ref.current.setLinvel === "function") {
-      if (direction) {
-        ref.current.setLinvel({
-          x: direction.x,
-          y: velocity.y,
-          z: direction.z,
-        });
-      }
-    } else {
-      console.error("setLinvel is not a function on ref.current");
-    }
+    ref.current.setLinvel({ x: direction.x, y: velocity.y, z: direction.z });
 
     const world = rapier.world.raw();
     const ray = world.castRay(
@@ -114,7 +103,8 @@ export function Player({
       } else {
         ref.current.setLinvel({ x: direction.x, y: 0, z: direction.z });
       }
-    } else if (velocity.length() > 0.1) {
+    }
+    if (!flying && velocity.length() > 0.1) {
       ref.current.setLinvel({ x: 0, y: velocity.y, z: 0 });
     }
 

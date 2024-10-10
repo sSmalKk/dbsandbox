@@ -16,7 +16,7 @@ function App() {
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`https://ea3298-base-sandbox.dhiwise.co/admin/user/me`, {
+        const response = await fetch(`https://localhost:5000/admin/user/me`, {
           headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`,
