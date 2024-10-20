@@ -1,19 +1,29 @@
-import React, { FormEvent, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Button, Input, Text } from "../../components";
 
 export default function LoginPage() {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [loginError, setLoginError] = useState(false);
+  const [serverUrl, setServerUrl] = useState(localStorage.getItem("server") || "");
   const [message, setMessage] = useState<string>("");
+  const [role, setRole] = useState(localStorage.getItem("userRole") || "admin"); // "admin" por padrão
 
-  const apiUrl = "https://localhost:5000";
+  useEffect(() => {
+    const savedServerUrl = localStorage.getItem("server");
+    if (savedServerUrl) {
+      setServerUrl(savedServerUrl);
+    }
+  }, []);
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const username = (e.currentTarget.elements.namedItem("login-username") as HTMLInputElement).value;
     const password = (e.currentTarget.elements.namedItem("login-password") as HTMLInputElement).value;
+    
+    // Seleção da rota com base no tipo de usuário
+    const loginRoute = role === "admin" ? "/admin/auth/login" : "/client/auth/login";
 
     const formData = JSON.stringify({
       username,
@@ -21,7 +31,7 @@ export default function LoginPage() {
     });
 
     try {
-      const response = await fetch(`https://localhost:5000/admin/auth/login`, {
+      const response = await fetch(`${serverUrl}${loginRoute}`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -52,6 +62,18 @@ export default function LoginPage() {
     }
   };
 
+  const handleServerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const serverInput = (e.currentTarget.elements.namedItem("server-url") as HTMLInputElement).value;
+    setServerUrl(serverInput);
+    localStorage.setItem("server", serverInput);
+  };
+
+  const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedRole = e.target.value;
+    setRole(selectedRole);
+    localStorage.setItem("userRole", selectedRole); // Salva o tipo de usuário no localStorage
+  };
 
   return (
     <>
@@ -60,7 +82,27 @@ export default function LoginPage() {
         <meta name="description" content="Web site created using create-react-app" />
       </Helmet>
       <div className="flex flex-col items-center justify-start w-[32%] md:w-full mt-[19px] ml-[830px] mr-[72px] md:mx-5">
-        <form onSubmit={handleLoginSubmit} className="flex flex-col items-center justify-start w-full p-5 bg-black-900_60">
+        
+        {/* Se não houver servidor salvo, mostrar o campo para adicionar a URL do servidor */}
+        {!serverUrl && (
+          <form onSubmit={handleServerSubmit} className="flex flex-col items-center justify-start w-full p-5 gap-4 bg-black-900_60">
+            <Text size="md" as="p" className="mb-3 text-white">
+              Add Server URL
+            </Text>
+            <Input
+              name="server-url"
+              placeholder="Server URL"
+              defaultValue={serverUrl}
+              className="w-full h-[57px] text-gray-A700 bg-gray-800 rounded px-2"
+            />
+            <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full">
+              Save Server
+            </Button>
+          </form>
+        )}
+
+        {/* Formulário de Login */}
+        <form onSubmit={handleLoginSubmit} className="flex flex-col items-center justify-start w-full p-5 bg-black-900_60 gap-4">
           {loginSuccess && (
             <div className="flex flex-col items-center justify-center w-full bg-green-300">
               <Text size="s" as="p" className="!text-green-700 !font-inter">
@@ -75,38 +117,49 @@ export default function LoginPage() {
               </Text>
             </div>
           )}
-          <div className="flex flex-col w-full mt-[28.11px] gap-[30px] md:px-5 max-w-xs">
-            <div className="flex flex-col items-start justify-start w-full mt-[30px] gap-[7px]">
-              <Text size="md" as="p" className="mt-[0.21px] mr-[261px] md:mr-5 tracking-[0.50px] !font-inter">
+          <div className="flex flex-col w-full gap-4">
+            <div className="flex flex-col items-start justify-start w-full">
+              <Text size="md" as="p" className="tracking-[0.50px] text-white">
                 Login
               </Text>
               <Input
                 name="login-username"
                 placeholder="Login"
-                className="w-[99%] h-[57px] sm:w-full gap-[5px] mx-auto text-gray-A700 tracking-[0.50px] font-inter text-xs"
+                className="w-full h-[57px] text-gray-A700 bg-gray-800 rounded px-2"
               />
             </div>
-            <div className="flex flex-col items-start justify-start w-full mt-[30px] gap-[7px]">
-              <Text size="md" as="p" className="mt-[0.21px] mr-[261px] md:mr-5 tracking-[0.50px] !font-inter">
+            <div className="flex flex-col items-start justify-start w-full">
+              <Text size="md" as="p" className="tracking-[0.50px] text-white">
                 Password
               </Text>
               <Input
                 name="login-password"
                 type="password"
                 placeholder="********"
-                className="w-full h-[36px] sm:w-full mb-px text-gray-A700 tracking-[0.50px] font-inter text-xs"
+                className="w-full h-[57px] text-gray-A700 bg-gray-800 rounded px-2"
               />
-              <Text size="s" as="p" className="mt-[6.89px] mr-[88px] md:mr-5 !font-inter">
-                At least one Uppercase, one number, one symbol
-              </Text>
             </div>
+
+            {/* Dropdown de seleção de papel (Admin ou Cliente) */}
+            <div className="flex flex-col w-full">
+              <Text size="md" as="p" className="tracking-[0.50px] text-white mb-2">
+                Login as
+              </Text>
+              <select
+                id="role"
+                name="role"
+                value={role}
+                onChange={handleRoleChange}
+                className="w-full h-[57px] text-black bg-gray-800 p-2 rounded border border-gray-300">
+                <option value="client">Cliente</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+
+            <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full">
+              Login
+            </Button>
           </div>
-          <Button type="submit" className="h-[36px] mt-[30px] mb-5 px-[35px] sm:px-5 text-gray-A700 tracking-[0.50px] font-inter text-xs bg-blue_gray-900_19 min-w-[327px] rounded-[3px] sm:min-w-full">
-            Login
-          </Button>
-          <Button className="h-[36px] mt-[30px] mb-5 px-[35px] sm:px-5 text-gray-A700 tracking-[0.50px] font-inter text-xs bg-blue_gray-900_19 min-w-[327px] rounded-[3px] sm:min-w-full">
-            Esqueci a senha
-          </Button>
         </form>
       </div>
     </>

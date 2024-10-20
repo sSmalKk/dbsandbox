@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import Routes from "./Routes";
 import Header from "components/Header";
+import { ServerStatus }  from "components/ServerStatus";
 
  
 function App() {
@@ -65,6 +66,7 @@ function PageLayout({ userData }) {
           life={0} 
         />
       )}
+      <ServerStatus/>
       <Routes />
     </>
   );
